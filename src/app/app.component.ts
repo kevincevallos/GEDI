@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ServicioService } from './servicio.service';
 
 @Component({
   selector: 'app-root',
@@ -20,4 +21,8 @@ export class AppComponent {
   this.router.navigate(['elaborador']);
   console.log("navigateElaborador");
 }
+
+ngOnInit() {
+}
+
 }
