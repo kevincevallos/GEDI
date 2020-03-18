@@ -12,7 +12,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class ElaboradorComponent implements OnInit {
 
   resume = new Resume();
-  degrees = ['B.E.', 'M.E.', 'B.Com', 'M.Com'];
+  degrees = ['Básico', 'Inicial','Bachillerato', 'Estudios Superiores'];
 
   constructor() { 
     this.resume = JSON.parse(sessionStorage.getItem('resume')) || new Resume();
@@ -61,7 +61,7 @@ export class ElaboradorComponent implements OnInit {
     return {
       content: [
         {
-          text: 'RESUME',
+          text: 'Hoja de Vida',
           bold: true,
           fontSize: 20,
           alignment: 'center',
@@ -80,12 +80,12 @@ export class ElaboradorComponent implements OnInit {
               text: 'Email : ' + this.resume.email,
             },
             {
-              text: 'Contant No : ' + this.resume.contactNo,
+              text: 'Teléfono : ' + this.resume.contactNo,
             },
             {
-              text: 'GitHub: ' + this.resume.socialProfile,
+              text: 'Usuario GitHub: ' + this.resume.socialProfile,
               link: this.resume.socialProfile,
-              color: 'blue',
+              color: 'green',
             }
             ],
             [
@@ -94,7 +94,7 @@ export class ElaboradorComponent implements OnInit {
           ]
         },
         {
-          text: 'Skills',
+          text: 'Habilidades',
           style: 'header'
         },
         {
@@ -117,29 +117,29 @@ export class ElaboradorComponent implements OnInit {
           ]
         },
         {
-          text: 'Experience',
+          text: 'Experiencia',
           style: 'header'
         },
         this.getExperienceObject(this.resume.experiences),
         {
-          text: 'Education',
+          text: 'Educación',
           style: 'header'
         },
         this.getEducationObject(this.resume.educations),
         {
-          text: 'Other Details',
+          text: 'Otros Detalles',
           style: 'header'
         },
         {
           text: this.resume.otherDetails
         },
         {
-          text: 'Signature',
+          text: 'Firma',
           style: 'sign'
         },
         {
           columns : [
-              { qr: this.resume.name + ', Contact No : ' + this.resume.contactNo, fit : 100 },
+              { qr: this.resume.name + ', Teléfono de contacto : ' + this.resume.contactNo, fit : 100 },
               {
               text: `(${this.resume.name})`,
               alignment: 'right',
@@ -148,7 +148,7 @@ export class ElaboradorComponent implements OnInit {
         }
       ],
       info: {
-        title: this.resume.name + '_RESUME',
+        title: this.resume.name + '_HOJA DE VIDA',
         author: this.resume.name,
         subject: 'RESUME',
         keywords: 'RESUME, ONLINE RESUME',
@@ -198,7 +198,7 @@ export class ElaboradorComponent implements OnInit {
               text: experience.jobDescription,
             }],
             {
-              text: 'Experience : ' + experience.experience + ' Months',
+              text: 'Experiencia : ' + experience.experience + ' Meses',
               alignment: 'right'
             }
           ]
@@ -220,19 +220,19 @@ export class ElaboradorComponent implements OnInit {
         widths: ['*', '*', '*', '*'],
         body: [
           [{
-            text: 'Degree',
+            text: 'Grado',
             style: 'tableHeader'
           },
           {
-            text: 'College',
+            text: 'Universidad',
             style: 'tableHeader'
           },
           {
-            text: 'Passing Year',
+            text: 'Año que Cursa',
             style: 'tableHeader'
           },
           {
-            text: 'Result',
+            text: 'Porcentaje',
             style: 'tableHeader'
           },
           ],
