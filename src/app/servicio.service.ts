@@ -7,10 +7,10 @@ import { HttpClient } from '@angular/common/http';
 export class ServicioService {
   //Conexión a API-HUBRE de ejemplo en heroku//
   api_url='http://apihubre.herokuapp.com/api/clientes';
-  constructor(protected http: HttpClient) { }
+  constructor(private http: HttpClient) { }
   getUsers() {
-    //return this.http.get('https://randomuser.me/api/?results=5');
-    return this.http.get(this.api_url);
+    //return this.http.get(this.api_url);
+    return this.http.get('http://localhost:3001/users');
   }
 
 }

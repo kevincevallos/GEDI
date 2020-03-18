@@ -11,16 +11,19 @@ import { ServicioService } from '../servicio.service';
   styleUrls: ['./visualizador.component.css']
 })
 export class VisualizadorComponent implements OnInit {
-  users: any[] = [];
+  users:any;
 
   constructor(private service: ServicioService) { }
 
-  ngOnInit(): void {
+  ngOnInit(){
     
   this.service.getUsers()
   .subscribe(
-    (data) => {
-      this.users = data['data'];
+    data => {
+      console.log('|VisualizadorComponent.getUsers()!|');
+      this.users = data;
+      console.log(this.users);
+
     },
     (error) => {
       console.error(error);

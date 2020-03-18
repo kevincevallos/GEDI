@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { VisualizadorComponent } from './visualizador/visualizador.component';
 import { ElaboradorComponent } from './elaborador/elaborador.component';
 import { HttpClientModule} from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -15,6 +17,7 @@ import { HttpClientModule} from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule
   ],

@@ -5,9 +5,11 @@
 <button (click)="agregarMensaje()">Botón Visualizador</button>
 <!--Bucle para recorrer el array users-->
 <h1>Mostrando datos de ejemplo API</h1>
-<h3>API alojada en Heroku</h3>
+<h3>API alojada en LOCALHOST</h3>
 <div *ngFor='let user of users'>
     <p>{{ user.nombre | uppercase }}</p>
     <p>{{ user.apellido | uppercase }}</p>
+    <p>{{ user.correo }}</p>
+    <p>{{ user.cuidad }}</p>
     <hr>
   </div>
