@@ -17,21 +17,22 @@ export class VisualizadorComponent implements OnInit {
 
   ngOnInit(){
     
-  this.service.getUsers()
-  .subscribe(
-    data => {
-      console.log('|VisualizadorComponent.getUsers()!|');
-      this.users = data;
+  }
+
+  agregarMensaje(){
+    
+  this.service.getUsers().subscribe(
+      x => {
+      //console.log('|VisualizadorComponent.getUsers()!|');
+      this.users = x;
       console.log(this.users);
 
     },
+
     (error) => {
       console.error(error);
     }
   );
-  }
 
-  agregarMensaje(){
-    console.log('Hola Visualizador!°');
   }
 }

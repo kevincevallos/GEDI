@@ -1,0 +1,131 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
+      <div class="navbar-brand mb-0 h1 text-white">ACTA - YAVIRAC</div>
+    </nav>
+    <form #actaForm="ngForm">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="shadow-sm card">
+            <div class="card-body">   
+              <h4 class="card-title d-flex">
+                Título
+              </h4>
+              <input type="text" class="form-control" name="titulo" [(ngModel)]="acta.titulo" #titulo="ngModel"
+              onkeyup="javascript:this.value=this.value.toUpperCase();" placeholder="JUNTA ACADÉMICA CARRERA "  
+              [ngClass]="{'is-invalid': titulo.invalid && (titulo.touched || actaForm.submitted) }" required>
+            </div>
+          </div>
+          <!-- cuerpo -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title" row="3">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    assignment
+                  </i>
+                  Inicio</h4>
+              </div>
+              <div class="row">
+                <div class="col-md-12" >
+                  <div class="form-group">
+                    <textarea class="form-control" name="inicio" [(ngModel)]="acta.inicio" #Inicio="ngModel" rows="6"
+                        placeholder="Inicio del documento" 
+                        [ngClass]="{'is-invalid': Inicio.invalid && (Inicio.touched || actaForm.submitted) }" required></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- orden del dia  -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    library_books
+                  </i>
+                  Orden del dia:</h4>
+                  <button class="btn btn-primary" (click)="agregarOrden()">+</button>
+              </div>
+              <div class="row">
+                <div class="col-md-12" *ngFor="let o of acta.ordenDelDia; let i=index">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="orden{{i}}" [(ngModel)]="o.orden"
+                     #Orden="ngModel" placeholder="Orden del dia"  
+                     [ngClass]="{'is-invalid': Orden.invalid && (Orden.touched || actaForm.submitted) }" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Desarrollo -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    assignment
+                  </i>
+                   Desarrollo:</h4>
+              </div>
+              <div class="row" >
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <textarea class="form-control" name="desarrollo" [(ngModel)]="acta.desarrollo" #Desarrollo="ngModel" rows="8"
+                        placeholder="Desarrollo del documento"
+                        [ngClass]="{'is-invalid': Desarrollo.invalid && (Desarrollo.touched || actaForm.submitted) }" required></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- despedida -->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between card-title">
+              <h4 class="d-flex align-items-center">
+                <i class="material-icons">
+                  library_books
+                </i>
+                Despedida:</h4>
+            </div>
+            <div class="row" >
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="despedida" [(ngModel)]="acta.despedida" #Despedida="ngModel"
+                  placeholder="Saludos Cordiales," 
+                  [ngClass]="{'is-invalid': Despedida.invalid && (Despedida.touched || actaForm.submitted) }" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+      <div class="col-md-4">
+        <div class="shadow-sm card action-buttons">
+          <button (click)="actaForm.valid ? generatePdf('open') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              picture_as_pdf
+            </i> <span>Mostrar PDF</span></button>
+          <button (click)="actaForm.valid ? generatePdf('download') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              cloud_download
+            </i><span>Descargar PDF</span></button>
+          <button (click)="actaForm.valid ? generatePdf('print') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              print
+            </i><span>Imprimir PDF</span></button>
+          <button type='reset' (click)="resetForm()"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              clear
+            </i><span>Limpiar</span></button>
+        </div>
+      </div>
+      </div>
+    </form>
+  </div>

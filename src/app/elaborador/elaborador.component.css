@@ -13,3 +13,32 @@ button span{
 .action-buttons button{
     margin : 5px;
 }
+[nbButton] {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .control-panel {
+    padding: 2rem;
+  }
+
+
+  body, html {
+    height: 100%;
+  }
+  .bg {
+    /* The image used */
+    background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+  
+    /* Half height */
+    height: 80%;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }

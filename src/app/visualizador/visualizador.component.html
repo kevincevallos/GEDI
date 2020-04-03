@@ -2,14 +2,14 @@
 <p>Visualizador de documentos de acuerdo al rol del usuario!</p>
 <p>Permitir descargar los documentos</p>
 <p>Permitir modificar los documentos que le pertenezcan al usuario en cuestión</p>
-<button (click)="agregarMensaje()">Botón Visualizador</button>
 <!--Bucle para recorrer el array users-->
 <h1>Mostrando datos de ejemplo API</h1>
 <h3>API alojada en LOCALHOST</h3>
+<button (click)="agregarMensaje()">Mostrar Usuarios</button>
 <div *ngFor='let user of users'>
-    <p>{{ user.nombre | uppercase }}</p>
-    <p>{{ user.apellido | uppercase }}</p>
+    <p>{{ user.id }}</p>
+    <p>{{ user.clave }}</p>
     <p>{{ user.correo }}</p>
-    <p>{{ user.cuidad }}</p>
+    <p>{{ user.fechaRegistro }}</p>
     <hr>
   </div>

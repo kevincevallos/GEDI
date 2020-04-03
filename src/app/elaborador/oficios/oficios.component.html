@@ -1,0 +1,175 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
+    <div class="navbar-brand mb-0 h1 text-white">OFICIO - YAVIRAC</div>
+  </nav>
+  <form #oficiosForm="ngForm">
+    <div class="row">
+     <div class="col-md-8">
+       <div class="shadow-sm card">
+         <div class="card-body">
+           <h4 class="card-title d-flex align-items-center">
+             <i class="material-icons">
+               today
+             </i>
+             Fecha:
+           </h4>
+
+           <div class="col-md-6">
+           <div class="row">
+             <div class="form-group">
+               <input type="text" class="form-control" [(ngModel)]="oficios.fecha" name="fecha" placeholder="Fecha"
+               #fecha="ngModel" required
+               [ngClass]="{'is-invalid': fecha.invalid && (fecha.touched || oficiosForm.submitted) }">
+               
+             </div>
+           </div>
+           </div>
+         </div>
+       </div>
+       <!--lugar-->
+       <div class="shadow-sm card">
+        <div class="card-body">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons">
+              location_on
+            </i>
+            Lugar:
+          </h4>
+
+          <div class="col-md-6">
+          <div class="row">
+            <div class="form-group">
+              <input type="text" class="form-control" [(ngModel)]="oficios.lugar" name="lugar" placeholder="Lugar"
+              #lugar="ngModel" required
+              [ngClass]="{'is-invalid': lugar.invalid && (lugar.touched || oficiosForm.submitted) }">
+              
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <!--numeroOficio-->
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons">
+             filter_1
+            </i>
+            Numero de oficio:
+          </h4>
+
+          <div class="col-md-6">
+          <div class="row">
+            <div class="form-group">
+              <input type="text" class="form-control" [(ngModel)]="oficios.numeroOficio" name="numeroOficio" placeholder="Numero de Oficio"
+              #numeroOficio="ngModel" required
+              [ngClass]="{'is-invalid': numeroOficio.invalid && (numeroOficio.touched || oficiosForm.submitted) }">
+              
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <!--destinatario-->
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons">
+             person
+            </i>
+            Destinatario:
+          </h4>
+
+          <div class="col-md-6">
+          <div class="row">
+            <div class="form-group">
+              <input type="text" class="form-control" [(ngModel)]="oficios.destinatario" name="destinatario " placeholder="Destinatario"
+              #destinatario="ngModel" required
+              [ngClass]="{'is-invalid': destinatario.invalid && (destinatario.touched || oficiosForm.submitted) }">         
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <!--Asunto-->
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons">
+             forum
+            </i>
+            Asunto:
+          </h4>
+          <div class="col-md-6">
+          <div class="row">
+            <div class="form-group">
+              <input type="text" class="form-control" [(ngModel)]="oficios.asunto" name="asunto" placeholder="Asunto"
+              #asunto="ngModel" required
+              [ngClass]="{'is-invalid': asunto.invalid && (asunto.touched || oficiosForm.submitted) }">         
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <!--Cuerpo-->
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons"> description</i>Cuerpo</h4>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <textarea class="form-control"[(ngModel)]='oficios.cuerpo' name="oficios" rows="4"
+                  placeholder="Cuerpo" #cuerpo="ngModel" required
+                  [ngClass]="{'is-invalid':cuerpo.invalid && (cuerpo.touched|| oficiosForm.submitted)}"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Despedida-->
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons"> description</i>Despedida</h4>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+             <textarea class="form-control"[(ngModel)]='oficios.despedida' name="oficios" rows="3"
+            placeholder="Despedida" #despedida="ngModel" required
+            [ngClass]="{'is-invalid':despedida.invalid && (despedida.touched|| oficiosForm.submitted)}"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     <!--Fin de html-->
+    </div>
+    <div class="col-md-4">
+      <div class="shadow-sm card action-buttons">
+        <button (click)="oficiosForm.valid ? generarPdf('open') : ''"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            picture_as_pdf
+          </i> <span>Mostrar PDF</span></button>
+        <button (click)="oficiosForm.valid ? generarPdf('download') : ''"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            cloud_download
+          </i><span>Descargar PDF</span></button>
+        <button (click)="oficiosForm.valid ? generarPdf('print') : ''"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            print
+          </i><span>Imprimir PDF</span></button>
+        <button type='reset' (click)="resetearForm()"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            clear
+          </i><span>Limpiar</span></button>
+          </div>
+  
+      </div>
+    </div>
+  </form>
+</div>

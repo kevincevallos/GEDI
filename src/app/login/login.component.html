@@ -1,0 +1,27 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+
+    <form [formGroup]="formLogin" (ngSubmit)="ingresar()">
+        <div class="form-group">
+            <mat-form-field>
+                <input placeholder="Correo Institucional" matInput type="text" [(ngModel)]="formLogin.correo" formControlName="correo"
+                    class="form-control" />
+            </mat-form-field>
+
+        </div>
+        <div class="form-group">
+            <mat-form-field>
+                <input placeholder="Contraseña" matInput type="password" [(ngModel)]="formLogin.clave" formControlName="clave"
+                    class="form-control" />
+            </mat-form-field>
+
+        </div>
+        <div class="form-group">
+            <button mat-raised-button [disabled]="loading" class="btn btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Iniciar Sesión
+            </button>
+            <a routerLink="/registration" class="btn btn-link">Registrarse</a>
+        </div>
+    </form>
+
+</div>

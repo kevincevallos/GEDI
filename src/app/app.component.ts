@@ -8,11 +8,13 @@ import { ServicioService } from './servicio.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  visible: boolean;
   title = 'GEDI';
   mensajeBienvenida = 'Bienvenido a GEDI';
 
-  constructor(private router: Router) { }
-
+  constructor(private router: Router) { 
+  this.visible = true;
+}
   navigateVisualizador(){
     this.router.navigate(['visualizador']);
     console.log("navigateVisualizador");

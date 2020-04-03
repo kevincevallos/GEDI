@@ -1,0 +1,105 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
+      <div class="navbar-brand mb-0 h1 text-white">MEMORÁNDUM - YAVIRAC</div>
+    </nav>
+    <form #memoForm="ngForm">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <h4 class="card-title d-flex">
+                Para:
+              </h4>
+              <input type="text" class="form-control" [(ngModel)]="memo.para" 
+              name="para" #Para="ngModel" placeholder="Nombre"
+              [ngClass]="{'is-invalid': Para.invalid && (Para.touched || memoForm.submitted) }" required>
+            </div>
+            <div class="card-body">
+              <h4 class="card-title d-flex">
+                Asunto:
+              </h4>
+              <input type="text" class="form-control" [(ngModel)]="memo.asunto" 
+              name="asunto" #Asunto="ngModel" required placeholder="Descripción"
+              [ngClass]="{'is-invalid': Asunto.invalid && (Asunto.touched || memoForm.submitted) }">
+            </div>
+            <div class="card-body">
+              <h4 class="card-title d-flex">
+                Fecha:
+              </h4>
+              <input type="date" class="form-control" [(ngModel)]="memo.fecha" 
+              name="fecha" #Fecha="ngModel" required placeholder="01/01/1990"
+              [ngClass]="{'is-invalid': Fecha.invalid && (Fecha.touched || memoForm.submitted) }">
+            
+            </div>
+          </div>
+          <!-- cuerpo -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    assignment
+                  </i>
+                  Cuerpo</h4>
+              </div>
+              <div class="row">
+                <div class="col-md-12" >
+                  <div class="form-group">
+                    <textarea class="form-control" name="cuerpo" [(ngModel)]="memo.cuerpo" #Cuerpo="ngModel" required rows="8"
+                        placeholder="Desarrollo del documento" 
+                        [ngClass]="{'is-invalid': Cuerpo.invalid && (Cuerpo.touched || memoForm.submitted) }">
+                      </textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- despedida -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    library_books
+                  </i>
+                  Despedida:</h4>
+              </div>
+              <div class="row" >
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="despedida" [(ngModel)]="memo.despedida" #Despedida="ngModel"
+                      value="saludos Cordiales," required
+                      [ngClass]="{'is-invalid': Despedida.invalid && (Despedida.touched || memoForm.submitted) }">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="shadow-sm card action-buttons">
+            <button (click)="memoForm.valid ? generatePdf('open') : ''"
+              class="btn btn-primary d-flex align-items-center justify-content-center">
+              <i class="material-icons">
+                picture_as_pdf
+              </i> <span>Mostrar PDF</span></button>
+            <button (click)="memoForm.valid ? generatePdf('download') : ''"
+              class="btn btn-primary d-flex align-items-center justify-content-center">
+              <i class="material-icons">
+                cloud_download
+              </i><span>Descargar PDF</span></button>
+            <button (click)="memoForm.valid ? generatePdf('print') : ''"
+              class="btn btn-primary d-flex align-items-center justify-content-center">
+              <i class="material-icons">
+                print
+              </i><span>Imprimir PDF</span></button>
+            <button type='reset' (click)="resetForm()"
+              class="btn btn-primary d-flex align-items-center justify-content-center">
+              <i class="material-icons">
+                clear
+              </i><span>Limpiar</span></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
