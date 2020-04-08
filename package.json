@@ -25,6 +25,7 @@
     "@nebular/eva-icons": "^5.0.0",
     "@nebular/theme": "^5.0.0",
     "@types/pg": "^7.14.3",
+    "angular-ng-autocomplete": "^2.0.1",
     "eva-icons": "^1.1.2",
     "pdfmake": "^0.1.65",
     "pg": "^7.18.2",

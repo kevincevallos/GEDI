@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { ServicioService } from "./servicio.service";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +13,8 @@ import { NbThemeModule } from '@nebular/theme';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from  '@angular/material/toolbar';
 import { MatButtonModule } from  '@angular/material/button';
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatMenuModule } from "@angular/material/menu";
 import { MatCardModule, MatCardContent } from  '@angular/material/card';
 import { MatFormFieldModule, MatFormField } from  '@angular/material/form-field';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -25,7 +27,10 @@ import { SolicitudesComponent } from './elaborador/solicitudes/solicitudes.compo
 import { HojaDeVidaComponent } from './elaborador/hoja-de-vida/hoja-de-vida.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatSliderModule } from '@angular/material/slider';
+import { MatIconModule } from "@angular/material/icon";
+import { ActasReunionesComponent } from './elaborador/actas-reuniones/actas-reuniones.component';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 @NgModule({
   declarations: [
@@ -39,11 +44,11 @@ import { MatSelectModule } from '@angular/material/select';
     MemorandumsComponent,
     OficiosComponent,
     SolicitudesComponent,
-    HojaDeVidaComponent
+    HojaDeVidaComponent,
+    ActasReunionesComponent
   ],
   imports: [
     BrowserModule,
-    NbThemeModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
@@ -53,12 +58,16 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatSelectModule,
     MatInputModule,
+    MatSliderModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    MatIconModule,
     MatFormFieldModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AutocompleteLibModule
   ],
   providers: [ServicioService, DatePipe],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [AppComponent]
 
 })
 export class AppModule { }

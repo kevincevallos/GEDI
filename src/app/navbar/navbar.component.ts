@@ -34,6 +34,10 @@ export class NavbarComponent {
     // return true if the current page is login or registration
     return this.router.url.match('/login|/registration');
   }
+  isUserView() {
+    return this.router.url.match('/visualizador|/elaborador');
+
+  }
   isActasView() {
     // return true if the current page is actas
     return this.router.url.match('/actas');

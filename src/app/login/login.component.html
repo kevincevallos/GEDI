@@ -1,6 +1,6 @@
 <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
 
-    <form [formGroup]="formLogin" (ngSubmit)="ingresar()">
+    <form [formGroup]="formLogin" (ngSubmit)="navegation()">
         <div class="form-group">
             <mat-form-field>
                 <input placeholder="Correo Institucional" matInput type="text" [(ngModel)]="formLogin.correo" formControlName="correo"
@@ -20,7 +20,6 @@
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                 Iniciar Sesión
             </button>
-            <a routerLink="/registration" class="btn btn-link">Registrarse</a>
         </div>
     </form>
 

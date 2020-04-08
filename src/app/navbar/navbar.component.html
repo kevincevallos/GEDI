@@ -1,126 +1,145 @@
 <!--Toolbar Registration-->
-<mat-toolbar *ngIf="isRegistrationView()" color="primary">
-    <span class="nav-tool-items">
-      <a mat-button routerLink="login" >Iniciar Sesión</a>
-      <a mat-button mat-raised-button routerLink="registration" routerLinkActive="active">Registrarse</a>
-    </span>
-</mat-toolbar>
+<!-- <mat-toolbar *ngIf="isRegistrationView()" color="primary">
+  <span class="nav-tool-items">
+    <a mat-button routerLink="login">Iniciar Sesión</a>
+    <a mat-button mat-raised-button routerLink="registration" routerLinkActive="active">Registrarse</a>
+  </span>
+</mat-toolbar> -->
 <!--Toolbar Login-->
-<mat-toolbar *ngIf="isLoginView()" color="primary">
-    <span class="nav-tool-items">
-      <a mat-button mat-raised-button routerLink="login" routerLinkActive="active">Iniciar Sesión</a>
-      <a mat-button routerLink="registration" >Registrarse</a>
-    </span>
-</mat-toolbar>
+<!-- <mat-toolbar *ngIf="isLoginView()" color="primary">
+  <span class="nav-tool-items">
+    <a mat-button mat-raised-button routerLink="login" routerLinkActive="active">Iniciar Sesión</a>
+    <a mat-button routerLink="registration">Registrarse</a>
+  </span>
+</mat-toolbar> -->
 <!--Toolbar Visualizador-->
-<mat-toolbar *ngIf="isVisualizadorView()" color="primary">
-    <span class="nav-tool-items">
-      <a mat-button mat-raised-button routerLink="visualizador" routerLinkActive="active">Visualizador de Documentos</a>
-      <a mat-button routerLink="elaborador" >Elaborador de Documentos</a>
-      <a class="logout" mat-button routerLink="login" >Cerrar Sesión</a>
-    </span>
-</mat-toolbar>
+<!-- <mat-toolbar *ngIf="isVisualizadorView()" color="primary">
+  <span class="nav-tool-items">
+    <a mat-button mat-raised-button routerLink="visualizador" routerLinkActive="active">Visualizador de Documentos</a>
+    <a mat-button routerLink="elaborador">Elaborador de Documentos</a>
+    <a class="logout" mat-button routerLink="login">Cerrar Sesión</a>
+  </span>
+</mat-toolbar> -->
 <!--Toolbar Elaborador-->
-<mat-toolbar *ngIf="isElaboradorView()" color="primary">
-    <span class="nav-tool-items">
-      <a mat-button  routerLink="visualizador" >Visualizador de Documentos</a>
-      <a mat-button mat-raised-button routerLink="elaborador" routerLinkActive="active">Elaborador de Documentos</a>
-      <a class="logout" mat-button routerLink="login" >Cerrar Sesión</a>
-    </span>
-</mat-toolbar>
+<!-- <mat-toolbar *ngIf="isElaboradorView()" color="primary">
+  <span class="nav-tool-items">
+    <a mat-button routerLink="visualizador">Visualizador de Documentos</a>
+    <a mat-button mat-raised-button routerLink="elaborador" routerLinkActive="active">Elaborador de Documentos</a>
+    <a class="logout" mat-button routerLink="login">Cerrar Sesión</a>
+  </span>
+</mat-toolbar> -->
 
 <!--Toolbar Tipos de Formato-->
-<mat-toolbar *ngIf="isElaboradorView()" color="white">
+<!-- <mat-toolbar *ngIf="isElaboradorView()" color="white">
   <span class="nav-tool-items">
-    <a mat-button routerLink="actas" >Acta</a>
-    <a mat-button routerLink="solicitudes" >Solicitud</a>
+    <a mat-button routerLink="actas">Acta</a>
+    <a mat-button routerLink="solicitudes">Solicitud</a>
     <a mat-button routerLink="memorandums" routerLinkActive="active">Memorándum</a>
     <a mat-button routerLink="oficios" routerLinkActive="active">Oficio</a>
-    <a mat-button routerLink="hojasDeVida" >Hoja de Vida</a>
+    <a mat-button routerLink="hojasDeVida">Hoja de Vida</a>
   </span>
-</mat-toolbar>
-<!--Toolbar Actas-->
-<mat-toolbar *ngIf="isActasView()" color="white">
-  <span class="nav-tool-items">
-    <a mat-button mat-raised-button routerLink="actas" >Acta</a>
-    <a mat-button routerLink="solicitudes" >Solicitud</a>
-    <a mat-button routerLink="memorandums" routerLinkActive="active">Memorándum</a>
-    <a mat-button routerLink="oficios" routerLinkActive="active">Oficio</a>
-    <a mat-button routerLink="hojasDeVida" >Hoja de Vida</a>
-    <a class="logout" mat-button routerLink="elaborador" >Regresar</a>
-  </span>
-</mat-toolbar>
-<!--Toolbar Solicitudes-->
-<mat-toolbar *ngIf="isSolicitudesView()" color="white">
-  <span class="nav-tool-items">
-    <a mat-button  routerLink="actas" >Acta</a>
-    <a mat-button mat-raised-button routerLink="solicitudes" >Solicitud</a>
-    <a mat-button routerLink="memorandums" routerLinkActive="active">Memorándum</a>
-    <a mat-button routerLink="oficios" routerLinkActive="active">Oficio</a>
-    <a mat-button routerLink="hojasDeVida" >Hoja de Vida</a>
-    <a class="logout" mat-button routerLink="elaborador" >Regresar</a>
-  </span>
-</mat-toolbar>
-<!--Toolbar Memorandums-->
-<mat-toolbar *ngIf="isMemorandumsView()" color="white">
-  <span class="nav-tool-items">
-    <a mat-button  routerLink="actas" >Acta</a>
-    <a mat-button routerLink="solicitudes" >Solicitud</a>
-    <a mat-button mat-raised-button routerLink="memorandums" routerLinkActive="active">Memorándum</a>
-    <a mat-button routerLink="oficios" routerLinkActive="active">Oficio</a>
-    <a mat-button routerLink="hojasDeVida" >Hoja de Vida</a>
-    <a class="logout" mat-button routerLink="elaborador" >Regresar</a>
-  </span>
-</mat-toolbar>
-<!--Toolbar Oficios-->
-<mat-toolbar *ngIf="isOficiosView()" color="white">
-  <span class="nav-tool-items">
-    <a mat-button routerLink="actas" >Acta</a>
-    <a mat-button routerLink="solicitudes" >Solicitud</a>
-    <a mat-button routerLink="memorandums" routerLinkActive="active">Memorándum</a>
-    <a mat-button mat-raised-button routerLink="oficios" routerLinkActive="active">Oficio</a>
-    <a mat-button routerLink="hojasDeVida" >Hoja de Vida</a>
-    <a class="logout" mat-button routerLink="elaborador" >Regresar</a>
-  </span>
-</mat-toolbar>
-<!--Toolbar HojaDeVida-->
-<mat-toolbar *ngIf="isHojasDeVidaView()" color="white">
-  <span class="nav-tool-items">
-    <a mat-button routerLink="actas" >Acta</a>
-    <a mat-button routerLink="solicitudes" >Solicitud</a>
-    <a mat-button routerLink="memorandums" routerLinkActive="active">Memorándum</a>
-    <a mat-button routerLink="oficios" routerLinkActive="active">Oficio</a>
-    <a mat-button mat-raised-button routerLink="hojasDeVida" >Hoja de Vida</a>
-    <a class="logout" mat-button routerLink="elaborador" >Regresar</a>
-  </span>
-</mat-toolbar>
+</mat-toolbar> -->
 
 <!--Contenido de Bienvenida-Home-->
 <div *ngIf="isHomeView()" class="content" role="main">
 
-    <!-- Highlight Card -->
-    <div class="card highlight-card card-small">
-  
-      <svg id="rocket" alt="Rocket Ship" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
-        <g id="Group_83" data-name="Group 83" transform="translate(-141 -696)">
-          <circle id="Ellipse_8" data-name="Ellipse 8" cx="50.839" cy="50.839" r="50.839" transform="translate(141 696)" fill="#dd0031"/>
-          <g id="Group_47" data-name="Group 47" transform="translate(165.185 720.185)">
-            <path id="Path_33" data-name="Path 33" d="M3.4,42.615a3.084,3.084,0,0,0,3.553,3.553,21.419,21.419,0,0,0,12.215-6.107L9.511,30.4A21.419,21.419,0,0,0,3.4,42.615Z" transform="translate(0.371 3.363)" fill="#fff"/>
-            <path id="Path_34" data-name="Path 34" d="M53.3,3.221A3.09,3.09,0,0,0,50.081,0,48.227,48.227,0,0,0,18.322,13.437c-6-1.666-14.991-1.221-18.322,7.218A33.892,33.892,0,0,1,9.439,25.1l-.333.666a3.013,3.013,0,0,0,.555,3.553L23.985,43.641a2.9,2.9,0,0,0,3.553.555l.666-.333A33.892,33.892,0,0,1,32.647,53.3c8.55-3.664,8.884-12.326,7.218-18.322A48.227,48.227,0,0,0,53.3,3.221ZM34.424,9.772a6.439,6.439,0,1,1,9.106,9.106,6.368,6.368,0,0,1-9.106,0A6.467,6.467,0,0,1,34.424,9.772Z" transform="translate(0 0.005)" fill="#fff"/>
-          </g>
+  <!-- Highlight Card -->
+  <div class="card highlight-card card-small">
+
+    <svg id="rocket" alt="Rocket Ship" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678"
+      viewBox="0 0 101.678 101.678">
+      <g id="Group_83" data-name="Group 83" transform="translate(-141 -696)">
+        <circle id="Ellipse_8" data-name="Ellipse 8" cx="50.839" cy="50.839" r="50.839" transform="translate(141 696)"
+          fill="#dd0031" />
+        <g id="Group_47" data-name="Group 47" transform="translate(165.185 720.185)">
+          <path id="Path_33" data-name="Path 33"
+            d="M3.4,42.615a3.084,3.084,0,0,0,3.553,3.553,21.419,21.419,0,0,0,12.215-6.107L9.511,30.4A21.419,21.419,0,0,0,3.4,42.615Z"
+            transform="translate(0.371 3.363)" fill="#fff" />
+          <path id="Path_34" data-name="Path 34"
+            d="M53.3,3.221A3.09,3.09,0,0,0,50.081,0,48.227,48.227,0,0,0,18.322,13.437c-6-1.666-14.991-1.221-18.322,7.218A33.892,33.892,0,0,1,9.439,25.1l-.333.666a3.013,3.013,0,0,0,.555,3.553L23.985,43.641a2.9,2.9,0,0,0,3.553.555l.666-.333A33.892,33.892,0,0,1,32.647,53.3c8.55-3.664,8.884-12.326,7.218-18.322A48.227,48.227,0,0,0,53.3,3.221ZM34.424,9.772a6.439,6.439,0,1,1,9.106,9.106,6.368,6.368,0,0,1-9.106,0A6.467,6.467,0,0,1,34.424,9.772Z"
+            transform="translate(0 0.005)" fill="#fff" />
         </g>
-      </svg>
-      <span>      {{mensajeBienvenida}} - Gestión y Elaboración de Documentos Institucionales!</span>
+      </g>
+    </svg>
+    <span> {{mensajeBienvenida}} - Gestión y Elaboración de Documentos Institucionales!</span>
+
+    <svg id="rocket-smoke" alt="Rocket Ship Smoke" xmlns="http://www.w3.org/2000/svg" width="516.119" height="1083.632"
+      viewBox="0 0 516.119 1083.632">
+      <path id="Path_40" data-name="Path 40"
+        d="M644.6,141S143.02,215.537,147.049,870.207s342.774,201.755,342.774,201.755S404.659,847.213,388.815,762.2c-27.116-145.51-11.551-384.124,271.9-609.1C671.15,139.365,644.6,141,644.6,141Z"
+        transform="translate(-147.025 -140.939)" fill="#f5f5f5" />
+    </svg>
+
+  </div>
+</div>
+
+
+<div class="menu" role="main">
+
+  <div *ngIf="isElaboradorView()" class="div1">
+    <button class="buttonFill1" mat-button mat-raised-button routerLink="visualizador">VISUALIZADOR DE DOCUMENTOS</button>
+    </div>
+    <div *ngIf="isUserView()" class="menu1" >
+    <button class="button2" mat-icon-button mat-raised-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button [matMenuTriggerFor]="formatos" mat-menu-item>
+        <mat-icon>library_books</mat-icon>
+        <span>Crear Documento</span>
+      </button>
+      <mat-menu #formatos="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="solicitud">Solicitud</button>
+        <button mat-menu-item [matMenuTriggerFor]="acta">Acta</button>
+        <button mat-menu-item [matMenuTriggerFor]="memorandum">Memorándum</button>
+        <button mat-menu-item [matMenuTriggerFor]="hojaDeVida">Hoja de Vida</button>
+        <button mat-menu-item [matMenuTriggerFor]="Oficio">Oficio</button>
+      </mat-menu>
+      <mat-menu #solicitud="matMenu">
+        <button mat-menu-item routerLink="solicitudes">Solicitud Básica</button>
+        <button mat-menu-item disabled>Cambio de Jornada</button>
+        <button mat-menu-item disabled>Cambio de Carrera</button>
+        <button mat-menu-item disabled>Tema de Tesis</button>
+      </mat-menu>
   
-      <svg id="rocket-smoke" alt="Rocket Ship Smoke" xmlns="http://www.w3.org/2000/svg" width="516.119" height="1083.632" viewBox="0 0 516.119 1083.632">
-        <path id="Path_40" data-name="Path 40" d="M644.6,141S143.02,215.537,147.049,870.207s342.774,201.755,342.774,201.755S404.659,847.213,388.815,762.2c-27.116-145.51-11.551-384.124,271.9-609.1C671.15,139.365,644.6,141,644.6,141Z" transform="translate(-147.025 -140.939)" fill="#f5f5f5"/>
-      </svg>
+      <mat-menu #acta="matMenu">
+        <button mat-menu-item routerLink="actas">Acta Básica</button>
+        <button mat-menu-item routerLink="actasReuniones">Acta de Reunión</button>
+      </mat-menu>
   
-    </div>  
+      <mat-menu #memorandum="matMenu">
+        <button mat-menu-item routerLink="memorandums">Memorándum Básico</button>
+      </mat-menu>
+  
+      <mat-menu #hojaDeVida="matMenu">
+        <button mat-menu-item routerLink="hojasDeVida">Hoja de Vida Básica</button>
+        <button mat-menu-item disabled>Hoja de Vida - Fase Práctica</button>
+      </mat-menu>
+  
+      <mat-menu #Oficio="matMenu">
+        <button mat-menu-item routerLink="oficios">Oficio Básico</button>
+        <button mat-menu-item disabled>Oficio - Carrera Específica</button>
+      </mat-menu>
+
+
+
+
+      <button  mat-menu-item>
+        <mat-icon>apartment</mat-icon>
+        <a href="http://yavirac.edu.ec/eva/login/index.php">IGNUG</a>
+      </button>
+      <button routerLink="login" mat-menu-item>
+        <mat-icon>cancel</mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </mat-menu>
   </div>
 
-  <!--<div id="center" *ngIf="isDocumentosView()" class="container-fluid">
-  <nav  class="navbar navbar-expand navbar-light bg-secondary d-flex justify-content-between">
-    <div class="navbar-brand mb-0 h1 text-white">ELABORADOR DE DOCUMENTOS INSTITUCIONALES - YAVIRAC</div>
-  </nav>
-  </div>-->
+
+  <div *ngIf="isVisualizadorView()" class="div1">
+    <button class="buttonFill1" mat-button mat-raised-button routerLink="elaborador">ELABORADOR DE DOCUMENTOS</button>
+  </div>
+  <div>
+
+  </div>
+</div>

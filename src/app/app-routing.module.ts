@@ -9,6 +9,7 @@ import { OficiosComponent } from './elaborador/oficios/oficios.component';
 import { ActasComponent } from './elaborador/actas/actas.component';
 import { MemorandumsComponent } from './elaborador/memorandums/memorandums.component';
 import { HojaDeVidaComponent } from './elaborador/hoja-de-vida/hoja-de-vida.component';
+import { ActasReunionesComponent } from './elaborador/actas-reuniones/actas-reuniones.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
    {path:"oficios",component:OficiosComponent},
    {path:"actas",component:ActasComponent},
    {path:"memorandums",component:MemorandumsComponent},
-   {path:"hojasDeVida",component:HojaDeVidaComponent}
+   {path:"hojasDeVida",component:HojaDeVidaComponent},
+   {path:"actasReuniones",component:ActasReunionesComponent}
 ]
 
 @NgModule({

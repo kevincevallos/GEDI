@@ -1,4 +1,25 @@
 
+.buttonFill {
+  width: 96%;
+  float: right;
+  display: block;
+}
+.buttonFill1 {
+  width: 96%;
+  float: right;
+  display: block;
+
+}
+.button2{
+  float: left;
+  display: block;
+  height: 36px;
+
+}
+.div1{
+}
+.menu1{
+}
   :host {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 14px;

@@ -1,0 +1,280 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
+      <div class="navbar-brand mb-0 h1 text-white">ACTA DE REUNIÓN - YAVIRAC</div>
+      <button mat-button mat-raised-button routerLink="/elaborador">REGRESAR</button>
+    </nav>
+    <form #reunionForm="ngForm">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="shadow-sm card">
+          <!-- cuerpo -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title" row="3">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    assignment
+                  </i>
+                  Inicio</h4>
+              </div>
+              <div class="row">
+                <div class="col-md-12" >
+                  <div class="form-group">
+                      <label for="">
+                        En el Distrito Metropolitano de Quito, provincia de Pichincha, siendo las {{hora}}:{{min}}, del día {{date}}, 
+                        luego de verificar el quórum reglamentario, se instala la sesión de investigación, la misma que es presidida por 
+                        <ng-autocomplete 
+                            [data]="listaDocentes"
+                            [searchKeyword]="keyword"
+                            [itemTemplate]="itemTemplate"
+                            placeholder="Nombre"
+                            (selected)='selectCoordinador($event)'
+                        > 
+                                                        
+                        </ng-autocomplete>
+                        
+                        <ng-template #itemTemplate let-item>
+                        <a [innerHTML]="item.nombre"  ></a>
+                        </ng-template> coordinador de Carrera; actúa como secretari@ de la reunión <ng-autocomplete 
+                        [data]="listaDocentes"
+                        [searchKeyword]="keyword"
+                        [itemTemplate]="itemTemplate"
+                        placeholder="Nombre"
+                        (selected)='selectSecretaria($event)'
+                        > 
+                                                    
+                      </ng-autocomplete>
+                      
+                      <ng-template #itemTemplate let-item>
+                      <a [innerHTML]="item.nombre"  ></a>
+                      </ng-template>; 
+                        con la asistencia de los siguientes docentes:
+                      </label>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- docentes involucrados -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    person
+                  </i>
+                    Docentes:</h4>
+                  <button class="btn btn-primary" (click)="agregarInvolucrados()">+</button>
+              </div>
+              <div class="row">
+                <div class="col-md-12" *ngFor="let d of reunion.involucrados; let i=index">
+                  <div class="form-group">
+                    <ng-autocomplete 
+                    [data]="listaDocentes"
+                    [searchKeyword]="keyword"
+                    [itemTemplate]="itemTemplate"
+                    placeholder="Nombre"
+                    (selected)='selectInvolucrados($event)'
+                    > 
+                                                
+                  </ng-autocomplete>
+                  
+                  <ng-template #itemTemplate let-item>
+                  <a [innerHTML]="item.nombre"  ></a>
+                  </ng-template>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- orden del dia  -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    library_books
+                  </i>
+                  Orden del dia:</h4>
+                  <button class="btn btn-primary" (click)="agregarOrden()">+</button>
+              </div>
+              <div class="row">
+                <div class="col-md-12" *ngFor="let o of reunion.ordenDelDia; let i=index">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="orden{{i}}" [(ngModel)]="o.orden"
+                     #Orden="ngModel" placeholder="Orden del dia"  
+                     [ngClass]="{'is-invalid': Orden.invalid && (Orden.touched || reunionForm.submitted) }" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Desarrollo -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    assignment
+                  </i>
+                   Desarrollo:</h4>
+              </div>
+              <div class="row" >
+                <div class="col-md-12">
+                  <div class="form-group" *ngFor="let o of reunion.ordenDelDia; let i= index" >
+                      <label for="" >{{o.orden}}</label>
+                      <textarea class="form-control" name="descripcion{{i}}" [(ngModel)]="o.descripcion"
+                      #Orden="ngModel" placeholder="Descripcion"  
+                      [ngClass]="{'is-invalid': Orden.invalid && (Orden.touched || reunionForm.submitted) }">
+                      </textarea>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Firmas -->
+          <div class="shadow-sm card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between card-title">
+                <h4 class="d-flex align-items-center">
+                  <i class="material-icons">
+                    person
+                  </i>
+                    Revisado y Aprobado por:</h4>
+              </div>
+              <div class="row">
+                <div class="col-md-12" >
+                  <div class="form-group">
+                    <ng-autocomplete 
+                    [data]="listaDocentes"
+                    [searchKeyword]="keyword"
+                    [itemTemplate]="itemTemplate"
+                    placeholder="Nombre"
+                    (selected)='selectRevisado($event)'
+                    > 
+                                                
+                  </ng-autocomplete>
+                  
+                  <ng-template #itemTemplate let-item>
+                  <a [innerHTML]="item.nombre"  ></a>
+                  </ng-template>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between card-title">
+                  <h4 class="d-flex align-items-center">
+                    <i class="material-icons">
+                      person
+                    </i>
+                      Aprobado por:</h4>
+                </div>
+                <div class="row">
+                  <div class="col-md-12" >
+                    <div class="form-group">
+                      <ng-autocomplete 
+                      [data]="listaDocentes"
+                      [searchKeyword]="keyword"
+                      [itemTemplate]="itemTemplate"
+                      placeholder="Nombre"
+                      (selected)='selectAprobadoUno($event)'
+                      > 
+                                                  
+                    </ng-autocomplete>
+                    
+                    <ng-template #itemTemplate let-item>
+                    <a [innerHTML]="item.nombre"  ></a>
+                    </ng-template>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" >
+                      <div class="form-group">
+                        <ng-autocomplete 
+                        [data]="listaDocentes"
+                        [searchKeyword]="keyword"
+                        [itemTemplate]="itemTemplate"
+                        placeholder="Nombre"
+                        (selected)='selectAprobadoDos($event)'
+                        > 
+                                                    
+                      </ng-autocomplete>
+                      
+                      <ng-template #itemTemplate let-item>
+                      <a [innerHTML]="item.nombre"  ></a>
+                      </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <ng-autocomplete 
+                        [data]="listaDocentes"
+                        [searchKeyword]="keyword"
+                        [itemTemplate]="itemTemplate"
+                        placeholder="Nombre"
+                        (selected)='selectAprobadoTres($event)'
+                        > 
+                                                    
+                      </ng-autocomplete>
+                      
+                      <ng-template #itemTemplate let-item>
+                      <a [innerHTML]="item.nombre"  ></a>
+                      </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <ng-autocomplete 
+                        [data]="listaDocentes"
+                        [searchKeyword]="keyword"
+                        [itemTemplate]="itemTemplate"
+                        placeholder="Nombre"
+                        (selected)='selectAprobadoCuatro($event)'
+                        > 
+                                                    
+                      </ng-autocomplete>
+                      
+                      <ng-template #itemTemplate let-item>
+                      <a [innerHTML]="item.nombre"  ></a>
+                      </ng-template>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </div>
+        
+      <div class="col-md-4">
+        <div class="shadow-sm card action-buttons">
+          <button (click)="reunionForm.valid ? generatePdf('open') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              picture_as_pdf
+            </i> <span>Mostrar PDF</span></button>
+          <button (click)="reunionForm.valid ? generatePdf('download') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              cloud_download
+            </i><span>Descargar PDF</span></button>
+          <button (click)="reunionForm.valid ? generatePdf('print') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              print
+            </i><span>Imprimir PDF</span></button>
+          <button type='reset' (click)="resetForm()"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              clear
+            </i><span>Limpiar</span></button>
+        </div>
+      </div>
+      </div>
+    </form>
+  </div>
