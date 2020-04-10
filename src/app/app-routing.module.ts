@@ -10,18 +10,24 @@ import { ActasComponent } from './elaborador/actas/actas.component';
 import { MemorandumsComponent } from './elaborador/memorandums/memorandums.component';
 import { HojaDeVidaComponent } from './elaborador/hoja-de-vida/hoja-de-vida.component';
 import { ActasReunionesComponent } from './elaborador/actas-reuniones/actas-reuniones.component';
+import { SolicitudesTitulacionComponent } from './elaborador/solicitudes-titulacion/solicitudes-titulacion.component';
+import { AuthGuard } from './guards/auth.guard';
+import { GestionUsuariosComponent } from './admin/gestion-usuarios/gestion-usuarios.component';
+import { AccesoDenegadoComponent } from './admin/acceso-denegado/acceso-denegado.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent },
-  { path: 'registration', component: RegistrationComponent },
-   {path:"visualizador",component:VisualizadorComponent},
-   {path:"elaborador",component:ElaboradorComponent},
-   {path:"solicitudes",component:SolicitudesComponent},
-   {path:"oficios",component:OficiosComponent},
-   {path:"actas",component:ActasComponent},
-   {path:"memorandums",component:MemorandumsComponent},
-   {path:"hojasDeVida",component:HojaDeVidaComponent},
-   {path:"actasReuniones",component:ActasReunionesComponent}
+   {path:"visualizador",component:VisualizadorComponent, canActivate: [AuthGuard] },
+   {path:"elaborador",component:ElaboradorComponent, canActivate: [AuthGuard] },
+   {path:"solicitudes",component:SolicitudesComponent, canActivate: [AuthGuard] },
+   {path:"oficios",component:OficiosComponent, canActivate: [AuthGuard] },
+   {path:"actas",component:ActasComponent, canActivate: [AuthGuard] },
+   {path:"memorandums",component:MemorandumsComponent, canActivate: [AuthGuard] },
+   {path:"hojasDeVida",component:HojaDeVidaComponent, canActivate: [AuthGuard] },
+   {path:"actasReuniones",component:ActasReunionesComponent, canActivate: [AuthGuard] },
+   {path:"solicitudes-titulacion",component:SolicitudesTitulacionComponent, canActivate: [AuthGuard] },
+   {path:"gestion-usuarios",component:GestionUsuariosComponent, canActivate: [AuthGuard] },
+   {path:"acceso-denegado",component:AccesoDenegadoComponent, canActivate: [AuthGuard] }
 ]
 
 @NgModule({

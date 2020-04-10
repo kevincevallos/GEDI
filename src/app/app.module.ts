@@ -31,6 +31,11 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from "@angular/material/icon";
 import { ActasReunionesComponent } from './elaborador/actas-reuniones/actas-reuniones.component';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import { SolicitudesTitulacionComponent } from './elaborador/solicitudes-titulacion/solicitudes-titulacion.component';
+import { GestionUsuariosComponent } from './admin/gestion-usuarios/gestion-usuarios.component';
+import { AccesoDenegadoComponent } from './admin/acceso-denegado/acceso-denegado.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -45,7 +50,10 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     OficiosComponent,
     SolicitudesComponent,
     HojaDeVidaComponent,
-    ActasReunionesComponent
+    ActasReunionesComponent,
+    SolicitudesTitulacionComponent,
+    GestionUsuariosComponent,
+    AccesoDenegadoComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +71,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     MatMenuModule,
     MatIconModule,
     MatFormFieldModule,
+    MatTableModule,
+    MatPaginatorModule,
     BrowserAnimationsModule,
     AutocompleteLibModule
   ],

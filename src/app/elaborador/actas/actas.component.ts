@@ -32,6 +32,7 @@ export class ActasComponent implements OnInit {
 
   resetForm() {
     this.acta = new Actas();
+    sessionStorage.removeItem('acta');
   }
 
   getDocumentDefinition() {

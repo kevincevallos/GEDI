@@ -3,6 +3,8 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import { ActasReuniones, Orden, Docentes } from 'src/app/models/actas-reuniones';
 import { DatePipe } from '@angular/common'
 import { sign } from 'crypto';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ServicioService } from 'src/app/servicio.service';
 
 @Component({
   selector: 'app-actas-reuniones',
@@ -11,20 +13,21 @@ import { sign } from 'crypto';
 })
 export class ActasReunionesComponent implements OnInit {
 
-  keyword = 'nombre'
+  keyword = 'name'
   reunion = new ActasReuniones()
   hora = new Date().getHours().toString()
   min = new Date().getMinutes().toString()
   date : any
   involucrado : any
-  listaDocentes : Docentes[] 
+  listaDocentes = []
 
   listaInvolucrados = []
 
-  constructor(public datepipe: DatePipe) {
+  constructor(public datepipe: DatePipe,
+    public service: ServicioService) {
 
     
-    this.reunion = JSON.parse(sessionStorage.getItem('acta')) || new ActasReuniones();
+    this.reunion = JSON.parse(sessionStorage.getItem('acta-reunion')) || new ActasReuniones();
     if (!this.reunion.ordenDelDia || this.reunion.ordenDelDia.length === 0) {
       this.reunion.ordenDelDia = [];
       this.reunion.ordenDelDia.push(new Orden());
@@ -37,12 +40,13 @@ export class ActasReunionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.service.getDocentes().subscribe(
+      (getdatos:any[]) =>  this.listaDocentes = getdatos ,
+      (error: HttpErrorResponse) => { console.log(error.message)},
+      ()=> console.log('peticion Finalizada',this.listaDocentes))
+
     this.obtenerFecha()
-    this.listaDocentes = [
-      {nombre: 'Kevin Cevallos',cargo:'Docente Desarrollo de Software'},
-      {nombre: 'Anthony Larrea',cargo:'Docente Arte culinario'},
-      {nombre:'Ricardo Yaguachi',cargo:'Docente Marketing'}
-     ]
+    
   }
   
   //metodos a usar
@@ -54,16 +58,20 @@ export class ActasReunionesComponent implements OnInit {
   }
 
   selectCoordinador(item) {
-      this.reunion.coordinador = item.nombre
+      this.reunion.coordinador = item.name
   }
+ /*  selectCoordinador(val: string): string[] {
+    return this.listaDocentes.map(x => x.name).filter(option =>
+      option.toLowerCase().includes(val.toLowerCase()));
+  } */
 
   selectSecretaria(item) {
-      this.reunion.secretaria = item.nombre
+      this.reunion.secretaria = item.name
   }
 
   selectInvolucrados(item) {
-    this.listaInvolucrados.push(item)
-    console.log(this.listaInvolucrados)
+    this.listaInvolucrados.push(item.name)
+    console.log('listaInvolucrados_:',this.listaInvolucrados)
   }
 
   selectRevisado(item){
@@ -94,10 +102,11 @@ export class ActasReunionesComponent implements OnInit {
 
   resetForm() {
     this.reunion = new ActasReuniones();
+    sessionStorage.removeItem('acta-reunion');
   }
 
   getDocumentDefinition() {
-    sessionStorage.setItem('acta', JSON.stringify(this.reunion));
+    sessionStorage.setItem('acta-reunion', JSON.stringify(this.reunion));
     return {
       content: [
         {
@@ -123,17 +132,17 @@ export class ActasReunionesComponent implements OnInit {
         },
         {
           ul : [
-            ...this.listaInvolucrados.filter((nombre, index) => index % 3 === 0).map(d => d.nombre)
+            ...this.listaInvolucrados.filter((name, index) => index % 3 === 0).map(d => d.name)
           ]
         },
         {
           ul : [
-            ...this.listaInvolucrados.filter((nombre, index) => index % 3 === 1).map(d => d.nombre)
+            ...this.listaInvolucrados.filter((name, index) => index % 3 === 1).map(d => d.name)
           ]
         },
         {
           ul : [
-            ...this.listaInvolucrados.filter((nombre, index) => index % 3 === 2).map(d => d.nombre)
+            ...this.listaInvolucrados.filter((name, index) => index % 3 === 2).map(d => d.name)
           ]
         },
         {

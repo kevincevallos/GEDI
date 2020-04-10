@@ -1,5 +1,5 @@
 <div class="registration-wrapper" fxLayout="row" fxLayoutAlign="center center">
-    <form [formGroup]="formRegistration" (ngSubmit)="registrar()">
+    <form [formGroup]="formRegistration" (ngSubmit)="login()">
         <table>
             <tr>
                 <td>
@@ -60,7 +60,6 @@
                     <div>
                         <select formControlName="instituto" (change)="instituto($event)" class="custom-select">
                             <option value="0">Instituto</option>
-                            <option *ngFor="let i of listaInstitutos" [ngValue]="i.id">{{i.instituto}}</option>
                         </select>
                     </div>
                 </td>
@@ -68,7 +67,6 @@
                     <div *ngIf='insti'>
                         <select formControlName="carrera" (change)="carrera($event)" class="custom-select">
                             <option value="0">Carrera</option>
-                            <option *ngFor="let c of listaCarreras" [ngValue]="c.id">{{c.carrera}}</option>
                         </select>
                     </div>
                     
@@ -80,7 +78,6 @@
                     <div>
                         <select *ngIf='carr' formControlName="cargo" (change)="cargo($event)" class="custom-select">
                             <option value="0">Cargo</option>
-                            <option *ngFor="let ca of listaCargos" [ngValue]="ca.id">{{ca.cargo}}</option>
                         </select>
                     </div>
                 </td>

@@ -32,6 +32,8 @@ export class SolicitudesComponent implements OnInit {
     }
  resetearForm(){
    this.solicitud= new Solicitudes();
+   sessionStorage.removeItem('solicitud');
+
  }
  getDefinicionSolicitud(){
    sessionStorage.setItem('solicitud',JSON.stringify(this.solicitud));

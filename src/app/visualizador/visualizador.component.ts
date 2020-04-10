@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 //import { pool } from '../database';
 import { QueryResult } from 'pg';
 import { ServicioService } from '../servicio.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,10 +14,11 @@ import { ServicioService } from '../servicio.service';
 export class VisualizadorComponent implements OnInit {
   users:any;
 
-  constructor(private service: ServicioService) { }
+  constructor(public service: ServicioService,
+    public router: Router) { }
 
   ngOnInit(){
-    
+
   }
 
   agregarMensaje(){

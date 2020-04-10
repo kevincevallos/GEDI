@@ -1,16 +1,35 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ServicioService } from '../servicio.service';
+import { User } from '../models/user';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  title = 'GEDI';
-  mensajeBienvenida = 'Bienvenido a GEDI';
+export class NavbarComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  admin:boolean;
+  constructor(private router: Router,
+    public service: ServicioService) {
+      //this.ngOnInit();      
 
+     }
+    user: any;
+    ngOnInit(){
+      this.admin=false;
+      this.user = this.service.getCurrentUser();
+      if (this.user.role_id==5||this.user.role_id==6){
+        this.admin=true;
+      }
+      //console.log('userNavBar',this.user.role_id)
+    }
+
+    logout(): void{
+      this.service.logoutUser();
+      this.router.navigate(["/login"]);
+    }
+    
 
   isRegistrationView() {
     // return true if the current page is registration
@@ -35,7 +54,11 @@ export class NavbarComponent {
     return this.router.url.match('/login|/registration');
   }
   isUserView() {
-    return this.router.url.match('/visualizador|/elaborador');
+    return this.router.url.match('/visualizador|/elaborador|/gestion-usuarios');
+
+  }
+  isGestionUsuariosView(){
+    return this.router.url.match('/gestion-usuarios');
 
   }
   isActasView() {

@@ -17,7 +17,7 @@ export class HojaDeVidaComponent implements OnInit {
 
   constructor() {
     
-    this.resume = JSON.parse(sessionStorage.getItem('resume')) || new Resume();
+    this.resume = JSON.parse(sessionStorage.getItem('hoja-de-vida')) || new Resume();
     if (!this.resume.experiences || this.resume.experiences.length === 0) {
       this.resume.experiences = [];
       this.resume.experiences.push(new Experience());
@@ -57,9 +57,10 @@ export class HojaDeVidaComponent implements OnInit {
   }
   resetForm() {
     this.resume = new Resume();
+    sessionStorage.removeItem('hoja-de-vida');
   }
   getDocumentDefinition() {
-    sessionStorage.setItem('resume', JSON.stringify(this.resume));
+    sessionStorage.setItem('hoja-de-vida', JSON.stringify(this.resume));
     return {
       content: [
         {

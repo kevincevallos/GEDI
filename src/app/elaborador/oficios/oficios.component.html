@@ -14,8 +14,8 @@
              </i>
              Fecha:
            </h4>
-
-           <div class="col-md-6">
+              <label id="fecha" for="fecha">{{date}}</label>
+           <!--<div class="col-md-6">
            <div class="row">
              <div class="form-group">
                <input type="text" class="form-control" [(ngModel)]="oficios.fecha" name="fecha" placeholder="Fecha"
@@ -24,7 +24,7 @@
                
              </div>
            </div>
-           </div>
+           </div>-->
          </div>
        </div>
        <!--lugar-->
@@ -50,7 +50,7 @@
         </div>
       </div>
       <!--numeroOficio-->
-      <div class="shadow-sm card">
+      <!--<div class="shadow-sm card">
         <div class="card-body">
           <h4 class="card-title d-flex align-items-center">
             <i class="material-icons">
@@ -58,7 +58,6 @@
             </i>
             Numero de oficio:
           </h4>
-
           <div class="col-md-6">
           <div class="row">
             <div class="form-group">
@@ -70,29 +69,35 @@
           </div>
           </div>
         </div>
-      </div>
+      </div>-->
       <!--destinatario-->
       <div class="shadow-sm card">
         <div class="card-body">
+          <div class="d-flex justify-content-between card-title">
           <h4 class="card-title d-flex align-items-center">
             <i class="material-icons">
              person
             </i>
             Destinatario:
           </h4>
-
-          <div class="col-md-6">
-          <div class="row">
-            <div class="form-group">
-              <input type="text" class="form-control" [(ngModel)]="oficios.destinatario" name="destinatario " placeholder="Destinatario"
-              #destinatario="ngModel" required
-              [ngClass]="{'is-invalid': destinatario.invalid && (destinatario.touched || oficiosForm.submitted) }">         
-            </div>
-          </div>
-          </div>
-        </div>
+        <button class="btn btn-primary" (click)="agregarCatalogo()">+</button>
       </div>
+      <div class="row" *ngFor="let ed of oficios.ordenDelDia; let i=index">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <select class="form-control" (change)="evento($event)" placeholder="Destinatario" name="catalogo{{i}}" [(ngModel)]="ed.catalogo"
+                      #prof="ngModel" required
+                      [ngClass]="{'is-invalid': prof.invalid && (prof.touched || oficiosForm.submitted) }">
+                      <option [value]="d" *ngFor="let d of listaProf">{{d}}</option>
+                    </select>
+                  </div>
+                </div>
+                </div>
+                </div>
+                </div>
+       
       <!--Asunto-->
+
       <div class="shadow-sm card">
         <div class="card-body">
           <h4 class="card-title d-flex align-items-center">
@@ -120,7 +125,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <textarea class="form-control"[(ngModel)]='oficios.cuerpo' name="oficios" rows="4"
+                <label id="hola">Por medio de este oficio</label><textarea class="form-control"[(ngModel)]='oficios.cuerpo' name="oficios" rows="4"
                   placeholder="Cuerpo" #cuerpo="ngModel" required
                   [ngClass]="{'is-invalid':cuerpo.invalid && (cuerpo.touched|| oficiosForm.submitted)}"></textarea>
               </div>
@@ -139,7 +144,8 @@
              <textarea class="form-control"[(ngModel)]='oficios.despedida' name="oficios" rows="3"
             placeholder="Despedida" #despedida="ngModel" required
             [ngClass]="{'is-invalid':despedida.invalid && (despedida.touched|| oficiosForm.submitted)}"></textarea>
-              </div>
+            <label>Reciba un cordial saludo, atentamente</label>    
+          </div>
             </div>
           </div>
         </div>

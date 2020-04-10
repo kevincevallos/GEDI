@@ -1,0 +1,201 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
+    <div class="navbar-brand mb-0 h1 text-white">SOLICITUD PROYECTO DE TITULACIÓN - YAVIRAC</div>
+    <button mat-button mat-raised-button routerLink="/elaborador">REGRESAR</button>
+  </nav>
+  <form #solicitudForm="ngForm">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <h4 class="card-title d-flex align-items-center">
+              <i class="material-icons">
+                today
+              </i>
+              Fecha:
+            </h4>
+            <label id="fecha" for="fecha">{{date}}</label>
+          </div>
+        </div>
+        <!--Lugar-->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <h4 class="card-title d-flex align-items-center">
+              <i class="material-icons">
+                person_pin_circle
+              </i>
+              Lugar Solicitud:</h4>
+
+            <div class="col-md-6">
+              <div class="row">
+                <div class="form-group">
+                  <input type="text" class="form-control" [(ngModel)]="solicitud.sumillas" name="sumillas"
+                    placeholder="lugar" #sumillas="ngModel" required
+                    [ngClass]="{'is-invalid': sumillas.invalid && (sumillas.touched || solicitudForm.submitted) }">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!--Destinatario-->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between card-title">
+              <h4 class="card-title d-flex align-items-center">
+                <i class="material-icons">
+                  person
+                </i>
+                Destinatario:
+              </h4>
+              <button class="btn btn-primary" (click)="agregarCatalogo()">+</button>
+            </div>
+            <div class="row" *ngFor="let ed of solicitud.listaIng; let i=index">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <select class="form-control" (change)="evento($event)" placeholder="Destinatario" name="catalogo{{i}}"
+                    [(ngModel)]="ed.catalogo" #prof="ngModel" required
+                    [ngClass]="{'is-invalid': prof.invalid && (prof.touched || solicitudForm.submitted) }">
+                    <option [value]="d.name" *ngFor="let d of listaProf">{{d.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--PresentacionSolicitante-->
+        <div class="row">
+          <div class="col-md-8">
+            <div class="shadow-sm card">
+              <div class="card-body">
+                <h4 class="card-title d-flex align-items-center">
+                  <i class="material-icons">
+                    person
+                  </i>
+                  Solicitante :</h4>
+
+                <div class="col-md-6">
+                  <div class="row">
+                    <div class="form-group">
+                      <input type="text" class="form-control" [(ngModel)]="solicitud.presentacionSolicitante"
+                        name="presentacionSolicitante" placeholder="solicitante:" #presentacionSolicitante="ngModel"
+                        required
+                        [ngClass]="{'is-invalid': presentacionSolicitante.invalid && (presentacionSolicitante.touched || solicitudForm.submitted) }">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Cedula-->
+        <div class="row">
+          <div class="col-md-8">
+            <div class="shadow-sm card">
+              <div class="card-body">
+                <h4 class="card-title d-flex align-items-center">
+                  <i class="material-icons">
+                    person
+                  </i>
+                  Cedula:</h4>
+
+                <div class="col-md-6">
+                  <div class="row">
+                    <div class="form-group">
+                      <input type="text" class="form-control" [(ngModel)]="solicitud.cedula" name="cedula"
+                        placeholder="Cedula:" #cedula="ngModel" required
+                        [ngClass]="{'is-invalid': cedula.invalid && (cedula.touched || solicitudForm.submitted) }">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Cuerpo-->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <h4 class="card-title d-flex align-items-center">
+              <i class="material-icons"> description</i>Cuerpo</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <textarea class="form-control" [(ngModel)]='solicitud.cuerpo' name="cuerpo" rows="4"
+                    placeholder="cuerpo" #cuerpo="ngModel" required
+                    [ngClass]="{'is-invalid':cuerpo.invalid && (cuerpo.touched|| solicitudForm.submitted)}"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Titulacion-->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <h4 class="card-title d-flex align-items-center">
+              <i class="material-icons">
+                library_books
+              </i>
+              Proyecto de Titulacion:
+            </h4>
+
+            <div class="col-md-8">
+              <div class="row">
+                <div class="form-group">
+                  <label>Titulo del Poyecto:</label>
+                  <input type="text" class="form-control" [(ngModel)]="solicitud.titulacion" name="titulacion"
+                    placeholder="Titulacion" #titulacion="ngModel" required
+                    [ngClass]="{'is-invalid': titulacion.invalid && (titulacion.touched || solicitudForm.submitted) }">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--despedida-->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <h4 class="card-title d-flex align-items-center">
+              <i class="material-icons"> description</i>Despedida</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <Label>Atentamente</Label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+        <div class="shadow-sm card action-buttons">
+          <button (click)="solicitudForm.valid ? generarPdf('open') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              picture_as_pdf
+            </i> <span>Mostrar PDF</span></button>
+          <button (click)="solicitudForm.valid ? generarPdf('download') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              cloud_download
+            </i><span>Descargar PDF</span></button>
+          <button (click)="solicitudForm.valid ? generarPdf('print') : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              print
+            </i><span>Imprimir PDF</span></button>
+          <button type='reset' (click)="resetearForm()"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              clear
+            </i><span>Limpiar</span></button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

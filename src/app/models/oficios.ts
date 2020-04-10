@@ -1,5 +1,5 @@
 export class Oficios {
-    fecha:Date;
+    fecha:string;
     lugar:string;
     numeroOficio:string;
     destinatario:string;
@@ -7,5 +7,11 @@ export class Oficios {
     cuerpo:string;
     despedida:string;
     firma:string;
-    
+    ordenDelDia:Ordenado[]=[];
+    constructor(){
+        this.ordenDelDia.push( new Ordenado())
     }
+}
+export class Ordenado{
+    catalogo:string;
+}

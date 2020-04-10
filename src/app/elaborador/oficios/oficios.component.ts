@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts'
-import { Oficios } from '../../models/oficios';
+import { Oficios ,Ordenado} from '../../models/oficios';
+import {FormBuilder} from '@angular/forms'
+import{DatePipe} from '@angular/common'
 pdfMake.vfs=pdfFonts.pdfMake.vfs
 @Component({
   selector: 'app-oficios',
@@ -10,11 +12,34 @@ pdfMake.vfs=pdfFonts.pdfMake.vfs
 })
 export class OficiosComponent implements OnInit {
 oficios= new Oficios();
-  constructor() { 
+
+listaProf = ['Ing.Mauricio Tamayo','Ing.Lorena Chulde'];
+date:any;
+fecha:any
+  constructor(private FormBuilder:FormBuilder,
+    public datepipe:DatePipe) { 
     this.oficios=JSON.parse(sessionStorage.getItem('oficios')) || new Oficios();
+ if(!this.oficios.ordenDelDia||this.oficios.ordenDelDia.length===0){
+   this.oficios.ordenDelDia=[];
+   this.oficios.ordenDelDia.push(new Ordenado());
+ }
   }
-  
-  ngOnInit(): void {
+  agregarCatalogo(){
+    this.oficios.ordenDelDia.push(new Ordenado())
+  }
+  evento(e){
+const x = e.target.value;
+console.log('Esto es x_:',x);
+  }
+  ngOnInit(){
+    this.obtenerFecha();
+    this.fecha=this.FormBuilder.group({
+      fecha:''
+    })
+  }
+  obtenerFecha(){
+    this.date=new Date()
+    this.date=this.datepipe.transform(this.date,'yyyy-MM-dd')
   }
     generarPdf(action='open'){
      const definicionDocumento=this.getDocumentoDefinicion();
@@ -28,8 +53,33 @@ oficios= new Oficios();
     }
     resetearForm(){
       this.oficios= new Oficios();
+      sessionStorage.removeItem('oficios');
+
     }
+   getObjectoDocumento(ordenDelDia:Ordenado[]){
+    //console.log('hola') 
+  return{
+    columns: [
+        ...ordenDelDia.map(ed => {
+          console.log('Esto es catálogo_:',ed.catalogo)
+          return [ed.catalogo];
+        })
+      
+      ]
+     /*  columns:[
+        [{
+          text:this.getObjectoDocumento(this.oficios.ordenDelDia),
+          style:'destinatario'
+        }]
+      ],
+       ...ordenDelDia.map(ed=>{
+         return[ed.catalogo]
+       }) */
+     };
+   }
     getDocumentoDefinicion(){
+      var fecha=this.date
+      console.log('fecha()',fecha)
       sessionStorage.setItem('oficios',JSON.stringify(this.oficios));
        return{
          content:[
@@ -41,9 +91,25 @@ oficios= new Oficios();
              margin:[0,0,0,20]
            },
            {
+            columns:[
+              [{
+                text:'Instituto Tecnologico Superior "Segun el usuario"',
+                style:'titulo'
+              }]
+            ]
+          },
+          {
+            columns:[
+              [{
+                text:'Oficio N°2 2020-ITSBJ',
+                style:'num'
+              }]
+            ]
+          },
+           {
              columns:[
                [{
-                 text:this.oficios.fecha,
+                 text:this.date,
                  style:'fecha'
                }]
              ]
@@ -54,28 +120,19 @@ oficios= new Oficios();
                  text:this.oficios.lugar,
                  style:'lugar'
                }]
-             ]
+             ] 
            },
+           
+           {
+             
+            text: 'Destinatario',
+            style: 'destinatario'
+          },
+          this.getObjectoDocumento(this.oficios.ordenDelDia),
            {
              columns:[
                [{
-                 text:this.oficios.numeroOficio,
-                 style:'numeroO'
-               }]
-             ]
-           },
-           {
-             columns:[
-             [{
-               text:this.oficios.destinatario,
-               style:'destinatario'
-             }]
-            ]
-           },
-           {
-             columns:[
-               [{
-                 text:this.oficios.asunto,
+                 text: this.oficios.asunto,
                  style:'asunto'
                }]
              ]
@@ -83,7 +140,7 @@ oficios= new Oficios();
            {
              columns:[
                [{
-                 text:this.oficios.cuerpo,
+                 text: 'Por medio de un oficio hago saber '  + this.oficios.cuerpo,
                  style:'cuerpo'
                }]
              ]
@@ -99,7 +156,7 @@ oficios= new Oficios();
            {
              columns:[
              [{
-               text:this.oficios.firma,
+               text: 'Reciba un cordial saludo, atentamente'+ '"Nombre del Usuario"',
                style:'firma'
              }]
             ]
@@ -117,6 +174,18 @@ oficios= new Oficios();
           fontSize:14,
           margin:[0,0,0,20]
         },
+        titulo:{
+         alignment:'center',
+         fontSize:14,
+         margin:[0,0,0,20],
+         bold:true
+        },
+        num:{
+          alignment:'center',
+          fontSize:14,
+          margin:[0,0,0,20],
+          bold:true
+         },
         lugar:{
           alignment:'right',
           fontSize:14,
@@ -134,7 +203,8 @@ oficios= new Oficios();
         },
         asunto:{
           fontSize:14,
-          margin:[0,0,0,20]
+          margin:[0,10,10,10],
+          bold:true
         },
         cuerpo:{
           fontSize:14,
@@ -146,12 +216,13 @@ oficios= new Oficios();
          },
          firma:{
           fontSize:14,
-          margin:[0,20,0,10] 
+          margin:[0,20,0,10],
+          alignment:'center',
+          bold:true 
+         },
          }
          }
          
 
        }   
     } 
-
-}

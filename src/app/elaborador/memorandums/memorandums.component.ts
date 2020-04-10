@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Memorandums} from 'src/app/models/memorandums';
 import pdfMake from 'pdfmake/build/pdfmake';
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-memorandums',
@@ -9,32 +10,59 @@ import pdfMake from 'pdfmake/build/pdfmake';
 })
 export class MemorandumsComponent implements OnInit {
 
-  memo = new Memorandums()
+  memo = new Memorandums();
+  date: any;
+  keyword = 'nombre'
+  listaDocentes = [
+   {nombre: 'Kevin Cevallos',cargo:'Docente Desarrollo de Software'},
+   {nombre: 'Anthony Larrea',cargo:'Docente Arte culinario'},
+   {nombre:'Ricardo Yaguachi',cargo:'Docente Marketing'}
+  ]
 
-  constructor() { 
+  constructor(public datepipe: DatePipe) { 
     this.memo=JSON.parse(sessionStorage.getItem('memo')) || new Memorandums();
 
   }
 
   ngOnInit(): void {
+    this.obtenerFecha()
   }
 
   //metodos  a usar
 
+  selectEvent(item) {
+    this.memo.para = item.nombre 
+    console.log(this.memo.para)
+  }
+
+  obtenerFecha() {
+    this.date = new Date();
+    this.date = this.datepipe.transform(this.date, 'yyyy-MM-dd');
+    return this.date;
+  }
 
   getDocumentDefinition() {
     sessionStorage.setItem('memo', JSON.stringify(this.memo));
     return {
       content: [
         {
-          text: 'Instituto el cual pertenece el usuario',
+          image: ''
+          ,fit: [50, 50]
+        },
+        {
+          text: 'Instituto Superior Tecnológico de Turismo y Patrimonio Yavirac',
           
           style : 'titulo'
         },
         {
-          text: `MEMORANDUM "ISTBJ-DS-001-2020" `,
+          text: `MEMORANDUM  `,
           style : 'titulo'
         },
+        {
+          text: `"ISTBJ-DS-001-2020"`,
+          style : 'titulo'
+        },
+        
         {
           columns: [
             [
@@ -51,7 +79,7 @@ export class MemorandumsComponent implements OnInit {
               style: 'cabecera'
             },
             {
-              text: `Fecha: ${this.memo.fecha}`,
+              text: `Fecha: ${this.date}`,
               style: 'cabecera'
             }
             ]
@@ -83,7 +111,7 @@ export class MemorandumsComponent implements OnInit {
       ],
         styles: {
           titulo: {
-            fontSize: 14,
+            fontSize: 12,
             bold: true,
             margin: [0, 20, 0, 20],
             upperCase: true ,
@@ -124,6 +152,7 @@ export class MemorandumsComponent implements OnInit {
   }
   resetForm() {
     this.memo = new Memorandums();
+    sessionStorage.removeItem('memo');
   }
 
 }

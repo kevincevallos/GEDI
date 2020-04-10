@@ -40,6 +40,7 @@ export class RegistrationComponent implements OnInit {
     public datepipe: DatePipe) { }
 
   ngOnInit() {
+    this.login();
     this.obtenerFecha();
     this.insti=false;
     this.carr=false;
@@ -61,7 +62,7 @@ export class RegistrationComponent implements OnInit {
     });
     //this.formRegistration.fechaRegistro=this.date;
 
-    this.service.getUsers().subscribe(
+/*     this.service.getUsers().subscribe(
       (getdatos: any[]) => this.listaUsuarios = getdatos,
       (error: HttpErrorResponse) => { console.log(error.message) },
       () => console.log('getUsers() Finalizado', this.listaUsuarios))
@@ -76,7 +77,7 @@ export class RegistrationComponent implements OnInit {
       (error: HttpErrorResponse) => { console.log(error.message) },
       () => console.log('getCarreras() Finalizado', this.listaCarreras))
 
-      console.log('getCargos() Finalizado', this.listaCargos)
+      console.log('getCargos() Finalizado', this.listaCargos) */
 
   }
 
@@ -159,7 +160,17 @@ export class RegistrationComponent implements OnInit {
     this.date = this.datepipe.transform(this.date, 'yyyy-MM-dd');
     return this.date;
   }
-
+  login(){/* 
+         alert('this.user.correo');
+        this.service.loginUser(user)
+        .subscribe(data => {
+          console.log('postUsuario_:', data),
+          //this.navigateToLogin()
+            error => {
+              console.log('error_postUsuario_:', error)
+            }
+        }) */
+      }
   registrar() {
     var codigoUser=this.codigo_usuario;
     console.log('registrarCodigoUser()',codigoUser);
@@ -182,14 +193,14 @@ export class RegistrationComponent implements OnInit {
     )
 
     if (typeof verificarCorreo === "undefined") {
-      this.service.setUser(usuario)
+      /* this.service.setUser(usuario)
         .subscribe(data => {
           console.log('postUsuario_:', data),
           this.navigateToLogin()
             error => {
               console.log('error_postUsuario_:', error)
             }
-        })
+        }) */
     } else {
       alert('La dirección de correo ya esta registrada')
     }

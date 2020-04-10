@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicioService } from '../servicio.service';
+import { User } from "../models/user";
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +12,8 @@ import { ServicioService } from '../servicio.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  title = 'GEDI';
+  mensajeBienvenida = 'Bienvenido a GEDI';
   formLogin : any;
   listaUsuarios = [];
   loginForm: FormGroup;
@@ -18,10 +22,12 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   url: string;
   constructor(private service: ServicioService,
-    private http: HttpClient,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router) { }
+public user: User = {
+  correo: "",
+  clave: ""
+};
 
   ngOnInit() {
     this.formLogin = this.formBuilder.group({
@@ -29,16 +35,39 @@ export class LoginComponent implements OnInit {
       clave:''
     });
 
-    this.service.getUsers().subscribe(
+    let data=this.service.getToken();
+    if (data) {
+          this.router.navigate(["/visualizador"]);
+    }
+    /* this.service.getUsers().subscribe(
       (getdatos:any[]) =>  this.listaUsuarios = getdatos ,
       (error: HttpErrorResponse) => { console.log(error.message)},
-      ()=> console.log('peticion Finalizada',this.listaUsuarios))
+      ()=> console.log('peticion Finalizada',this.listaUsuarios)) */
 
   }
 
 
+  login(){
+   return this.service.loginUser(this.user)
+   .subscribe(data => {
+     this.service.setUser(data[0]);
+     let token = data[0].id;
+     this.service.setToken(token);
+     console.log('postUsuario_:', data[0].id),
+     this.router.navigate(["/visualizador"]);
+     location.reload();
+     },
+     //this.navigateToLogin()
+       error => {
+        alert('Credenciales Incorrectas');
+        //console.log('error_postUsuario_:', error)
+       }
+   );
+  }
   
   ingresar(){
+    this.service.getUsers();
+
     var correo = this.formLogin.correo
     var clave = this.formLogin.clave
     if(this.validarEmail(correo) === true  && this.validarInputs(clave) === true){
