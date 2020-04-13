@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 import { Observable } from 'rxjs/internal/Observable';
 import { User } from './models/user';
 import { isNullOrUndefined } from 'util';
+import { UserData } from './models/userData';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,15 @@ export class ServicioService {
   constructor(private http: HttpClient) { }
 
   getInstitutos() {
-    return this.http.get(this.api_GEDI_url + '/leerInstituto');
+    return this.http.get(this.api_GEDI_url + '/leerInstitutos');
   }
 
   getCarreras() {
-    return this.http.get(this.api_GEDI_url + '/leerCarrera');
+    return this.http.get(this.api_GEDI_url + '/leerCarreras');
   }
 
-  getRol() {
-    return this.http.get(this.api_GEDI_url + '/leerRol');
+  getRoles() {
+    return this.http.get(this.api_GEDI_url + '/leerRoles');
   }
 
   getUsers() {
@@ -34,8 +35,17 @@ export class ServicioService {
     //return this.http.get(this.api_url);
     return this.http.get(this.api_GEDI_url + '/leerDocentes');
   }
+  getCarrerasxUsuario(){
+    return this.http.get(this.api_GEDI_url + '/leerCarrerasxUsuario')
+  }
   loginUser(user: User) {
     return this.http.post(this.api_GEDI_url + '/login', user);
+  }
+  findById(user: UserData){
+    return this.http.post(this.api_GEDI_url + '/findById', user);
+  }
+  updateUser(user: UserData){
+    return this.http.post(this.api_GEDI_url + '/updateById', user);
   }
 
   //For Logged auth user

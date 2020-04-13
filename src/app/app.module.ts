@@ -36,7 +36,13 @@ import { GestionUsuariosComponent } from './admin/gestion-usuarios/gestion-usuar
 import { AccesoDenegadoComponent } from './admin/acceso-denegado/acceso-denegado.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ModalComponent } from './modal/modal.component';
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSortModule } from "@angular/material/sort";
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +59,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ActasReunionesComponent,
     SolicitudesTitulacionComponent,
     GestionUsuariosComponent,
-    AccesoDenegadoComponent
+    AccesoDenegadoComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -73,8 +80,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatDialogModule,
     BrowserAnimationsModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatSortModule
+  ],
+  entryComponents: [
+    ModalComponent
   ],
   providers: [ServicioService, DatePipe],
   bootstrap: [AppComponent]

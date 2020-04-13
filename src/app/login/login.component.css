@@ -165,7 +165,7 @@ body{background-position:center;background-size:cover;background-repeat:no-repea
     }
   
     .card.highlight-card {
-      background-color: #1976d2;
+      background-color: #8B4513;
       color: white;
       font-weight: 600;
       border: none;
@@ -342,6 +342,10 @@ body{background-position:center;background-size:cover;background-repeat:no-repea
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+  }
+  #inputText{
+    background: inherit;
+    border: inherit;
   }
   .loginForm{
       margin-top: 50px;

@@ -8,7 +8,7 @@ import { User } from '../models/user';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
+  loading:boolean;
   admin:boolean;
   constructor(private router: Router,
     public service: ServicioService) {
@@ -59,8 +59,13 @@ export class NavbarComponent implements OnInit {
   }
   isGestionUsuariosView(){
     return this.router.url.match('/gestion-usuarios');
-
+    
   }
+
+  loader(){
+    this.loading=true
+  }
+
   isActasView() {
     // return true if the current page is actas
     return this.router.url.match('/actas');

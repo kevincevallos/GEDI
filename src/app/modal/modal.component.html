@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>¿Generar código de usuario para <u>{{data.name}}</u>?</h2>
+<div mat-dialog-content>
+  <p>El usuario podrá elaborar documentos en GEDI</p>
+  <div>
+    <ul>
+        <li>
+          <span> ID: {{ data.id }}</span>
+        </li>
+        <li>
+          <span> Nombre: {{ data.name }}</span>
+        </li>
+        <li>
+          <span> Email: {{ data.email }}</span>
+        </li>
+      </ul>
+  </div>
+    </div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No</button>
+  <button mat-button [mat-dialog-close]="data.id" cdkFocusInitial>Yes</button>
+</div>
