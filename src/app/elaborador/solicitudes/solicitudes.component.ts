@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 import { Solicitudes } from '../../models/solicitudes';
+import { User } from 'src/app/models/user';
 
 
 pdfMake.vfs=pdfFonts.pdfMake.vfs
@@ -15,7 +16,12 @@ export class SolicitudesComponent implements OnInit {
   constructor() { 
     this.solicitud=JSON.parse(sessionStorage.getItem('solicitud')) || new Solicitudes();
   }
-  ngOnInit():void{
+  ngOnInit(){
+    let user_string = localStorage.getItem("currentUser");
+    let user: User = JSON.parse(user_string);
+    var x:any = user;
+    console.log(user_string);
+    console.log(x.id);
   }
   agregarMensaje(){
     console.log('quiero comprobar')

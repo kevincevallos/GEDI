@@ -343,7 +343,11 @@ body{background-position:center;background-size:cover;background-repeat:no-repea
     background-repeat: no-repeat;
     background-size: cover;
   }
-  #inputText{
+  #correo{
+   background: inherit;
+    border: inherit;
+  }
+  #clave{
     background: inherit;
     border: inherit;
   }

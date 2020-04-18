@@ -1,5 +1,6 @@
 export class Solicitudes{
     sumillas:string;
+    codigoDocumento:string;
     destinatario:string;
     presentacionSolicitante:string;
     cuerpo:string;

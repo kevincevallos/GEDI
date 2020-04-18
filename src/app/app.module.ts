@@ -15,7 +15,6 @@ import { MatToolbarModule } from  '@angular/material/toolbar';
 import { MatButtonModule } from  '@angular/material/button';
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatMenuModule } from "@angular/material/menu";
-import { MatCardModule, MatCardContent } from  '@angular/material/card';
 import { MatFormFieldModule, MatFormField } from  '@angular/material/form-field';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -43,6 +42,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ModalComponent } from './modal/modal.component';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
+import { CardsComponent } from './visualizador/cards/cards.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { MatCardModule} from  '@angular/material/card';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +62,8 @@ import { MatSortModule } from "@angular/material/sort";
     SolicitudesTitulacionComponent,
     GestionUsuariosComponent,
     AccesoDenegadoComponent,
-    ModalComponent
+    ModalComponent,
+    CardsComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +90,9 @@ import { MatSortModule } from "@angular/material/sort";
     AutocompleteLibModule,
     MatTooltipModule,
     MatSnackBarModule,
-    MatSortModule
+    MatSortModule,
+    NgbModule,
+    MatCardModule
   ],
   entryComponents: [
     ModalComponent

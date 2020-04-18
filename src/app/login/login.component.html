@@ -36,14 +36,14 @@
     <form [formGroup]="formLogin" (ngSubmit)="login()">
         <div class="form-group">
             <mat-form-field>
-                <input id="inputText" placeholder="Correo Institucional" matInput type="text" [(ngModel)]="user.correo" formControlName="correo"
+                <input id="correo" placeholder="Correo Institucional" matInput type="text" [(ngModel)]="user.correo" formControlName="correo"
                     class="form-control" />
             </mat-form-field>
 
         </div>
         <div class="form-group">
             <mat-form-field>
-                <input id="inputText" placeholder="Contraseña" matInput type="password" [(ngModel)]="user.clave" formControlName="clave"
+                <input id="clave" placeholder="Contraseña" matInput type="password" [(ngModel)]="user.clave" formControlName="clave"
                     class="form-control" />
             </mat-form-field>
 

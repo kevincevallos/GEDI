@@ -1,0 +1,192 @@
+.bj{
+    color:#FF5733 ;
+    text-align: center;
+    font-size: 60;
+    font-style: oblique;
+    }
+    .bj1{
+        color:rgb(255, 255, 255) ;
+        text-align: center;
+        font-size: 50; 
+    }
+    .contenedor1{
+        background-color: aliceblue;
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
+        
+    }
+    .img1{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 450px;
+    }
+    .img2{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        bottom: 20px;   
+    }
+
+    .contenedor2{
+    
+        width: 100%;
+        height:700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .img3{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .contenedor3{
+        
+        width: 100%;
+        height:700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .contenedor4{
+             
+                background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+                
+                        height: 100%;
+            
+                        background-position: center;
+                        background-repeat:no-repeat;
+                       
+                       background-size: cover;
+                        width: 100%; 
+        padding-left: 2%;
+        padding-right: 2%;  
+        }
+        .titulo{
+/*             font: 32px "Comic Sans MS", cursive;
+ */            text-align: left;
+            color:antiquewhite;
+        }
+    .body{
+        background-color: aliceblue;
+    }
+
+.contenedor5{
+/*         background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+    */        background-color: #676762;        
+        height: auto;
+        margin-top: 1%;
+        background-position: center;
+        background-repeat:no-repeat;
+        position: relative;
+        overflow: hidden;
+        background-size: cover;
+        width: 100%; 
+        /*margin-top: 20%;*/
+                            }
+    .contenedor6{
+        /*         background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+*/        background-color: cadetblue;        
+        height: auto;
+        margin-top: 1%;
+        background-position: center;
+        background-repeat:no-repeat;
+        position: relative;
+        overflow: hidden;
+                background-size: cover;
+                width: 100%; 
+        /*margin-top: 20%;*/
+ }
+  .contenedor7{
+        /*         background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+            */        background-color: chocolate;        
+                height: auto;
+                margin-top: 1%;
+                background-position: center;
+                background-repeat:no-repeat;
+                position: relative;
+                overflow: hidden;
+                background-size: cover;
+                width: 100%; 
+                /*margin-top: 20%;*/
+            }
+        .contenedor8{
+            /*         background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+                */        background-color: cornflowerblue;        
+                    height: auto;
+                    margin-top: 1%;
+                    background-position: center;
+                    background-repeat:no-repeat;
+                    position: relative;
+                    overflow: hidden;
+                    background-size: cover;
+                    width: 100%; 
+                    /*margin-top: 20%;*/
+                }
+    .contenedor9{
+        /*         background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+            */        background-color: darkolivegreen;        
+                height: auto;
+                margin-top: 1%;
+                background-position: center;
+                background-repeat:no-repeat;
+                position: relative;
+                overflow: hidden;
+                background-size: cover;
+                width: 100%; 
+                /*margin-top: 20%;*/
+            }
+        .contenedor10{
+            /*         background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+                */        background-color: darkseagreen;        
+                    height: auto;
+                    margin-top: 1%;
+                    background-position: center;
+                    background-repeat:no-repeat;
+                    position: relative;
+                    overflow: hidden;
+                    background-size: cover;
+                    width: 100%;
+                    /*margin-top: 20%;*/
+                }
+    .contenedor11{
+        /*         background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+            */        background-color: #676762;        
+                height: auto;
+                margin-top: 1%;
+                background-position: center;
+                background-repeat:no-repeat;
+                position: relative;
+                overflow: hidden;
+                background-size: cover;
+                width: 100%; 
+                /*margin-top: 20%;*/
+            }
+            .contenedor12{
+                /*         background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
+                    */        background-color: skyblue;        
+                        height: auto;
+                        margin-top: 1%;
+                        background-position: center;
+                        background-repeat:no-repeat;
+                        position: relative;
+                        overflow: hidden;
+                        background-size: cover;
+                        width: 100%; 
+                        /*margin-top: 20%;*/
+                    }
+    .menu{
+        padding-bottom: 10%;
+    }
+    .example-card {
+        max-width: 200px; 
+        width: 200px;
+        float: left;
+        margin-left:1%;
+        margin-top: 0%;
+        margin-bottom: 3%;
+      }
+      .example-header-image {
+        background-image: url('../../assets/One_User_Orange.png');
+        background-size: cover;
+      }

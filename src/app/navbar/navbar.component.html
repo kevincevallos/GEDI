@@ -1,48 +1,3 @@
-<!--Toolbar Registration-->
-<!-- <mat-toolbar *ngIf="isRegistrationView()" color="primary">
-  <span class="nav-tool-items">
-    <a mat-button routerLink="login">Iniciar Sesión</a>
-    <a mat-button mat-raised-button routerLink="registration" routerLinkActive="active">Registrarse</a>
-  </span>
-</mat-toolbar> -->
-<!--Toolbar Login-->
-<!-- <mat-toolbar *ngIf="isLoginView()" color="primary">
-  <span class="nav-tool-items">
-    <a mat-button mat-raised-button routerLink="login" routerLinkActive="active">Iniciar Sesión</a>
-    <a mat-button routerLink="registration">Registrarse</a>
-  </span>
-</mat-toolbar> -->
-<!--Toolbar Visualizador-->
-<!-- <mat-toolbar *ngIf="isVisualizadorView()" color="primary">
-  <span class="nav-tool-items">
-    <a mat-button mat-raised-button routerLink="visualizador" routerLinkActive="active">Visualizador de Documentos</a>
-    <a mat-button routerLink="elaborador">Elaborador de Documentos</a>
-    <a class="logout" mat-button routerLink="login">Cerrar Sesión</a>
-  </span>
-</mat-toolbar> -->
-<!--Toolbar Elaborador-->
-<!-- <mat-toolbar *ngIf="isElaboradorView()" color="primary">
-  <span class="nav-tool-items">
-    <a mat-button routerLink="visualizador">Visualizador de Documentos</a>
-    <a mat-button mat-raised-button routerLink="elaborador" routerLinkActive="active">Elaborador de Documentos</a>
-    <a class="logout" mat-button routerLink="login">Cerrar Sesión</a>
-  </span>
-</mat-toolbar> -->
-
-<!--Toolbar Tipos de Formato-->
-<!-- <mat-toolbar *ngIf="isElaboradorView()" color="white">
-  <span class="nav-tool-items">
-    <a mat-button routerLink="actas">Acta</a>
-    <a mat-button routerLink="solicitudes">Solicitud</a>
-    <a mat-button routerLink="memorandums" routerLinkActive="active">Memorándum</a>
-    <a mat-button routerLink="oficios" routerLinkActive="active">Oficio</a>
-    <a mat-button routerLink="hojasDeVida">Hoja de Vida</a>
-  </span>
-</mat-toolbar> -->
-
-
-
-
 <div class="menu" role="main">
   <div *ngIf="isGestionUsuariosView()" class="div1">
     <button class="buttonFill1" mat-button mat-raised-button routerLink="gestion-usuarios">GESTIÓN DE USUARIOS</button>
@@ -67,7 +22,7 @@
        
       </div>
         <mat-icon>build</mat-icon>
-        <span>Gestionar Usuarios</span>
+        <span>Administrador</span>
         </button>
       <button [matMenuTriggerFor]="formatos" mat-menu-item>
         <mat-icon>library_books</mat-icon>
@@ -81,28 +36,28 @@
         <button mat-menu-item [matMenuTriggerFor]="Oficio">Oficio</button>
       </mat-menu>
       <mat-menu #solicitud="matMenu">
-        <button mat-menu-item routerLink="solicitudes">Solicitud Básica</button>
-        <button mat-menu-item disabled>Cambio de Jornada</button>
-        <button mat-menu-item disabled>Cambio de Carrera</button>
-        <button mat-menu-item routerLink="solicitudes-titulacion">Proyecto de Titulación</button>
+        <button mat-menu-item routerLink="/solicitudes">Solicitud Básica</button>
+        <button mat-menu-item disabled>Solicitud - Cambio de Jornada</button>
+        <button mat-menu-item disabled>Solicitud - Cambio de Carrera</button>
+        <button mat-menu-item routerLink="/solicitudes-titulacion">Solicitud - Proyecto de Titulación</button>
       </mat-menu>
   
       <mat-menu #acta="matMenu">
-        <button mat-menu-item routerLink="actas">Acta Básica</button>
-        <button mat-menu-item routerLink="actasReuniones">Acta de Reunión</button>
+        <button mat-menu-item routerLink="/actas">Acta Básica</button>
+        <button mat-menu-item routerLink="/actasReuniones">Acta de Reunión</button>
       </mat-menu>
   
       <mat-menu #memorandum="matMenu">
-        <button mat-menu-item routerLink="memorandums">Memorándum Básico</button>
+        <button mat-menu-item routerLink="/memorandums">Memorándum Básico</button>
       </mat-menu>
   
       <mat-menu #hojaDeVida="matMenu">
-        <button mat-menu-item routerLink="hojasDeVida">Hoja de Vida Básica</button>
+        <button mat-menu-item routerLink="/hojasDeVida">Hoja de Vida Básica</button>
         <button mat-menu-item disabled>Hoja de Vida - Fase Práctica</button>
       </mat-menu>
   
       <mat-menu #Oficio="matMenu">
-        <button mat-menu-item routerLink="oficios">Oficio Básico</button>
+        <button mat-menu-item routerLink="/oficios">Oficio Básico</button>
         <button mat-menu-item disabled>Oficio - Carrera Específica</button>
       </mat-menu>
 

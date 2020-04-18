@@ -1,15 +1,242 @@
-<h1>COMPONENTE VISUALIZADOR</h1>
-<p>Visualizador de documentos de acuerdo al rol del usuario!</p>
-<p>Permitir descargar los documentos</p>
-<p>Permitir modificar los documentos que le pertenezcan al usuario en cuestión</p>
-<!--Bucle para recorrer el array users-->
-<h1>Mostrando datos de ejemplo API</h1>
-<h3>API alojada en LOCALHOST</h3>
-<button (click)="agregarMensaje()">Mostrar Usuarios</button>
-<div *ngFor='let user of users'>
-    <p>{{ user.id }}</p>
-    <p>{{ user.clave }}</p>
-    <p>{{ user.correo }}</p>
-    <p>{{ user.fechaRegistro }}</p>
-    <hr>
+<!-- <div class="menu">
+  <app-navbar></app-navbar>
+  </div> -->
+  <div class="body">
+  <div class="carouselDiv">
+  <ngb-carousel *ngIf="images">
+    <ng-template ngbSlide>
+      <div class="contenedor1">
+        <img [src]="images[0]" alt="Random first slide" class="img1">
+      </div>
+      <div class="carousel-caption">
+        <h3 class="bj">Benito Juárez</h3>
+        <p class="bj1">Gestión de documentos</p>
+      </div>
+    </ng-template>
+  
+    <ng-template ngbSlide>
+      <div class="contenedor1">
+        <img [src]="images[1]" alt="Random second slide" class="img1">
+     
+      </div>
+      <div class="carousel-caption">
+        <h3 class="bj">Gran Colombia</h3>
+        <p class="bj1">Gestión de documentos</p>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <div class="contenedor1">
+        <img [src]="images[2]" alt="Random third slide" class="img1">         
+      </div>
+      <div class="carousel-caption">
+        <h3 class="bj">Yavirac</h3>
+        <p class="bj1">Gestión de documentos</p>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+</div>
+
+
+
+  <div *ngIf="visible" class="contenedor5">
+   <h1 class="titulo">SOLICITUDES PARA PROYECTO DE TITULACIÓN</h1>
+   <div class="card1" >
+    <mat-card class="example-card" *ngFor="let o of listaSPT">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{o.name}}</mat-card-title>
+          <mat-card-subtitle>{{o.idUsuario}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="../../../assets/pdf.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+           {{o.codigo_documento}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>
+            Editar
+          </button>
+          <button mat-button>Publicar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  <!-- <app-cards></app-cards>
+   --></div>
+  <div *ngIf="visible" class="contenedor6">
+  <h1 class="titulo">MEMORÁNDOS</h1>
+  <div class="card1" >
+    <mat-card class="example-card" *ngFor="let o of listaMEM">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{o.id}}</mat-card-title>
+          <mat-card-subtitle>{{o.name}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="../../../assets/pdf.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+           {{o.codigo_documento}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>
+            Editar
+          </button>
+          <button mat-button>Descargar</button>
+          <button mat-button>Ver</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  <!-- <app-cards></app-cards>
+   --></div>
+  <div *ngIf="visible" class="contenedor7">
+  <h1 class="titulo">SOLICITUDES BÁSICAS</h1>
+  <div class="card1" >
+    <mat-card class="example-card" *ngFor="let o of listaSOL">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{o.id}}</mat-card-title>
+          <mat-card-subtitle>{{o.name}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="../../../assets/pdf.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+           {{o.codigo_documento}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>
+            Editar
+          </button>
+          <button mat-button>Publicar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  <!-- <app-cards></app-cards>
+   --></div>
+  <div *ngIf="visible" class="contenedor8">
+  <h1 class="titulo">ACTAS</h1>
+  <div class="card1" >
+    <mat-card class="example-card" *ngFor="let o of listaACT">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{o.name}}</mat-card-title>
+          <mat-card-subtitle>{{o.idUsuario}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="../../../assets/pdf.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+           {{o.codigo_documento}}
+          </p>
+          <p>{{o.codigo_user}}</p>
+          <p>Elaborado:{{o.fechaElaboracion | date: 'dd/MM/yyyy'}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>
+            Editar
+          </button>
+          <button mat-button>Publicar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  <!-- <app-cards></app-cards>
+   --></div>
+  <div *ngIf="visible" class="contenedor9">
+  <h1 class="titulo">OFICIOS</h1>
+  <div class="card1" >
+    <mat-card class="example-card" *ngFor="let o of listaOFI">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{o.id}}</mat-card-title>
+          <mat-card-subtitle>{{o.name}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="../../../assets/pdf.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+           {{o.codigo_documento}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>
+            Editar
+          </button>
+          <button mat-button>Publicar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  <!-- <app-cards></app-cards>
+   --></div>
+   <div *ngIf="visible" class="contenedor10">
+    <h1 class="titulo">CONVOCATORIAS</h1>
+   <div class="card1" >
+    <mat-card class="example-card" *ngFor="let o of listaCON">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{o.name}}</mat-card-title>
+          <mat-card-subtitle>{{o.idUsuario}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="../../../assets/pdf.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+           {{o.codigo_documento}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>
+            Editar
+          </button>
+          <button mat-button>Descargar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="visible" class="contenedor11">
+    <h1 class="titulo">HOJAS DE VIDA</h1>
+    <div class="card1" >
+      <mat-card class="example-card" *ngFor="let o of listaHDV">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{o.name}}</mat-card-title>
+            <mat-card-subtitle>{{o.idUsuario}}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="../../../assets/pdf.jpg" alt="Photo of a Shiba Inu">
+          <mat-card-content>
+            <p>
+             {{o.codigo_documento}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>
+              Editar
+            </button>
+            <button mat-button>Publicar</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+    <div *ngIf="!visible" class="contenedor12">
+      <h1 class="titulo">DOCUMENTOS DE INVITADO</h1>
+      <div class="card1" >
+        <mat-card class="example-card" *ngFor="let o of listaHDV">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>{{o.name}}</mat-card-title>
+              <mat-card-subtitle>{{o.idUsuario}}</mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image src="../../../assets/pdf.jpg" alt="Photo of a Shiba Inu">
+            <mat-card-content>
+              <p>
+               {{o.codigo_documento}}
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button>
+                Editar
+              </button>
+              <button mat-button>Publicar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
   </div>

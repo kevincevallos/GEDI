@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { User } from './models/user';
 import { isNullOrUndefined } from 'util';
 import { UserData } from './models/userData';
+import { SolicitudesTitulacion } from './models/solicitudes-titulacion';
 
 @Injectable({
   providedIn: 'root'
@@ -47,9 +48,19 @@ export class ServicioService {
   updateUser(user: UserData){
     return this.http.post(this.api_GEDI_url + '/updateById', user);
   }
-
+  getDocumentos(){
+    return this.http.get(this.api_GEDI_url + '/getDocumentos');
+  }
+  setDocumento(documento: SolicitudesTitulacion){
+    console.log('setDocumentoUsuario!!');
+    return this.http.post(this.api_GEDI_url + '/setDocumentoCode', documento);
+  }  
+  setDocumentoInvitado(documento: SolicitudesTitulacion){
+    console.log('setDocumentoINVITADO!!');
+    return this.http.post(this.api_GEDI_url + '/setDocumentoNonCode', documento);
+  }
   //For Logged auth user
-  setUser(user: User): void {
+  setUser(user: any): void {
     let user_string = JSON.stringify(user);
     localStorage.setItem("currentUser", user_string);
     //console.log('setUsuario:_',usuario);

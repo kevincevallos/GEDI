@@ -8,6 +8,8 @@ export class ActasReuniones {
     aprobadoDos : string
     aprobadoTres : string
     aprobadoCuatro : string
+    codigoDocumento:string
+    fechaCodigo:string
 
     constructor(){
         this.ordenDelDia.push(new Orden())

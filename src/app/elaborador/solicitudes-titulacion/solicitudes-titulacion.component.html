@@ -3,10 +3,17 @@
     <div class="navbar-brand mb-0 h1 text-white">SOLICITUD PROYECTO DE TITULACIÓN - YAVIRAC</div>
     <button mat-button mat-raised-button routerLink="/elaborador">REGRESAR</button>
   </nav>
+<!--   <div class="progress-loader" [hidden]="!loading">
+ 
+    <mat-progress-bar [mode]="'indeterminate'">
+    </mat-progress-bar>
+ 
+</div> -->
   <form #solicitudForm="ngForm">
     <div class="row">
       <div class="col-md-8">
         <div class="shadow-sm card">
+          <p>Código Documento: {{solicitudCodigoDocumento}}</p>
           <div class="card-body">
             <h4 class="card-title d-flex align-items-center">
               <i class="material-icons">
@@ -173,7 +180,7 @@
 
       <div class="col-md-4">
         <div class="shadow-sm card action-buttons">
-          <button (click)="solicitudForm.valid ? generarPdf('open') : ''"
+          <!-- <button (click)="solicitudForm.valid ? generarPdf('open') : ''"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               picture_as_pdf
@@ -187,14 +194,18 @@
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               print
-            </i><span>Imprimir PDF</span></button>
+            </i><span>Imprimir PDF</span></button> -->
+            <button (click)="publicarEnGedi()"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              cloud_download
+            </i><span>PUBLICAR EN GEDI</span></button>
           <button type='reset' (click)="resetearForm()"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               clear
             </i><span>Limpiar</span></button>
         </div>
-
       </div>
     </div>
   </form>

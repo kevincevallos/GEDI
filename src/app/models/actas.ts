@@ -4,7 +4,8 @@ export class Actas {
     ordenDelDia  : Orden[] = []
     desarrollo : string
     despedida : string
-
+    codigoDocumento:string;
+    fechaCodigo:string;
     constructor(){
         this.ordenDelDia.push(new Orden())
     }
