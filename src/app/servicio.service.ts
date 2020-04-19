@@ -51,9 +51,11 @@ export class ServicioService {
   getDocumentos(){
     return this.http.get(this.api_GEDI_url + '/getDocumentos');
   }
-  setDocumento(documento: SolicitudesTitulacion){
+  
+  //subir-pdf método API
+  setDocumento(documento: FormData){
     console.log('setDocumentoUsuario!!');
-    return this.http.post(this.api_GEDI_url + '/setDocumentoCode', documento);
+    return this.http.post(this.api_GEDI_url + '/subir-pdf', documento);
   }  
   setDocumentoInvitado(documento: SolicitudesTitulacion){
     console.log('setDocumentoINVITADO!!');

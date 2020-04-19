@@ -12,7 +12,6 @@ import { UserData } from 'src/app/models/userData';
 import { IfStmt } from '@angular/compiler';
 import { ModalComponent } from '../../modal/modal.component'
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 @Component({
   selector: 'app-solicitudes-titulacion',
@@ -198,7 +197,7 @@ export class SolicitudesTitulacionComponent implements OnInit {
         }
       }
       if (Array.isArray(array) && array.length) {
-        //console.log('Hay Documentos existentes!!',data);
+        console.log('Hay Documentos existentes!!',data);
         this.generarNumeracionDocumento();
       } else {
         //console.log('NO Existen Documentos!!');
@@ -215,17 +214,22 @@ export class SolicitudesTitulacionComponent implements OnInit {
   generarNumeracionDocumento() {
     //console.log('this.codigoDoc_:', this.codigoDoc);
     //if (this.codigoDoc) {
+    var n;
     for (let i = 0; i < this.codigoDoc.length; i++) {
       var t = this.codigoDoc[i].codigo_documento;
       var elemento = this.codigoDoc[i];
       //console.log(t)
-      var n = t.includes('SPT');
+      n = t.includes('SPT');
       //console.log(n);
       if (n) {
         this.listaDocumentos.push(elemento);
         //codigoDoc.push(n);
       }
     }
+    if(!n){
+      console.log('No hay Documentos SPTs');
+      this.solicitudCodigoDocumento = this.solicitudCodigoDocumento +1;
+    }else {
     for (let m = 0; m < this.listaDocumentos.length; m++) {
       const element = this.listaDocumentos[m];
       console.log('listaDocumentos_:', element);
@@ -235,7 +239,7 @@ export class SolicitudesTitulacionComponent implements OnInit {
       this.m = element.codigo_documento;
       this.codigoGet = this.m;
     });
-    var long = this.codigoGet.length;
+    //var long = this.codigoGet.length;
     //console.log('long_:', long);
     var cad2 = this.m.slice(-1);
     var cad3 = this.m.slice(-2);
@@ -273,14 +277,17 @@ export class SolicitudesTitulacionComponent implements OnInit {
         this.solicitud.codigoDocumento=this.solicitudCodigoDocumento;
 
       }
-    }
+    }    
+    //
+
+  }
     console.log('codigo_documento_generado:', this.solicitudCodigoDocumento, this.solicitud.codigoDocumento)
   }
 
   ///////////////////////Fin de métodos escenciales////////////////////////
   ///////////////////////Comienza generación de PDF////////////////////////
 guardarDocumentoUsuario(){
-  this.service.setDocumento(this.solicitud);
+  //this.service.setDocumento(this.solicitud);
 }
 guardarDocumentoInvitado(){
   this.service.setDocumentoInvitado(this.solicitud)
@@ -288,6 +295,7 @@ guardarDocumentoInvitado(){
   publicarEnGedi() {
     if (this.invitado.includes('si')) {
       //alert('ERES INVITADO!!');
+      this.obtenerPdf();
     Swal.fire({
       title: this.usuario.name+' publicarás como invitado',
       text: "Este documento solo lo podrás visualizar tú y los cargos administrativos",
@@ -316,6 +324,7 @@ guardarDocumentoInvitado(){
     }
     if (this.invitado.includes('no')) {
       //alert('ERES USUARIO DE GEDI!');
+      this.obtenerPdf();
       Swal.fire({
         title: this.usuario.name+' vas a publicar en GEDI',
         html: "Si publicas tu documento estará disponible para ti y otros usuarios en la pestaña <b>Visualizador</b>",
@@ -354,6 +363,18 @@ this.guardarDocumentoUsuario();
       default: pdfMake.createPdf(defenicionSolicitud).open(); break
     }
 
+  }
+  obtenerPdf(){
+    var formData = new FormData();
+    const defenicionSolicitud = this.getDefinicionSolicitud();
+    var pdf = pdfMake.createPdf(defenicionSolicitud);
+    //pdf.write('pdfs/basics.pdf');
+    formData.append("upload",pdf);
+    //formData.append("codDoc",);
+    //formData.append("codUserc",);
+    //formData.append("idUser",);
+    console.log('VAR_PDF_:',this.usuario.id, this.usuario.codigoUser, this.solicitudCodigoDocumento);
+    //this.service.
   }
   resetearForm() {
     this.solicitud = new SolicitudesTitulacion();
