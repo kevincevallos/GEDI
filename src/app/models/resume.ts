@@ -1,4 +1,6 @@
 export class Resume {
+    idUsuario:number;
+    codigoUsuario:string;
     profilePic: string;
     name: string;
     address: string;
@@ -9,6 +11,9 @@ export class Resume {
     educations: Education[] = [];
     otherDetails: string;
     skills: Skill[] = [];
+    fechaCodigo:string;
+    InstitutoPertenciciente:string
+    codigoDocumento:string;
     constructor() {
         this.experiences.push(new Experience());
         this.educations.push(new Education());

@@ -1,4 +1,8 @@
+  
 export class Solicitudes{
+    idUsuario:number;
+    codigoUsuario:string;
+    logoPic: string;
     sumillas:string;
     codigoDocumento:string;
     destinatario:string;
@@ -7,4 +11,6 @@ export class Solicitudes{
     despedida:string;
     fecha:Date;
     firma:string;
+    fechaCodigo:string;
+    InstitutoPertenciciente:string
     }

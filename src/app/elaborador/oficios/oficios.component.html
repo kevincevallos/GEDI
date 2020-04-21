@@ -7,6 +7,7 @@
     <div class="row">
      <div class="col-md-8">
        <div class="shadow-sm card">
+        <p>Codigo Documento: {{oficiosCodigoUsuario}}</p>   
          <div class="card-body">
            <h4 class="card-title d-flex align-items-center">
              <i class="material-icons">
@@ -82,6 +83,17 @@
           </h4>
         <button class="btn btn-primary" (click)="agregarCatalogo()">+</button>
       </div>
+      <ng-autocomplete 
+      [data]="listaProf"
+      [searchKeyword]="keyword"
+      (selected)='selectDestinatario($event)'
+      [itemTemplate]="itemTemplate"                                 
+                                ></ng-autocomplete>
+     
+    <ng-template #itemTemplate let-item>
+    <a [innerHTML]="item.name"></a>
+    </ng-template>
+      <!-- 
       <div class="row" *ngFor="let ed of oficios.ordenDelDia; let i=index">
                 <div class="col-md-6">
                   <div class="form-group">
@@ -92,7 +104,7 @@
                     </select>
                   </div>
                 </div>
-                </div>
+                </div> -->
                 </div>
                 </div>
        
@@ -154,21 +166,16 @@
     </div>
     <div class="col-md-4">
       <div class="shadow-sm card action-buttons">
-        <button (click)="oficiosForm.valid ? generarPdf('open') : ''"
-          class="btn btn-primary d-flex align-items-center justify-content-center">
-          <i class="material-icons">
-            picture_as_pdf
-          </i> <span>Mostrar PDF</span></button>
-        <button (click)="oficiosForm.valid ? generarPdf('download') : ''"
-          class="btn btn-primary d-flex align-items-center justify-content-center">
-          <i class="material-icons">
-            cloud_download
-          </i><span>Descargar PDF</span></button>
-        <button (click)="oficiosForm.valid ? generarPdf('print') : ''"
-          class="btn btn-primary d-flex align-items-center justify-content-center">
-          <i class="material-icons">
-            print
-          </i><span>Imprimir PDF</span></button>
+        <button (click)="oficiosForm.valid ? publicarEnGedi() : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              cloud_download
+            </i><span>PUBLICAR EN GEDI</span></button>
+            <button (click)="oficiosForm.valid ? visualizarPdf() : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              picture_as_pdf
+            </i><span>VER ANTES DE PUBLICAR</span></button>
         <button type='reset' (click)="resetearForm()"
           class="btn btn-primary d-flex align-items-center justify-content-center">
           <i class="material-icons">

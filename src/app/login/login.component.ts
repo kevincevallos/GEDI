@@ -221,21 +221,14 @@ public user: User = {
    );
   }
   
-
   updateUser(usuario: UserData){
     this.service.updateUser(usuario).subscribe(data => {
-      //this.correcto=true;
       },
-      //this.navigateToLogin()
       error => {
-        //this.generado=false;
-        //this.openSnackBar("Usuario " + username + " no consta en una carrera", 'OK')
-        //alert('Error updateUser()');
         console.log('error_updateUser_:', error)
       }
     )
   }
-
 
   navegation(){
     this.router.navigateByUrl('/visualizador')

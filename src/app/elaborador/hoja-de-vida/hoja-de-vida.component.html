@@ -7,6 +7,7 @@
       <div class="row">
         <div class="col-md-8">
           <div class="shadow-sm card">
+            <p>Codigo Documento: {{hdvCodigoUsuario}}</p>
             <div class="card-body">
               <h4 class="card-title d-flex align-items-center">
                 <i class="material-icons">
@@ -172,21 +173,16 @@
         </div>
         <div class="col-md-4">
           <div class="shadow-sm card action-buttons">
-            <button (click)="resumeForm.valid ? generatePdf('open') : ''"
-              class="btn btn-primary d-flex align-items-center justify-content-center">
-              <i class="material-icons">
-                picture_as_pdf
-              </i> <span>Mostrar PDF</span></button>
-            <button (click)="resumeForm.valid ? generatePdf('download') : ''"
-              class="btn btn-primary d-flex align-items-center justify-content-center">
-              <i class="material-icons">
-                cloud_download
-              </i><span>Descargar PDF</span></button>
-            <button (click)="resumeForm.valid ? generatePdf('print') : ''"
-              class="btn btn-primary d-flex align-items-center justify-content-center">
-              <i class="material-icons">
-                print
-              </i><span>Imprimir PDF</span></button>
+            <button (click)="resumeForm.valid ? publicarEnGedi() : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              cloud_download
+            </i><span>PUBLICAR EN GEDI</span></button>
+            <button (click)="resumeForm.valid ? visualizarPdf() : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              picture_as_pdf
+            </i><span>VER ANTES DE PUBLICAR</span></button>
             <button type='reset' (click)="resetForm()"
               class="btn btn-primary d-flex align-items-center justify-content-center">
               <i class="material-icons">

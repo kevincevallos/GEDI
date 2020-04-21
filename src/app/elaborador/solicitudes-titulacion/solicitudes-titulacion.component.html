@@ -3,12 +3,12 @@
     <div class="navbar-brand mb-0 h1 text-white">SOLICITUD PROYECTO DE TITULACIÓN - YAVIRAC</div>
     <button mat-button mat-raised-button routerLink="/elaborador">REGRESAR</button>
   </nav>
-<!--   <div class="progress-loader" [hidden]="!loading">
+<div class="progress-loader" [hidden]="!loading">
  
     <mat-progress-bar [mode]="'indeterminate'">
     </mat-progress-bar>
  
-</div> -->
+</div>
   <form #solicitudForm="ngForm">
     <div class="row">
       <div class="col-md-8">
@@ -195,11 +195,16 @@
             <i class="material-icons">
               print
             </i><span>Imprimir PDF</span></button> -->
-            <button (click)="publicarEnGedi()"
+            <button (click)="solicitudForm.valid ? publicarEnGedi() : ''"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               cloud_download
             </i><span>PUBLICAR EN GEDI</span></button>
+            <button (click)="solicitudForm.valid ? visualizarPdf() : ''"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              picture_as_pdf
+            </i><span>VER ANTES DE PUBLICAR</span></button>
           <button type='reset' (click)="resetearForm()"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">

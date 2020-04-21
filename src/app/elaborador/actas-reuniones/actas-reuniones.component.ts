@@ -8,6 +8,8 @@ import { ServicioService } from 'src/app/servicio.service';
 import { FormBuilder } from '@angular/forms';
 import { UserData } from 'src/app/models/userData';
 import pdfFonts from 'pdfmake/build/vfs_fonts'
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+declare let alertify: any;
 pdfMake.vfs=pdfFonts.pdfMake.vfs
 @Component({
   selector: 'app-actas-reuniones',
@@ -31,7 +33,13 @@ export class ActasReunionesComponent implements OnInit {
   codigoGet:string
   numeroActual:number
   numeroSiguiente:number;
-  listaDOcumentos:any[]=[]
+  listaDocumentos:any[]=[]
+  n: number;
+  carreraxUser;
+  codigoDoc;
+  m;
+  invitado;
+  loading: boolean;
   constructor(private formBuilder:FormBuilder
     ,public datepipe: DatePipe,
     public service: ServicioService) {
@@ -50,219 +58,446 @@ export class ActasReunionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
+    this.n = 0;
     this.service.getDocentes().subscribe(
       (getdatos:any[]) =>  this.listaDocentes = getdatos ,
       (error: HttpErrorResponse) => { console.log(error.message)},
       ()=> console.log('peticion Finalizada',this.listaDocentes))
 
     this.obtenerFecha()
-    this.obtenerFechaS()
+    this.obtenerfechaS()
     this.reunion.codigoDocumento='ACT-';
-    this.generar()
-    this.generarCodigo();
+    this.actaReunionesCodigoUsuario = 'ACT-';
+    this.getLocalStorageData();
+    this.constaEnCarrera();
   }
-  generar(){
-    let user_string=localStorage.getItem("currentUser");
-    let user=JSON.parse(user_string);
-    var x=user;
-   this.usuario=x; 
+  getLocalStorageData() {
+    /*localStorage*/
+    let user_string = localStorage.getItem("currentUser");
+    let user = JSON.parse(user_string);
+    var x = user;
+    //var id_usuario:number = x.id;
+    this.usuario = user;
+    this.usuario.codigoUser = x.codigo_user;
+    this.reunion.idUsuario = this.usuario.id;
+    this.reunion.codigoUsuario = this.usuario.codigoUser;
+    //console.log(this.usuario.id, this.usuario.codigoUser);
+    //console.log('user_string_:', user_string);
+    console.log('usuario.id_:', this.usuario);
+
   }
-  generarCodigo(){
-    var carrera_usuario_id
-    if(this.usuario.id){
-      var n:number=0;
-      var carrera_id;
-      var codigoDoc;
-      this.service.findById(this.usuario).subscribe(data=>{
-        carrera_id=data[0].carrera_id;
-        for(const key in data){
-          if(data.hasOwnProperty(key))
-          n++
-        }
-      if(n>1){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.YAV-'+this.dateS+'-'
+  obtenerFecha() {
+    this.date = new Date()
+    this.date = this.datepipe.transform(this.date, 'yyyy-MM-dd')
+  }
+  obtenerfechaS() {
+    this.dateS = new Date()
+    this.dateS = this.datepipe.transform(this.dateS, 'yyyy')
+  }
+  constaEnCarrera() {
+    this.service.findById(this.usuario).subscribe(data => {
+      this.carreraxUser = data[0].carrera_id;
+      for (const key in data) {
+        if (data.hasOwnProperty(key))
+          this.n++
       }
-      if(n==1){
-        if(carrera_id==1){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.B.J.M-'+this.dateS+'-'
+      //console.log('variable n1_:', this.n);
+      console.log('El usuario consta en la tabla CarrerasxUser!!');
+      this.invitado = 'no';
+      this.generarCodigo();
+    },
+      error => {
+        //console.log('variable n2_:', this.n);
+        console.log('El usuario NO consta en la tabla CarrerasxUser!!')
+        this.invitado = 'si';
+        this.generarCodigoInvitado();
       }
-      if(carrera_id==2){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.24.M.K-'+this.dateS+'-'
-      }
-      if(carrera_id==3){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.G.C.M-'+this.dateS+'-'
-      }
-      if(carrera_id==4){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.YAV.AC.V-'+this.dateS+'-'
-      }
-      if(carrera_id==5){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.YAV.GT.M-'+this.dateS+'-'
-      }
-      if(carrera_id==6){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.YAV.MK-'+this.dateS+'-'
-      }
-      if(carrera_id==7){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.YAV.ELT.N-'+this.dateS+'-'
-      }
-      if(carrera_id==8){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.YAV.ELT.V-'+this.dateS+'-'
-      }
-      if(carrera_id==9){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.B.J.V-'+this.dateS+'-'
-      }
-      if(carrera_id==10){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.YAV.AC.M-'+this.dateS+'-'
-      }
-      if(carrera_id==11){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.YAV.GT.V-'+this.dateS+'-'
-      }
-      if(carrera_id==12){
-        this.actaReunionesCodigoUsuario=this.reunion.codigoDocumento+'I.T.S.DM.V-'+this.dateS+'-'
-      }
-    }
-      this.service.getDocumentos().subscribe(data=>{
-        codigoDoc=data['datos'];
-        var m;
-        if (!codigoDoc) {
-          console.log('No hay docs')
-          this.actaReunionesCodigoUsuario=this.actaReunionesCodigoUsuario+1;
-
-         }
-       for (let i=0;i<codigoDoc.length;i++){
-         var t=codigoDoc[i].codigo_documento;
-         var elemento=codigoDoc[i];
-         console.log(t)
-         var n=t.includes('ACT')
-         console.log(n);
-         if(n){
-           this.listaDOcumentos.push(elemento);
-         }
-       }
-       for (let m = 0; m < this.listaDOcumentos.length; m++) {
-        const element = this.listaDOcumentos[m];
-        console.log('listaDocumentos_:',element);
-        
-      }
-      this.listaDOcumentos.forEach(element => {
-        //console.log('ELEMENT_:',element);
-
-        m=element.codigo_documento;
-        this.codigoGet=m;
-        
-      });
-     
-      var long=this.codigoGet.length;
-      console.log('long_:',long);
-      var cad2= m.slice(-1);
-      var cad3 = m.slice(-2);
-      var cad4 = m.slice(-3);
-      if (cad3>10&&cad3<100) {
-        console.log('cad3_:',cad3)
-        cad2 = m.slice(-2);
-        console.log('cad2_:',cad2);
-      }
-      if (cad4>100&&cad3<1000) {
-       cad2 = m.slice(-3);
-      }
-      console.log('antes_del_if_:',cad2);
-      //cad2 = +cad2;
-      if (cad2==0) {
-        cad2 = m.slice(-2);
-        console.log('if_cad2_:',cad2);
-
-     }
-     if (cad3==0) {
-       cad2 = m.slice(-3);
-        console.log('if_cad2_:',cad2);
-     }
-      this.numeroActual=cad2;
-     // parseInt(cad2);
-      console.log('getDocumentos()_:',this.codigoGet);
-      console.log(cad2,this.numeroActual);
-
-      var x;
-      // console.log('aleatorio',num)
-       for(var y=1 ; y<=1000;y++){
-         //num[y]=y;
-         //y=3
-         //numeroActual=2
-         x = y;
-         //x=2
-         //console.log('x_:',x)
-         if (this.numeroActual==x) {
-           x++
-           var k=x;
-           console.log('k_:',k)
-           this.actaReunionesCodigoUsuario=this.actaReunionesCodigoUsuario+k;
-         }
-         //console.log('num_:',num[x]);
-       }
-
-
-   },
-   //this.navigateToLogin()
-   error => {
-      //alert('Error FindById()');
-       console.log('error_postUsuario_:', error)
-   }
- )
-
-    //var num:number[]=[];
-
-   //this.solicitudCodigoUsuario=this.solicitudCodigoUsuario+x;
- //this.solicitudCodigoUsuario=this.solicitudCodigoUsuario+num[x];
-         // this.usuario.codigoUser=this.solicitudCodigoUsuario;
- console.log('codigo_:',this.actaReunionesCodigoUsuario) 
-
-   },
     )
   }
-}
-  //metodos a usar
-
-  obtenerFecha() {
-    this.date = new Date();
-    this.date = this.datepipe.transform(this.date, 'dd-MM-yyyy');
-    return this.date;
+  generarCodigo() {
+    var carrera_id = this.carreraxUser;
+    if (this.n > 1) {
+      console.log('generarCodigo()_:',this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
+      this.actaReunionesCodigoUsuario = this.reunion.codigoDocumento + 'I.T.S.YAV-' + this.dateS + '-';
+      //console.log('ifMayor1_:', this.solicitudCodigoDocumento);
+    } else
+      if (this.n == 1) {
+        if (carrera_id == 1) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.B.J.M-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 2) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.24.M.K-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 3) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.G.C.M-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 4) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.AC.V-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 5) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.GT.M-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 6) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.MK-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 7) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.ELT.N-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 8) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.ELT.V-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 9) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.B.J.V-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 10) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.AC.M-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 11) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.GT.V-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+        if (carrera_id == 12) {
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.G.C.DM.V-' + this.dateS + '-';
+          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+        }
+      }
+    this.comprobarDocumentosExistentes();
   }
-   obtenerFechaS(){
-   this.dateS= new Date()
-   this.dateS=this.datepipe.transform(this.dateS,'yyyy')
-   }
+  generarCodigoInvitado() {
+    this.actaReunionesCodigoUsuario = 'GEDI-';
+    this.reunion.codigoDocumento = 'GEDI-'
+    console.log(this.reunion.codigoDocumento);
+    this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'INVITADO-' + this.dateS + '-';
+    //this.reunion.logoPic;
+    this.comprobarDocumentosExistentes();
+  }
+  comprobarDocumentosExistentes() {
+    this.service.getDocumentos().subscribe(data => {
+      //Actualización 17/4/2020
+      this.codigoDoc = data;
+      let array = [];
+      //array.push(data);
+      //console.log('Nueva Consulta_:', this.codigoDoc)
+      var element;
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          element = data[key];
+          array.push(element);
+          //console.log('ELEMENT_2_:',array[key]);
+        }
+      }
+      if (Array.isArray(array) && array.length) {
+        console.log('Hay Documentos existentes!!', data);
+        if (this.invitado.includes('no')) {
+          console.log('No es invitado');
+          this.generarNumeracionDocumento();
+          this.loading = false;
+        }
+        if (this.invitado.includes('si')) {
+          console.log('Si es invitado');
+          this.generarNumeracionDocumentoInvitado();
+          this.loading = false;
+        }
+      } else {
+        //console.log('NO Existen Documentos!!');
+        this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 1;
+        this.reunion.codigoDocumento = this.actaReunionesCodigoUsuario;
+
+      }
+    },
+      error => {
+        console.log('error_comprobarDocumentosExistentes()_:')
+      }
+    )
+  }
+  generarNumeracionDocumento() {
+    //console.log('this.codigoDoc_:', this.codigoDoc);
+    //if (this.codigoDoc) {
+    var n;
+    var existe: boolean = false;
+    for (let i = 0; i < this.codigoDoc.length; i++) {
+      var t = this.codigoDoc[i].codigo_documento;
+      var elemento = this.codigoDoc[i];
+      n = t.includes('ACT');
+      //console.log(n);
+      if (n) {
+        console.log('Variable_t_:', t)
+
+        this.listaDocumentos.push(elemento);
+        existe = true
+        //codigoDoc.push(n);
+      }
+    }
+    if (!existe) {
+      console.log('No hay Documentos SPTs');
+      this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 1;
+    } else {
+      for (let m = 0; m < this.listaDocumentos.length; m++) {
+        const element = this.listaDocumentos[m];
+        //console.log('listaDocumentos_:', element);
+      }
+      this.listaDocumentos.forEach(element => {
+        //console.log('ELEMENT_:',element);
+        this.m = element.codigo_documento;
+        this.codigoGet = this.m;
+      });
+      //var long = this.codigoGet.length;
+      //console.log('long_:', long);
+      var cad2 = this.m.slice(-1);
+      var cad3 = this.m.slice(-2);
+      var cad4 = this.m.slice(-3);
+      if (cad3 > 10 && cad3 < 100) {
+        //console.log('cad3_:', cad3)
+        cad2 = this.m.slice(-2);
+        //console.log('cad2_:', cad2);
+      }
+      if (cad4 > 100 && cad3 < 1000) {
+        cad2 = this.m.slice(-3);
+      }
+      //console.log('antes_del_if_:', cad2);
+      //cad2 = +cad2;
+      if (cad2 == 0) {
+        cad2 = this.m.slice(-2);
+        //console.log('if_cad2_:', cad2);
+      }
+      if (cad3 == 0) {
+        cad2 = this.m.slice(-3);
+        //console.log('if_cad2_:', cad2);
+      }
+      this.numeroActual = cad2;
+      // parseInt(cad2);
+      //console.log('Códigos_Tabla_Documentos()_:', this.codigoGet);
+      //console.log(cad2, this.numeroActual);
+      var x;
+      for (var y = 1; y <= 1000; y++) {
+        x = y;
+        if (this.numeroActual == x) {
+          x++
+          var k = x;
+          //console.log('k_:', k)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + k;
+          this.reunion.codigoDocumento = this.actaReunionesCodigoUsuario;
+
+        }
+      }
+      //
+
+    }
+    console.log('codigo_documento_generado:', this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
+  }
+  generarNumeracionDocumentoInvitado() {
+    //console.log('this.codigoDoc_:', this.codigoDoc);
+    //if (this.codigoDoc) {
+    var n;
+    var existe: boolean = false;
+    for (let i = 0; i < this.codigoDoc.length; i++) {
+      var t = this.codigoDoc[i].codigo_documento;
+      var elemento = this.codigoDoc[i];
+      //console.log(t)
+      n = t.includes('INVITADO');
+      //console.log(n);
+      if (n) {
+        this.listaDocumentos.push(elemento);
+        //codigoDoc.push(n);
+        existe = true;
+      }
+    }
+    if (!existe) {
+      //console.log('No hay Documentos INVITADO');
+      this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 1;
+    } else {
+      for (let m = 0; m < this.listaDocumentos.length; m++) {
+        const element = this.listaDocumentos[m];
+        //console.log('listaDocumentos_:', element);
+      }
+      this.listaDocumentos.forEach(element => {
+        //console.log('ELEMENT_:',element);
+        this.m = element.codigo_documento;
+        this.codigoGet = this.m;
+      });
+      //var long = this.codigoGet.length;
+      //console.log('long_:', long);
+      var cad2 = this.m.slice(-1);
+      var cad3 = this.m.slice(-2);
+      var cad4 = this.m.slice(-3);
+      if (cad3 > 10 && cad3 < 100) {
+        //console.log('cad3_:', cad3)
+        cad2 = this.m.slice(-2);
+        //console.log('cad2_:', cad2);
+      }
+      if (cad4 > 100 && cad3 < 1000) {
+        cad2 = this.m.slice(-3);
+      }
+      //console.log('antes_del_if_:', cad2);
+      //cad2 = +cad2;
+      if (cad2 == 0) {
+        cad2 = this.m.slice(-2);
+        //console.log('if_cad2_:', cad2);
+      }
+      if (cad3 == 0) {
+        cad2 = this.m.slice(-3);
+        //console.log('if_cad2_:', cad2);
+      }
+      this.numeroActual = cad2;
+      // parseInt(cad2);
+      //console.log('Códigos_Tabla_Documentos()_:', this.codigoGet);
+      //console.log(cad2, this.numeroActual);
+      var x;
+      for (var y = 1; y <= 1000; y++) {
+        x = y;
+        if (this.numeroActual == x) {
+          x++
+          var k = x;
+          //console.log('k_:', k)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + k;
+          this.reunion.codigoDocumento = this.actaReunionesCodigoUsuario;
+
+        }
+      }
+      //
+
+    }
+    console.log('codigo_documento_generado:', this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
+  }
+
+  ///////////////////////Fin de métodos escenciales////////////////////////
+  ///////////////////////Comienza generación de PDF////////////////////////
+  guardarBorrador(){
+    sessionStorage.setItem('solicitud-titulacion', JSON.stringify(this.reunion));
+  }
+  visualizarPdf(){
+    const defenicionSolicitud = this.getDocumentDefinition();
+    const pdf:Object = pdfMake.createPdf(defenicionSolicitud).open();
+    console.log('visualizarPdf()_: ',pdf);
+  }
+  publicarEnGedi() {
+    /////PUBLICAR COMO INVITADO/////
+    if (this.invitado.includes('si')) {
+      Swal.fire({
+        title: this.usuario.name + ' publicarás como invitado',
+        text: "Este documento solo lo podrás visualizar tú y los cargos administrativos",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Publicar!',
+        cancelButtonText: 'Cancelar!',
+        timer: 5000,
+        timerProgressBar: true,
+      }).then((result) => {
+        if (result.value) {
+          this.publicar();
+          //console.log('VALUE_DATA_Invitado:',a,c);
+          Swal.fire(
+            'Publicado!',
+            'Tu documento ha sido publicado en GEDI como invitado.',
+            'success'
+          )
+        }
+      })
+
+    }
+    /////PUBLICAR COMO USUARIO GEDI/////
+    if (this.invitado.includes('no')) {
+      //alert('ERES USUARIO DE GEDI!');
+      Swal.fire({
+        title: this.usuario.name + ' vas a publicar en GEDI',
+        html: "Si publicas tu documento estará disponible para ti y otros usuarios en la pestaña <b>Visualizador</b>",
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Publicar!',
+        cancelButtonText: 'Cancelar!',
+        timer: 5000,
+        timerProgressBar: true,
+      }).then((result) => {
+        if (result.value) {
+          this.publicar();
+          Swal.fire(
+            'EXCELENTE!',
+            this.usuario.name + ' Tu documento ha sido publicado en GEDI.',
+            'success'
+          )
+          alertify.notify('Publicado con éxito!', 'success', 2);
+        } else {
+          alertify.notify('Cancelado!', 'error', 2);
+        }
+      })
+    }
+  }
+  /*  generarPdf(accion = 'open') {
+     const defenicionSolicitud = this.getDefinicionSolicitud();
+     switch (accion) {
+       case 'open': pdfMake.createPdf(defenicionSolicitud).open(); break;
+       case 'print': pdfMake.createPdf(defenicionSolicitud).print(); break;
+       case 'download': pdfMake.createPdf(defenicionSolicitud).download(); break;
+       default: pdfMake.createPdf(defenicionSolicitud).open(); break
+     }
+ 
+   } */
+  publicar() {
+    const formData = new FormData();
+    const defenicionSolicitud = this.getDocumentDefinition();
+    const pdf = pdfMake.createPdf(defenicionSolicitud);
+    const blob = new Blob([pdf], { type: 'application/octet-stream' });
+    //console.log('metodo_obtenerPdf()_:', blob);
+    formData.append("upload", blob);
+    formData.append("codDoc", this.actaReunionesCodigoUsuario);
+    formData.append("codUser", this.usuario.codigoUser);
+    formData.append("idUser", this.usuario.id.toString());
+
+    this.service.setDocumento(formData);
+    console.log('ANTES_DE_:', this.actaReunionesCodigoUsuario)
+    this.actaReunionesCodigoUsuario = '';
+    console.log('ANTES_DE_:', this.reunion.codigoDocumento)
+    this.reunion.codigoDocumento = '';
+    setTimeout(() => {
+      this.ngOnInit();
+      //console.log('Page reload!!');
+    }, 3000);//1000ms=1Sec
+  }
 
   selectCoordinador(item) {
       this.reunion.coordinador = item.name
   }
- /*  selectCoordinador(val: string): string[] {
-    return this.listaDocentes.map(x => x.name).filter(option =>
-      option.toLowerCase().includes(val.toLowerCase()));
-  } */
 
   selectSecretaria(item) {
       this.reunion.secretaria = item.name
   }
 
   selectInvolucrados(item) {
-    this.listaInvolucrados.push(item.name)
+    this.listaInvolucrados.push(item)
     console.log('listaInvolucrados_:',this.listaInvolucrados)
   }
 
   selectRevisado(item){
-    this.reunion.revisado = item.nombre 
+    this.reunion.revisado = item.name 
   }
 
   selectAprobadoUno(item){
-    this.reunion.aprobadoUno = item.nombre
+    this.reunion.aprobadoUno = item.name
   }
 
   selectAprobadoDos(item){
-    this.reunion.aprobadoDos = item.nombre
+    this.reunion.aprobadoDos = item.name
   }
   selectAprobadoTres(item){
-    this.reunion.aprobadoTres = item.nombre
+    this.reunion.aprobadoTres = item.name
   }
   selectAprobadoCuatro(item){
-    this.reunion.aprobadoCuatro = item.nombre
+    this.reunion.aprobadoCuatro = item.name
   }
 
   agregarOrden () {
@@ -276,6 +511,7 @@ export class ActasReunionesComponent implements OnInit {
   resetForm() {
     this.reunion = new ActasReuniones();
     sessionStorage.removeItem('acta-reunion');
+    this.listaInvolucrados = []
   }
 
   getDocumentDefinition() {
@@ -480,7 +716,7 @@ export class ActasReunionesComponent implements OnInit {
     };
   }
 
-  generatePdf(action = 'open') {
+/*   generatePdf(action = 'open') {
     const documentDefinition = this.getDocumentDefinition();
     switch (action) {
       case 'open': pdfMake.createPdf(documentDefinition).open(); break;
@@ -488,6 +724,6 @@ export class ActasReunionesComponent implements OnInit {
       case 'download': pdfMake.createPdf(documentDefinition).download(); break;
       default: pdfMake.createPdf(documentDefinition).open(); break;
     }
-  }
+  } */
 
 }

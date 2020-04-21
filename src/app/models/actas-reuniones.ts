@@ -1,4 +1,6 @@
 export class ActasReuniones {
+    idUsuario:number;
+    codigoUsuario:string;
     coordinador : string
     secretaria : string
     involucrados : Docentes[]=[]
@@ -10,7 +12,8 @@ export class ActasReuniones {
     aprobadoCuatro : string
     codigoDocumento:string
     fechaCodigo:string
-
+    InstitutoPertenciciente:string
+    logoPic:string;
     constructor(){
         this.ordenDelDia.push(new Orden())
         this.involucrados.push(new Docentes())

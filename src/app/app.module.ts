@@ -45,6 +45,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { CardsComponent } from './visualizador/cards/cards.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { MatCardModule} from  '@angular/material/card';
+import { MatExpansionModule } from "@angular/material/expansion";
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,7 +93,8 @@ import { MatCardModule} from  '@angular/material/card';
     MatSnackBarModule,
     MatSortModule,
     NgbModule,
-    MatCardModule
+    MatCardModule,
+    MatExpansionModule
   ],
   entryComponents: [
     ModalComponent
