@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentRef
 import { Router, ActivatedRoute } from '@angular/router';
 import { ServicioService } from '../servicio.service';
 import { User } from '../models/user';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -10,13 +11,21 @@ import { User } from '../models/user';
 export class NavbarComponent implements OnInit {
   loading:boolean;
   admin:boolean;
+  date:any;
   constructor(private router: Router,
-    public service: ServicioService) {
+    public service: ServicioService, public datepipe:DatePipe) {
       //this.ngOnInit();      
 
      }
     user: any;
+    
     ngOnInit(){
+       //1000ms=1second
+  setTimeout(() => {
+    this.obtenerFecha();
+    //window.location.reload();
+    //console.log('Page reload!!');
+  }, 1000);//reloading every 10 minutes
       this.admin=false;
       this.user = this.service.getCurrentUser();
       if (this.user.role_id==5||this.user.role_id==6){
@@ -27,10 +36,16 @@ export class NavbarComponent implements OnInit {
 
     logout(): void{
       this.service.logoutUser();
+      localStorage.removeItem('Invitado');
       this.router.navigate(["/login"]);
     }
     
-
+    obtenerFecha() {
+      this.date = new Date()
+      this.date = this.datepipe.transform(this.date, 'HH:mm:ss')
+      this.ngOnInit();
+      //console.log('Fecha_Actual_: ',this.date)
+    }
   isRegistrationView() {
     // return true if the current page is registration
     return this.router.url.match('/registration');

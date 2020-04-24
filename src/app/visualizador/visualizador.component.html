@@ -2,6 +2,7 @@
   <app-navbar></app-navbar>
   </div> -->
 <div class="body">
+  
   <div class="carouselDiv">
     <ngb-carousel *ngIf="images">
       <ng-template ngbSlide>
@@ -36,9 +37,66 @@
     </ngb-carousel>
   </div>
 <!-- Fin Carousel -->
+<!-- <h2>Filtrar por Tipo de Documento</h2> -->
+<div class="alt">
+<mat-form-field *ngIf="!filtroInvitado">
+  <mat-label>Filtrar por Tipos de Documento GEDI</mat-label>
+  <mat-select [(ngModel)]="selectedItem" (selectionChange)="select($event.value)">
+    <mat-option *ngFor="let team of teams" [value]="team.name">
+      {{team.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- <h3>Estás viendo: {{selectedItem}}</h3> -->
+</div>
+<!-- <mat-card>
+  <mat-card-content>
+    <h2 class="example-h2">Checkbox configuration</h2> -->
+
+    <!-- <section class="example-section">
+      <mat-checkbox class="example-margin" [(ngModel)]="checked">Checked</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="indeterminate">Indeterminate</mat-checkbox>
+    </section>
+
+    <section class="example-section">
+      <label class="example-margin">Align:</label>
+      <mat-radio-group [(ngModel)]="labelPosition">
+        <mat-radio-button class="example-margin" value="after">After</mat-radio-button>
+        <mat-radio-button class="example-margin" value="before">Before</mat-radio-button>
+      </mat-radio-group>
+    </section> -->
+
+    <!-- <section class="example-section">
+      <mat-checkbox class="example-margin" [(ngModel)]="disabled">Solicitudes</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="disabled">Memorándums</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="disabled">Actas</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="disabled">Oficios</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="disabled">Hojas de Vida</mat-checkbox>
+    </section>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="result">
+  <mat-card-content>
+    <h2 class="example-h2">Result</h2>
+
+    <section class="example-section">
+      <mat-checkbox
+          class="example-margin"
+          [(ngModel)]="checked"
+          [(indeterminate)]="indeterminate"
+          [labelPosition]="labelPosition"
+          [disabled]="disabled">
+        I'm a checkbox
+      </mat-checkbox>
+    </section>
+  </mat-card-content>
+</mat-card> -->
 <!-- Inicio Accordeon -->
   <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenStateSPT = true"
+    <div *ngIf="categoriaSolicitudes">
+    <mat-expansion-panel *ngIf="visible" (opened)="panelOpenStateSPT = true"
     (closed)="panelOpenStateSPT = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -48,7 +106,11 @@
           {{panelOpenStateSPT ? 'VIENDO EN ESTE MOMENTO' : ''}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-    <div *ngIf="visible" class="contenedor5">
+    <mat-form-field id="inputFilter">
+        <input  matInput (keyup)="applyFilter($event.target.value)" 
+         placeholder="Filtrar por apellido-nombre o correo institucional">
+      </mat-form-field>
+      <div class="contenedor5">
     <!-- <h1 class="titulo">SOLICITUDES PARA PROYECTO DE TITULACIÓN</h1> -->
     <div class="card1">
       <mat-card class="example-card" *ngFor="let o of listaSPT">
@@ -80,8 +142,9 @@
    -->
   </div>
     </mat-expansion-panel>
-
-    <mat-expansion-panel (opened)="panelOpenStateMEM = true"
+  </div>
+  <div *ngIf="categoriaMemorandos">
+    <mat-expansion-panel *ngIf="visible" (opened)="panelOpenStateMEM = true"
     (closed)="panelOpenStateMEM = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -92,7 +155,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <div *ngIf="visible" class="contenedor6">
+      <div class="contenedor6">
         <!-- <h1 class="titulo">MEMORÁNDOS</h1> -->
         <div class="card1">
           <mat-card class="example-card" *ngFor="let o of listaMEM">
@@ -125,8 +188,9 @@
       </div>
 
     </mat-expansion-panel>
-
-    <mat-expansion-panel (opened)="panelOpenStateSOL = true"
+</div>
+<div *ngIf="categoriaSolicitudes">
+    <mat-expansion-panel *ngIf="visible" (opened)="panelOpenStateSOL = true"
     (closed)="panelOpenStateSOL = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -137,7 +201,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <div *ngIf="visible" class="contenedor7">
+      <div class="contenedor7">
         <!-- <h1 class="titulo">SOLICITUDES BÁSICAS</h1> -->
         <div class="card1">
           <mat-card class="example-card" *ngFor="let o of listaSOL">
@@ -170,8 +234,9 @@
       </div>
 
     </mat-expansion-panel>
-
-    <mat-expansion-panel (opened)="panelOpenStateACT = true"
+</div>
+<div *ngIf="categoriaActas">
+    <mat-expansion-panel *ngIf="visible" (opened)="panelOpenStateACT = true"
     (closed)="panelOpenStateACT = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -182,7 +247,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <div *ngIf="visible" class="contenedor8">
+      <div class="contenedor8">
         <!-- <h1 class="titulo">ACTAS</h1> -->
         <div class="card1">
           <mat-card class="example-card" *ngFor="let o of listaACT">
@@ -215,8 +280,9 @@
       </div>
 
     </mat-expansion-panel>
-
-    <mat-expansion-panel (opened)="panelOpenStateOFI = true"
+</div>
+<div *ngIf="categoriaOficios">
+    <mat-expansion-panel *ngIf="visible" (opened)="panelOpenStateOFI = true"
     (closed)="panelOpenStateOFI = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -227,7 +293,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <div *ngIf="visible" class="contenedor9">
+      <div class="contenedor9">
         <!-- <h1 class="titulo">OFICIOS</h1> -->
         <div class="card1">
           <mat-card class="example-card" *ngFor="let o of listaOFI">
@@ -259,8 +325,9 @@
        -->
       </div>
     </mat-expansion-panel>
-
-    <mat-expansion-panel (opened)="panelOpenStateHDV = true"
+</div>
+<div *ngIf="categoriaHojasdeVida">
+    <mat-expansion-panel *ngIf="visible" (opened)="panelOpenStateHDV = true"
     (closed)="panelOpenStateHDV = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -271,7 +338,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <div *ngIf="visible" class="contenedor11">
+      <div  class="contenedor11">
         <!-- <h1 class="titulo">HOJAS DE VIDA</h1> -->
         <div class="card1">
           <mat-card class="example-card" *ngFor="let o of listaHDV">
@@ -301,7 +368,7 @@
         </div>
       </div>
     </mat-expansion-panel>
-
+</div>
   </mat-accordion>
 
 <mat-accordion *ngIf="!visible">

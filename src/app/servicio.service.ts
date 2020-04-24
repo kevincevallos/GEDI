@@ -7,6 +7,7 @@ import { User } from './models/user';
 import { isNullOrUndefined } from 'util';
 import { UserData } from './models/userData';
 import { SolicitudesTitulacion } from './models/solicitudes-titulacion';
+import { Doc } from './models/doc';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ import { SolicitudesTitulacion } from './models/solicitudes-titulacion';
 export class ServicioService {
   //Conexión a API-HUBRE de ejemplo en heroku//
   api_GEDI_url = 'http://localhost:3000/server';
+  //api_GEDI_url = 'https://api-gedi.herokuapp.com/server';
   constructor(private http: HttpClient) { }
 
   getInstitutos() {
@@ -42,7 +44,7 @@ export class ServicioService {
   loginUser(user: User) {
     return this.http.post(this.api_GEDI_url + '/login', user);
   }
-  findById(user: UserData){
+  findById(user){
     return this.http.post(this.api_GEDI_url + '/findById', user);
   }
   updateUser(user: UserData){
@@ -59,6 +61,9 @@ export class ServicioService {
       });
       return false; 
   }  
+  getPdf(doc:Doc){
+    return this.http.post(this.api_GEDI_url + '/getPdf/',doc);
+  }
   setDocumentoInvitado(documento: SolicitudesTitulacion){
     console.log('setDocumentoINVITADO!!');
     return this.http.post(this.api_GEDI_url + '/setDocumentoNonCode', documento);
@@ -69,6 +74,10 @@ export class ServicioService {
     localStorage.setItem("currentUser", user_string);
     //console.log('setUsuario:_',usuario);
     //return this.http.post(this.api_GEDI_url+'/registro',usuario);    
+  }
+  setDoc(doc: any): void {
+    let doc_string = JSON.stringify(doc);
+    localStorage.setItem("currentDoc", doc_string);   
   }
   setToken(token): void {
     localStorage.setItem("accessToken", token);

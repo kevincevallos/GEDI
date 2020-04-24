@@ -49,10 +49,17 @@
 
         </div>
         <div class="form-group">
-            <button mat-raised-button [disabled]="loading" class="btn btn-primary">
+            <button mat-raised-button *ngIf="!loading" class="btn btn-primary">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                 Iniciar Sesión
             </button>
+            <mat-progress-spinner style="margin: auto;"
+            *ngIf="loading"
+            class="spinnerLogin"
+            diameter="20"
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-spinner>
         </div>
     </form>
 </div>

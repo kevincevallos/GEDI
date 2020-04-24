@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from  '@angular/material/toolbar';
 import { MatButtonModule } from  '@angular/material/button';
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import {MatRadioModule} from '@angular/material/radio';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatFormFieldModule, MatFormField } from  '@angular/material/form-field';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -94,7 +95,8 @@ import { MatExpansionModule } from "@angular/material/expansion";
     MatSortModule,
     NgbModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatRadioModule
   ],
   entryComponents: [
     ModalComponent

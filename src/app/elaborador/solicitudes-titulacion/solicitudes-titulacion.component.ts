@@ -33,12 +33,16 @@ export class SolicitudesTitulacionComponent implements OnInit {
   numeroActual: number;
   numeroSiguiente: number;
   listaDocumentos: any[] = [];
+  blobPdf: Blob;
   n: number;
   carreraxUser;
   codigoDoc;
   m;
   invitado;
   loading: boolean;
+  //actualizacion
+  documento: any;
+  editable: boolean;
   constructor(private formBuilder: FormBuilder,
     public datepipe: DatePipe,
     private http: HttpClient,
@@ -74,9 +78,20 @@ export class SolicitudesTitulacionComponent implements OnInit {
     this.solicitud.codigoDocumento = 'SPT-';
     this.solicitudCodigoDocumento = 'SPT-';
     this.getLocalStorageData();
-    this.constaEnCarrera();
+      //actualizacion
+    if (this.documento) {
+      this.solicitudCodigoDocumento = this.documento.codigo_documento;
+      this.loading = false;
+      this.editable = true;
+    }
+    else {
+      this.loading = true;
+      this.editable = false;
+      this.constaEnCarrera();
+    }
   }
 
+  //actualizacionMetodogetLocalStorageData
   getLocalStorageData() {
     /*localStorage*/
     let user_string = localStorage.getItem("currentUser");
@@ -87,10 +102,12 @@ export class SolicitudesTitulacionComponent implements OnInit {
     this.usuario.codigoUser = x.codigo_user;
     this.solicitud.idUsuario = this.usuario.id;
     this.solicitud.codigoUsuario = this.usuario.codigoUser;
+    let doc_string = localStorage.getItem("currentDoc");
+    let doc = JSON.parse(doc_string);
+    this.documento = doc;
     //console.log(this.usuario.id, this.usuario.codigoUser);
     //console.log('user_string_:', user_string);
-    console.log('usuario.id_:', this.usuario);
-
+    //console.log('documento_: ', this.documento.codigo_documento);
   }
   obtenerFecha() {
     this.date = new Date()
@@ -100,6 +117,8 @@ export class SolicitudesTitulacionComponent implements OnInit {
     this.dateS = new Date()
     this.dateS = this.datepipe.transform(this.dateS, 'yyyy')
   }
+  //En alguno de estos siguientes metodos buscale los booleanos true y false y 
+  //compara con los de tu proyecto...
   constaEnCarrera() {
     this.service.findById(this.usuario).subscribe(data => {
       this.carreraxUser = data[0].carrera_id;
@@ -123,7 +142,7 @@ export class SolicitudesTitulacionComponent implements OnInit {
   generarCodigo() {
     var carrera_id = this.carreraxUser;
     if (this.n > 1) {
-      console.log('generarCodigo()_:',this.solicitudCodigoDocumento, this.solicitud.codigoDocumento)
+      console.log('generarCodigo()_:', this.solicitudCodigoDocumento, this.solicitud.codigoDocumento)
       this.solicitudCodigoDocumento = this.solicitud.codigoDocumento + 'I.T.S.YAV-' + this.dateS + '-';
       //console.log('ifMayor1_:', this.solicitudCodigoDocumento);
     } else
@@ -214,11 +233,12 @@ export class SolicitudesTitulacionComponent implements OnInit {
           this.loading = false;
         }
       } else {
-        //console.log('NO Existen Documentos!!');
+        console.log('NO Existen Documentos!!');
         this.solicitudCodigoDocumento = this.solicitudCodigoDocumento + 1;
         this.solicitud.codigoDocumento = this.solicitudCodigoDocumento;
 
       }
+      this.loading = false;
     },
       error => {
         console.log('error_comprobarDocumentosExistentes()_:')
@@ -236,7 +256,7 @@ export class SolicitudesTitulacionComponent implements OnInit {
       n = t.includes('SPT');
       //console.log(n);
       if (n) {
-        console.log('Variable_t_:', t)
+        //console.log('Variable_t_:', t)
 
         this.listaDocumentos.push(elemento);
         existe = true
@@ -318,7 +338,7 @@ export class SolicitudesTitulacionComponent implements OnInit {
       }
     }
     if (!existe) {
-      //console.log('No hay Documentos INVITADO');
+      console.log('No hay Documentos INVITADO');
       this.solicitudCodigoDocumento = this.solicitudCodigoDocumento + 1;
     } else {
       for (let m = 0; m < this.listaDocumentos.length; m++) {
@@ -374,19 +394,24 @@ export class SolicitudesTitulacionComponent implements OnInit {
     }
     console.log('codigo_documento_generado:', this.solicitudCodigoDocumento, this.solicitud.codigoDocumento)
   }
+  //...hasta aquí!
 
   ///////////////////////Fin de métodos escenciales////////////////////////
   ///////////////////////Comienza generación de PDF////////////////////////
-  guardarBorrador(){
+  guardarBorrador() {
     sessionStorage.setItem('solicitud-titulacion', JSON.stringify(this.solicitud));
   }
-  visualizarPdf(){
-    const defenicionSolicitud = this.getDefinicionSolicitud();
-    const pdf:Object = pdfMake.createPdf(defenicionSolicitud).getDataUrl();
-    console.log('visualizarPdf()_: ',pdf);
-  }
+    //actualizacionMetodopublicarEnGedi
   publicarEnGedi() {
+    const defenicionSolicitud = this.getDefinicionSolicitud();
+    const pdf = pdfMake.createPdf(defenicionSolicitud);
+    pdf.getBlob(async (blob) => {
+      this.blobPdf = blob;
+      await this.blobPdf;
+      //console.log('PDF_TO_BLOB_: ',this.blobPdf);
+    })
     /////PUBLICAR COMO INVITADO/////
+    console.log(this.invitado);
     if (this.invitado.includes('si')) {
       Swal.fire({
         title: this.usuario.name + ' publicarás como invitado',
@@ -441,37 +466,71 @@ export class SolicitudesTitulacionComponent implements OnInit {
       })
     }
   }
-  /*  generarPdf(accion = 'open') {
-     const defenicionSolicitud = this.getDefinicionSolicitud();
-     switch (accion) {
-       case 'open': pdfMake.createPdf(defenicionSolicitud).open(); break;
-       case 'print': pdfMake.createPdf(defenicionSolicitud).print(); break;
-       case 'download': pdfMake.createPdf(defenicionSolicitud).download(); break;
-       default: pdfMake.createPdf(defenicionSolicitud).open(); break
-     }
- 
-   } */
+    //actualizacionMetodopublicar
   publicar() {
     const formData = new FormData();
-    const defenicionSolicitud = this.getDefinicionSolicitud();
-    const pdf = pdfMake.createPdf(defenicionSolicitud);
-    const blob = new Blob([pdf], { type: 'application/octet-stream' });
-    //console.log('metodo_obtenerPdf()_:', blob);
-    formData.append("upload", blob);
+    /*     const defenicionSolicitud = this.getDefinicionSolicitud();
+        const pdf = pdfMake.createPdf(defenicionSolicitud); */
+    /* const blob = new Blob([pdf], { type: 'arraybuffer' }); */
+    /* const file = new File([pdf], 'untitled.pdf', { type: 'application/pdf' });
+    var fileURL = URL.createObjectURL(blob);
+    var fileReader = new FileReader(); */
+    /*     pdf.getBlob(async(blob)=>{
+          blobPdf=blob;
+          await blobPdf;
+          console.log('PDF_TO_BLOB_: ',blob);
+        }) */
+    /* fileReader.readAsDataURL(blobPdf);
+    fileReader.onloadend = () => {
+    pdf.file = fileReader.result;
+    console.log('Pdf and fileReader_: ',pdf.file,fileReader);
+    } */
+    //window.open(fileURL);
+    /*     console.log('metodo_obtenerPdf()_:',pdf);
+        //alert(pdf);
+        for (const key in pdf) {
+            const element = pdf[key];
+            for (const k in element) {
+              const e = element[k];
+              console.log('PDF_: ',e);
+    
+            }
+    
+        } */
+    const file = new File([this.blobPdf], 'doc.pdf', { type: 'application/pdf' });
+    //console.log('Antes_del_Append_file_: ',file,'document.pdf');
+
+    formData.append("upload", file);
     formData.append("codDoc", this.solicitudCodigoDocumento);
     formData.append("codUser", this.usuario.codigoUser);
     formData.append("idUser", this.usuario.id.toString());
 
     this.service.setDocumento(formData);
-    console.log('ANTES_DE_:', this.solicitudCodigoDocumento)
+    //console.log('ANTES_DE_:', this.solicitudCodigoDocumento)
     this.solicitudCodigoDocumento = '';
-    console.log('ANTES_DE_:', this.solicitud.codigoDocumento)
+    //console.log('ANTES_DE_:', this.solicitud.codigoDocumento)
     this.solicitud.codigoDocumento = '';
     setTimeout(() => {
       this.ngOnInit();
       //console.log('Page reload!!');
-    }, 3000);//1000ms=1Sec
+    }, 5000);//1000ms=1Sec
   }
+  //Metodos Nuevos!!
+  publicarEditado() {
+    alertify.notify('Publicado con éxito!','success',4);
+  }
+  cancelarEdicion() {
+    localStorage.removeItem('currentDoc');
+    this.ngOnInit();
+    alertify.notify('De vuelta en el Visualizador!','success',10);
+  }
+  backToHome() {
+    localStorage.removeItem('currentDoc');
+    this.router.navigate(["/visualizador"]);
+    alertify.notify('Edición Cancelada!','error',10);
+  }
+  //Fin de Metodos Nuevos y actualizaciones!!
+  
   resetearForm() {
     this.solicitud = new SolicitudesTitulacion();
     sessionStorage.removeItem('solicitud-titulacion');

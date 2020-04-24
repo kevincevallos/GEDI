@@ -1,7 +1,6 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
     <div class="navbar-brand mb-0 h1 text-white">SOLICITUD PROYECTO DE TITULACIÓN - YAVIRAC</div>
-    <button mat-button mat-raised-button routerLink="/elaborador">REGRESAR</button>
   </nav>
 <div class="progress-loader" [hidden]="!loading">
  
@@ -13,7 +12,8 @@
     <div class="row">
       <div class="col-md-8">
         <div class="shadow-sm card">
-          <p>Código Documento: {{solicitudCodigoDocumento}}</p>
+          <p *ngIf="!editable">Nuevo Documento: {{solicitudCodigoDocumento}}</p>
+          <p *ngIf="editable">Editando Documento: {{solicitudCodigoDocumento}}</p>
           <div class="card-body">
             <h4 class="card-title d-flex align-items-center">
               <i class="material-icons">
@@ -180,36 +180,31 @@
 
       <div class="col-md-4">
         <div class="shadow-sm card action-buttons">
-          <!-- <button (click)="solicitudForm.valid ? generarPdf('open') : ''"
+            <button *ngIf="!editable" (click)="solicitudForm.valid ? publicarEnGedi() : ''"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
-              picture_as_pdf
-            </i> <span>Mostrar PDF</span></button>
-          <button (click)="solicitudForm.valid ? generarPdf('download') : ''"
-            class="btn btn-primary d-flex align-items-center justify-content-center">
-            <i class="material-icons">
-              cloud_download
-            </i><span>Descargar PDF</span></button>
-          <button (click)="solicitudForm.valid ? generarPdf('print') : ''"
-            class="btn btn-primary d-flex align-items-center justify-content-center">
-            <i class="material-icons">
-              print
-            </i><span>Imprimir PDF</span></button> -->
-            <button (click)="solicitudForm.valid ? publicarEnGedi() : ''"
-            class="btn btn-primary d-flex align-items-center justify-content-center">
-            <i class="material-icons">
-              cloud_download
+              publish
             </i><span>PUBLICAR EN GEDI</span></button>
-            <button (click)="solicitudForm.valid ? visualizarPdf() : ''"
+            <button *ngIf="editable" (click)="solicitudForm.valid ? publicarEditado() : ''"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
-              picture_as_pdf
-            </i><span>VER ANTES DE PUBLICAR</span></button>
+              create
+            </i><span>TERMINAR EDICIÓN Y PUBLICAR</span></button>
+            <button *ngIf="editable" type='reset' (click)="cancelarEdicion()"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              cancel
+            </i><span>CANCELAR EDICIÓN</span></button>
           <button type='reset' (click)="resetearForm()"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
-              clear
-            </i><span>Limpiar</span></button>
+              cancel
+            </i><span>LIMPIAR BORRADOR</span></button>
+            <button type='reset' (click)="backToHome()"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              meeting_room
+            </i><span>REGRESAR A GEDI</span></button>
         </div>
       </div>
     </div>

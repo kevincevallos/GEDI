@@ -1,8 +1,8 @@
 
 .buttonFill {
-  width: 96%;
-  float: right;
-  display: block;
+  /* width: 96%;
+  float: right; */
+  display: inline;
 }
 .buttonFill1 {
   width: 96%;
@@ -22,6 +22,16 @@
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  .horaActual{
+    position: fixed;
+    text-align: center;
+    word-wrap: break-word;
+    margin-left: 90%;
+    font-size: large;
+    background-color: transparent;
+    color: white;
   }
 
   #center {

@@ -31,7 +31,9 @@
               "node_modules/sweetalert2/src/sweetalert2.scss"
             ],
             "scripts": [
-              "./node_modules/alertifyjs/build/alertify.min.js"
+              "./node_modules/alertifyjs/build/alertify.min.js",
+              "./node_modules/jquery/dist/jquery.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.js"
             ]
           },
           "configurations": {

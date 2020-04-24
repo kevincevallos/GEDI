@@ -1,10 +1,11 @@
-<div class="menu" role="main">
-  <div *ngIf="isGestionUsuariosView()" class="div1">
+<div>
+<div class="position-fixed" role="main" style="z-index: 100">
+<!--   <div *ngIf="isGestionUsuariosView()" class="div1">
     <button class="buttonFill1" mat-button mat-raised-button routerLink="gestion-usuarios">GESTIÓN DE USUARIOS</button>
-    </div>
-  <div *ngIf="isElaboradorView()" class="div1">
+    </div> -->
+<!--   <div *ngIf="isElaboradorView()" class="div1">
     <button class="buttonFill1" mat-button mat-raised-button routerLink="visualizador">VISUALIZADOR DE DOCUMENTOS</button>
-    </div>
+    </div> -->
     <div *ngIf="isUserView()" class="menu1" >
     <button class="button2" mat-icon-button mat-raised-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>menu</mat-icon>
@@ -82,10 +83,12 @@
   </div>
 
 
-  <div *ngIf="isVisualizadorView()" class="div1">
+ <!--  <div *ngIf="isVisualizadorView()" class="div1">
     <button class="buttonFill1" mat-button mat-raised-button routerLink="elaborador">ELABORADOR DE DOCUMENTOS</button>
-  </div>
-  <div>
+  </div> -->
 
-  </div>
 </div>
+</div> 
+<div class="horaActual" style="z-index: 100">
+{{this.date}}
+  </div>

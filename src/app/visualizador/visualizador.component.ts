@@ -8,6 +8,12 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { UserData } from '../models/userData';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts'
+import { DatePipe } from '@angular/common';
+import { pathToFileURL } from 'url';
+import { Doc } from '../models/doc';
+declare let alertify: any;
+declare var require: any
+const FileSaver = require('file-saver');
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 @Component({
   selector: 'app-visualizador',
@@ -15,7 +21,22 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
   styleUrls: ['./visualizador.component.css']
 })
 export class VisualizadorComponent implements OnInit {
+  checked = false;
+  indeterminate = false;
+  labelPosition: 'before' | 'after' = 'after';
+  disabled = false;
   users: any;
+  selectedItem: string;
+  filtroInvitado:boolean;
+  teams: any[] = [
+    { id: 1, name: 'Solicitudes' },
+    { id: 2, name: 'Memorándums' },
+    { id: 3, name: 'Actas' },
+    { id: 4, name: 'Hojas de Vida' },
+    { id: 5, name: 'Oficios' },
+    { id: 6, name: 'Desactivar Filtro' }
+  ];
+
   listaSPT: any[] = [];
   listaMEM: any[] = [];
   listaCON: any[] = [];
@@ -34,48 +55,64 @@ export class VisualizadorComponent implements OnInit {
   codigoUser;
   code;
   name;
+  date:any;
   isTrue: boolean;
   //users:any[]=[];
   usuario: UserData;
   visible: boolean;
   invitate_string;
   invitate;
-  panelOpenStateSPT:boolean;
-  panelOpenStateMEM:boolean;
-  panelOpenStateSOL:boolean;
-  panelOpenStateACT:boolean;
-  panelOpenStateHDV:boolean;
-  panelOpenStateINV:boolean;
-  panelOpenStateOFI:boolean;
+  panelOpenStateSPT: boolean;
+  panelOpenStateMEM: boolean;
+  panelOpenStateSOL: boolean;
+  panelOpenStateACT: boolean;
+  panelOpenStateHDV: boolean;
+  panelOpenStateINV: boolean;
+  panelOpenStateOFI: boolean;
+  categoriaSolicitudes: boolean;
+  categoriaMemorandos: boolean;
+  categoriaOficios: boolean;
+  categoriaActas: boolean;
+  categoriaHojasdeVida: boolean;
+  public doc: Doc={
+    id:0,
+    cond:''
+}
+
   //propio: boolean;
   constructor(public service: ServicioService,
-    public router: Router) {
+    public router: Router,public datepipe: DatePipe) {
 
   }
   ngOnInit() {
+    this.obtenerFecha();
+    //localStorage.setItem('Invitado', '');
+    this.filtroInvitado=false;
     //this.propio = false;
+    this.categoriaSolicitudes = true;
+    this.categoriaMemorandos = true;
+    this.categoriaOficios = true;
+    this.categoriaActas = true;
+    this.categoriaHojasdeVida = true;
     this.invitate_string = localStorage.getItem('Invitado');
     //this.invitate = JSON.parse(this.invitate_string);
     console.log('INVITATE_:', this.invitate_string);
-    this.llenarTarjetas();
     this.getUsuarios();
-    this.getLocalStorageData();
-    //this.getCurrentUser();
-
-    //this.usuario.id=0;
     var user_string = localStorage.getItem("currentUser");
     var usr = JSON.parse(user_string);
     this.usuario = usr;
-    console.log(this.usuario)
+    //console.log(this.usuario)
     var n: number = usr.id;
     //this.usuario.id = n;
     var x = usr.codigo_user;
     this.code = usr.codigo_user;
-    this.codigoUser = x;
+    this.codigoUser = this.usuario.codigoUser;
     let name = usr.name;
-    console.log('Name_: ', this.usuario.name);
-    if (this.code) {
-      localStorage.setItem('Invitado', 'no');
+    console.log('code_: ',this.code);
+    console.log('User_: ', this.usuario);
+    if (this.invitate_string.includes('no')) {
+      //localStorage.setItem('Invitado', 'no');
+      this.LlenarCards();
       //console.log(code);
       this.visible = true;
       Swal.fire({
@@ -84,8 +121,9 @@ export class VisualizadorComponent implements OnInit {
         icon: 'success'
       });
     }
-    if (!this.code) {
-      localStorage.setItem('Invitado', 'si');
+    if (this.invitate_string.includes('si')) {
+      //localStorage.setItem('Invitado', 'si');
+      this.LlenarCardsInvitado();
       this.visible = false;
       //console.log('Usuario sin código!!');
       Swal.fire({
@@ -102,23 +140,91 @@ export class VisualizadorComponent implements OnInit {
       });
 
     }
+    //this.llenarTarjetas();
 
   }
 
-  llenarTarjetas() {
+/*   llenarTarjetas() {
 
     console.log('LOCAL_STORAGE_:', this.invitate_string);
     if (this.invitate_string.includes('si')) {
       this.LlenarCardsInvitado();
       console.log('INVITATED');
+      this.filtroInvitado=true;
     }
     else if (this.invitate_string.includes('no')) {
       this.LlenarCards();
       console.log('NON-INVITATED');
     }
-  }
+  } */
 
   images = ['../../assets/descarga.jpg', '../../assets/logo-instituto-tecnologico-superior-gran-colombia.png', '../../assets/GIulRsPr_400x400.jpg'];
+  
+  obtenerFecha() {
+    this.date = new Date()
+    this.date = this.datepipe.transform(this.date, 'yyyy-MM-dd,HH:mm')
+    console.log('Fecha_Actual_: ',this.date)
+  }
+
+  select(e) {
+    console.log('Categoría Seleccionada_:', e);
+    if (e.includes('Solicitudes')) {
+      console.log('Categorizar por SOLICITUDES', this.categoriaSolicitudes);
+      this.categoriaSolicitudes = true;
+      this.categoriaMemorandos = false;
+      this.categoriaActas = false;
+      this.categoriaHojasdeVida = false;
+      this.categoriaOficios = false;
+    }
+    if (e.includes('Memorándums')) {
+      console.log('Categorizar por SOLICITUDES', this.categoriaSolicitudes);
+      this.categoriaSolicitudes = false;
+      this.categoriaMemorandos = true;
+      this.categoriaActas = false;
+      this.categoriaHojasdeVida = false;
+      this.categoriaOficios = false;
+    }
+    if (e.includes('Actas')) {
+      console.log('Categorizar por SOLICITUDES', this.categoriaSolicitudes);
+      this.categoriaSolicitudes = false;
+      this.categoriaMemorandos = false;
+      this.categoriaActas = true;
+      this.categoriaHojasdeVida = false;
+      this.categoriaOficios = false;
+    }
+    if (e.includes('Hojas de Vida')) {
+      console.log('Categorizar por SOLICITUDES', this.categoriaSolicitudes);
+      this.categoriaSolicitudes = false;
+      this.categoriaMemorandos = false;
+      this.categoriaActas = false;
+      this.categoriaHojasdeVida = true;
+      this.categoriaOficios = false;
+    }
+    if (e.includes('Oficios')) {
+      console.log('Categorizar por SOLICITUDES', this.categoriaSolicitudes);
+      this.categoriaSolicitudes = false;
+      this.categoriaMemorandos = false;
+      this.categoriaActas = false;
+      this.categoriaHojasdeVida = false;
+      this.categoriaOficios = true;
+    }
+    if (e.includes('Desactivar Filtro')) {
+      console.log('Categorizar por SOLICITUDES', this.categoriaSolicitudes);
+      this.categoriaSolicitudes = true;
+      this.categoriaMemorandos = true;
+      this.categoriaActas = true;
+      this.categoriaHojasdeVida = true;
+      this.categoriaOficios = true;
+      //panelOpenState-Viendo en este momento
+      this.panelOpenStateSPT = false;
+      this.panelOpenStateMEM = false;
+      this.panelOpenStateSOL = false;
+      this.panelOpenStateACT = false;
+      this.panelOpenStateHDV = false;
+      this.panelOpenStateINV = false;
+      this.panelOpenStateOFI = false;
+    }
+  }
 
   getUsuarios() {
     this.service.getUsers()
@@ -133,19 +239,11 @@ export class VisualizadorComponent implements OnInit {
         this.cargarDatos();
       });
   }
-  getLocalStorageData() {
-
-    var invitate_string = localStorage.getItem("Invitado");
-    /* var invitate = JSON.parse(invitate_string);
-     */
-    //console.log('LOCAL_STORAGE_:',invitate_string);
-
-  }
   LlenarCardsInvitado() {
     var codigoDoc;
     this.service.getDocumentos().subscribe(data => {
       codigoDoc = data;
-      //console.log('Nueva Consulta_:', codigoDoc)
+      console.log('Nueva Consulta_:', codigoDoc)
       var m;
       for (let i = 0; i < codigoDoc.length; i++) {
         var t = codigoDoc[i].codigo_documento;
@@ -180,12 +278,12 @@ export class VisualizadorComponent implements OnInit {
       var m;
       for (let i = 0; i < codigoDoc.length; i++) {
         var t = codigoDoc[i].codigo_documento;
-        var j = codigoDoc[i].idUsuario;
-        //console.log(j);
+        var j = codigoDoc[i];
+        console.log(j);
         var elemento = codigoDoc[i];
         var codigo = codigoDoc[i].codigo_user;
         var e = codigoDoc[i].idUsuario;
-        console.log('Codigo_documentos_:', e);
+        //console.log('Codigo_documentos_:', e);
         //console.log('LlenarCards()_:',this.codigoUser);
         //var coor = this.codigoUser.includes('COOR');
         if (this.usuario.id == j) {
@@ -424,6 +522,31 @@ export class VisualizadorComponent implements OnInit {
 
 
   }
+  applyFilter(filterValue: any) {
+    /*  const filterValue = (event.target as HTMLInputElement).value;
+     this.dataSource.filter = filterValue.trim().toLowerCase();
+    */
+    console.log('FILTER_VALUE_:', filterValue);
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.listaSPT.filter = filterValue;
+    console.log('FILTER_VALUE_2_:', filterValue);
+
+    for (let i = 0; i < this.listaSPT.length; i++) {
+      const element = this.listaSPT[i];
+      const name = this.listaSPT[i].name;
+      const res = name.toLowerCase().trim();
+
+
+      if (res.includes(filterValue)) {
+        this.listaSPT.push(element);
+        this.listaSPT = [];
+        console.log('resultado_: ', name);
+      }
+      console.log('Element_Name: ', res);
+    }
+
+  }
   cargarDatos() {
 
     //condiciones
@@ -448,20 +571,20 @@ export class VisualizadorComponent implements OnInit {
       //SPT
       for (const n in this.listaSPT) {
         const element = this.listaSPT[n];
-        var idUsuario = this.listaSPT[n].idUsuario;
+        var idUsuarioSPT = this.listaSPT[n].idUsuario;
         //console.log('Id_Usuario_: ',idUsuario)
-        if (idUsuario == this.id) {
+        if (idUsuarioSPT == this.id) {
           //console.log('Nombre_: ', this.name,'ID_: ',this.id);
-         
+
           this.listaSPT[n].name = this.name;
           //console.log('NOMBRESPTUSER_: ',this.listaSPT[n]);
         }
-        if (idUsuario==this.usuario.id) {
+        if (idUsuarioSPT == this.usuario.id) {
           //console.log('Mi_ID_:', this.usuario.id);
           this.listaSPT[n].propio = true;
           //this.propio=false;
         }
-       
+
       }
 
       //oficios
@@ -474,7 +597,7 @@ export class VisualizadorComponent implements OnInit {
           //console.log(this.name)
           this.listaOFI[a].name = this.name
         }
-        if (idUsuario==this.usuario.id) {
+        if (idUsuarioOfi == this.usuario.id) {
           //console.log('Mi_ID_:', this.usuario.id);
           this.listaOFI[a].propio = true;
           //this.propio=false;
@@ -491,7 +614,7 @@ export class VisualizadorComponent implements OnInit {
           //console.log(this.name)
           this.listaACT[b].name = this.name
         }
-        if (idUsuario==this.usuario.id) {
+        if (idUsuarioACT == this.usuario.id) {
           //console.log('Mi_ID_:', this.usuario.id);
           this.listaACT[b].propio = true;
           //this.propio=false;
@@ -502,17 +625,18 @@ export class VisualizadorComponent implements OnInit {
       for (const q in this.listaMEM) {
         const element = this.listaMEM[q];
         var idUsuarioMEM = this.listaMEM[q].idUsuario;
-        console.log('id Usuario', idUsuarioMEM)
+        //console.log('id Usuario', idUsuarioMEM)
         if (idUsuarioMEM == this.id) {
           //this.propio = true;
-          console.log(this.name)
+          //console.log('MI_NOMBRE_MEMOS_:', this.name)
           this.listaMEM[q].name = this.name
         }
-        if (idUsuario==this.usuario.id) {
-          //console.log('Mi_ID_:', this.usuario.id);
+        if (idUsuarioMEM == this.usuario.id) {
+          //console.log('Mi_ID_MEMOS_:', idUsuarioMEM, this.usuario.id);
           this.listaMEM[q].propio = true;
           //this.propio=false;
         }
+
       }
 
       //CONVO
@@ -525,7 +649,7 @@ export class VisualizadorComponent implements OnInit {
           //console.log(this.name)
           this.listaCON[w].name = this.name
         }
-        if (idUsuario==this.usuario.id) {
+        if (idUsuarioCON == this.usuario.id) {
           //console.log('Mi_ID_:', this.usuario.id);
           this.listaCON[w].propio = true;
           //this.propio=false;
@@ -537,12 +661,12 @@ export class VisualizadorComponent implements OnInit {
         const element = this.listaSOL[r];
         var idUsuarioSOL = this.listaSOL[r].idUsuario;
         //console.log('id Usuario',idUsuarioSOL)
-        if (idUsuarioCON == this.id) {
+        if (idUsuarioSOL == this.id) {
           //this.propio = true;
           //console.log(this.name)
           this.listaSOL[r].name = this.name
         }
-        if (idUsuario==this.usuario.id) {
+        if (idUsuarioSOL == this.usuario.id) {
           //console.log('Mi_ID_:', this.usuario.id);
           this.listaSOL[r].propio = true;
           //this.propio=false;
@@ -560,7 +684,7 @@ export class VisualizadorComponent implements OnInit {
           //console.log(this.name)
           this.listaHDV[t].name = this.name
         }
-        if (idUsuario==this.usuario.id) {
+        if (idUsuarioHDV == this.usuario.id) {
           //console.log('Mi_ID_:', this.usuario.id);
           this.listaHDV[t].propio = true;
           //this.propio=false;
@@ -568,30 +692,59 @@ export class VisualizadorComponent implements OnInit {
       }
     }
   }
-verPdf(o){
-  //alert('Ver PDF usuario: '+o.path+'-'+o.name);
-  //var documento = pdfMake.createPdf(o.path).open();
-  for (const key in o) {
-      const element = o[key];
-      console.log('Element_: ',o[key]);
+  verPdf(o) {
+    var path = o.path;
+    var pdf=this.service.api_GEDI_url+'/verpdf/'+path;
+    var w = window.open(pdf,'Documento-GEDI');
   }
-  //console.log('Objetos O_: '+o);
-    /*  generarPdf(accion = 'open') {
-     const defenicionSolicitud = this.getDefinicionSolicitud();
-     switch (accion) {
-       case 'open': pdfMake.createPdf(defenicionSolicitud).open(); break;
-       case 'print': pdfMake.createPdf(defenicionSolicitud).print(); break;
-       case 'download': pdfMake.createPdf(defenicionSolicitud).download(); break;
-       default: pdfMake.createPdf(defenicionSolicitud).open(); break
-     }
- 
-   } */
-}
-descargarPdf(o){
-  alert('Descargar PDF usuario: '+o.idUsuario+'-'+o.name);
-}
-editarPdf(o){
-  alert('Editar PDF usuario: '+o.idUsuario+'-'+o.name);
-}
+  descargarPdf(o) {
+    var path = o.path;
+    const pdfUrl=this.service.api_GEDI_url+'/verpdf/'+path;
+    const pdfName='GEDI-'+o.name+'-'+o.id;
+    FileSaver.saveAs(pdfUrl, pdfName);
+  }
+  editarPdf(o) {
+    this.doc.id=o.id;
+    this.doc.cond=o.codigo_documento+'%';
+    var tipo;
+    return this.service.getPdf(this.doc)
+    .subscribe(datos => {
+      for (const key in datos) {
+          const element = datos['datos'];
+          for (const k in element) {
+              const e = element[k];
+              tipo = e.codigo_documento;
+              this.service.setDoc(e);
+          }
+      }
+      //!!Modificar con nueva actulaización de un solo tipo de Solicitudes¡¡
+      if (tipo.includes('SPT'||'SOL')) {
+        alertify.notify('Editando documento '+tipo,'success',10);
+        this.router.navigate(["/solicitudes-titulacion"]);
+      }
+      if (tipo.includes('MEM')) {
+        alertify.notify('Editando documento '+tipo,'success',10);
+        this.router.navigate(["/memorandums"]);
+      }
+      if (tipo.includes('OFI')) {
+        alertify.notify('Editando documento '+tipo,'success',10);
+        this.router.navigate(["/oficios"]);
+      }
+      if (tipo.includes('ACT')) {
+        alertify.notify('Editando documento '+tipo,'success',10);
+        this.router.navigate(["/actas"]);
+      }
+      if (tipo.includes('HDV')) {
+        alertify.notify('Editando documento '+tipo,'success',10);
+        this.router.navigate(["/hojasDeVida"]);
+      }
+    },
+    error => {
+      console.log('error_editarPdf_:', error)
+    }
+  )
+
+  }
+  
 
 }
