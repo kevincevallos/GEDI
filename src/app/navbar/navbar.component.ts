@@ -9,43 +9,60 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  loading:boolean;
-  admin:boolean;
-  date:any;
+  loading: boolean;
+  admin: boolean;
+  date: any;
   constructor(private router: Router,
-    public service: ServicioService, public datepipe:DatePipe) {
-      //this.ngOnInit();      
+    public service: ServicioService, public datepipe: DatePipe) {
+    //this.ngOnInit();      
 
-     }
-    user: any;
-    
-    ngOnInit(){
-       //1000ms=1second
-  setTimeout(() => {
-    this.obtenerFecha();
-    //window.location.reload();
-    //console.log('Page reload!!');
-  }, 1000);//reloading every 10 minutes
-      this.admin=false;
-      this.user = this.service.getCurrentUser();
-      if (this.user.role_id==5||this.user.role_id==6){
-        this.admin=true;
-      }
-      //console.log('userNavBar',this.user.role_id)
-    }
+  }
+  user: any;
 
-    logout(): void{
-      this.service.logoutUser();
-      localStorage.removeItem('Invitado');
-      this.router.navigate(["/login"]);
+  ngOnInit() {
+    //1000ms=1second
+    setTimeout(() => {
+      this.obtenerFecha();
+      //window.location.reload();
+      //console.log('Page reload!!');
+    }, 1000);//reloading every 10 minutes
+    this.admin = false;
+    this.user = this.service.getCurrentUser();
+    let name = this.user.name.toLowerCase();
+    var separador = " ";    
+    var arrayNombre = name.split(separador);
+    var nombre = arrayNombre[1];
+    var apellido = arrayNombre[0];
+    if (nombre&&apellido) {
+    nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+    apellido = apellido.charAt(0).toUpperCase() + apellido.slice(1);
+    this.user.name = nombre +' '+ apellido;
     }
-    
-    obtenerFecha() {
-      this.date = new Date()
-      this.date = this.datepipe.transform(this.date, 'HH:mm:ss')
-      this.ngOnInit();
-      //console.log('Fecha_Actual_: ',this.date)
+    if (!nombre&&apellido) {
+      apellido='';
+      nombre=arrayNombre[0];
+      nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+      this.user.name = nombre;
     }
+    /* if (this.user.role_id == 5 || this.user.role_id == 6) {
+      this.admin = true;
+    } */
+    //console.log('userNavBar',this.user.role_id)
+  }
+
+  logout(): void {
+    this.service.logoutUser();
+    localStorage.removeItem('Invitado');
+    localStorage.removeItem('currentDoc');
+    this.router.navigate(["/login"]);
+  }
+
+  obtenerFecha() {
+    this.date = new Date()
+    this.date = this.datepipe.transform(this.date, 'HH:mm:ss')
+    this.ngOnInit();
+    //console.log('Fecha_Actual_: ',this.date)
+  }
   isRegistrationView() {
     // return true if the current page is registration
     return this.router.url.match('/registration');
@@ -72,13 +89,13 @@ export class NavbarComponent implements OnInit {
     return this.router.url.match('/visualizador|/elaborador|/gestion-usuarios');
 
   }
-  isGestionUsuariosView(){
+  isGestionUsuariosView() {
     return this.router.url.match('/gestion-usuarios');
-    
+
   }
 
-  loader(){
-    this.loading=true
+  loader() {
+    this.loading = true
   }
 
   isActasView() {

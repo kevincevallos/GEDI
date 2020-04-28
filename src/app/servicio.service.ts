@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Usuarios } from './models/usuarios';
 import { map } from "rxjs/operators";
 import { Observable } from 'rxjs/internal/Observable';
@@ -16,7 +16,19 @@ export class ServicioService {
   //Conexión a API-HUBRE de ejemplo en heroku//
   api_GEDI_url = 'http://localhost:3000/server';
   //api_GEDI_url = 'https://api-gedi.herokuapp.com/server';
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'multipart/form-data',
+      'Authorization': 'jwt-token'
+    })
+  };
+  httpFiles = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/x-www-form-urlencoded'
+    })
+  };
   constructor(private http: HttpClient) { }
+  /** In Angular 5, including the header Content-Type can invalidate your request */
 
   getInstitutos() {
     return this.http.get(this.api_GEDI_url + '/leerInstitutos');
@@ -53,8 +65,11 @@ export class ServicioService {
   getDocumentos(){
     return this.http.get(this.api_GEDI_url + '/getDocumentos');
   }
+  getDataDocs(){
+    return this.http.get(this.api_GEDI_url + '/getPdf');
+  }
   //set documento subir-pdf
-  setDocumento(documento:FormData){
+  setDocumento(documento:any){
     this.http.post(this.api_GEDI_url + '/subir-pdf', documento).subscribe((val) => {
 
       console.log('THE_VAL_:',val);
@@ -62,10 +77,15 @@ export class ServicioService {
       return false; 
   }  
   getPdf(doc:Doc){
-    return this.http.post(this.api_GEDI_url + '/getPdf/',doc);
+    return this.http.post(this.api_GEDI_url + '/traerPdf/',doc);
+  }
+  updatePdf(documento:any){
+    return this.http.put(this.api_GEDI_url + '/putPdf/',documento).subscribe((x) => {
+      console.log('updatePdf_: ',x);
+    });
   }
   setDocumentoInvitado(documento: SolicitudesTitulacion){
-    console.log('setDocumentoINVITADO!!');
+    //console.log('setDocumentoINVITADO!!');
     return this.http.post(this.api_GEDI_url + '/setDocumentoNonCode', documento);
   }
   //For Logged auth user

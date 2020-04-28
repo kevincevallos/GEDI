@@ -33,21 +33,28 @@
   
     </div>
 <div class="loginForm">
-    <form [formGroup]="formLogin" (ngSubmit)="login()">
+    <form #loginForm="ngForm" [formGroup]="formLogin" (ngSubmit)="login()">
+      <mat-card class="loginCard">
+        <mat-card-header>
+          <h3>INICIAR SESIÓN EN GEDI</h3>
+        </mat-card-header>
+        <mat-card-content>
         <div class="form-group">
             <mat-form-field>
                 <input id="correo" placeholder="Correo Institucional" matInput type="text" [(ngModel)]="user.correo" formControlName="correo"
-                    class="form-control" />
+                    class="form-control" required/>
             </mat-form-field>
 
         </div>
         <div class="form-group">
             <mat-form-field>
                 <input id="clave" placeholder="Contraseña" matInput type="password" [(ngModel)]="user.clave" formControlName="clave"
-                    class="form-control" />
+                    class="form-control" required/>
             </mat-form-field>
 
         </div>
+      </mat-card-content>
+      
         <div class="form-group">
             <button mat-raised-button *ngIf="!loading" class="btn btn-primary">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -61,6 +68,7 @@
         mode="indeterminate">
     </mat-progress-spinner>
         </div>
+      </mat-card>
     </form>
 </div>
 </div>

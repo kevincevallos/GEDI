@@ -9,7 +9,7 @@ export class Actas {
     codigoDocumento:string;
     fechaCodigo:string;
     InstitutoPertenciciente:string;
-    logoPic:string;
+    logoPic:string|ArrayBuffer;
     constructor(){
         this.ordenDelDia.push(new Orden())
     }

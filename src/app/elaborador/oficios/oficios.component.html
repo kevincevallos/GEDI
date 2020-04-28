@@ -1,14 +1,20 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
-    <div class="navbar-brand mb-0 h1 text-white">OFICIO - YAVIRAC</div>
-    <button mat-button mat-raised-button routerLink="/elaborador">REGRESAR</button>
+    <div class="navbar-brand mb-0 h1 text-white">Elaborando Documento Institucional <u>Oficio</u> en GEDI - YAVIRAC</div>
   </nav>
+  <div class="progress-loader" [hidden]="!loading">
+ 
+    <mat-progress-bar [mode]="'indeterminate'">
+    </mat-progress-bar>
+ 
+</div>
   <form #oficiosForm="ngForm">
     <div class="row">
      <div class="col-md-8">
        <div class="shadow-sm card">
-        <p>Codigo Documento: {{oficiosCodigoUsuario}}</p>   
-         <div class="card-body">
+        <p *ngIf="!editable">Nuevo Documento: {{oficiosCodigoUsuario}}</p>
+        <p *ngIf="editable">Editando Documento: {{oficiosCodigoUsuario}}</p>
+     <div class="card-body">
            <h4 class="card-title d-flex align-items-center">
              <i class="material-icons">
                today
@@ -81,7 +87,6 @@
             </i>
             Destinatario:
           </h4>
-        <button class="btn btn-primary" (click)="agregarCatalogo()">+</button>
       </div>
       <ng-autocomplete 
       [data]="listaProf"
@@ -137,7 +142,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label id="hola">Por medio de este oficio</label><textarea class="form-control"[(ngModel)]='oficios.cuerpo' name="oficios" rows="4"
+                <label id="hola">Por medio de un oficio hago saber</label><textarea class="form-control"[(ngModel)]='oficios.cuerpo' name="oficios" rows="4"
                   placeholder="Cuerpo" #cuerpo="ngModel" required
                   [ngClass]="{'is-invalid':cuerpo.invalid && (cuerpo.touched|| oficiosForm.submitted)}"></textarea>
               </div>
@@ -153,9 +158,9 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-             <textarea class="form-control"[(ngModel)]='oficios.despedida' name="oficios" rows="3"
+             <!-- <textarea class="form-control"[(ngModel)]='oficios.despedida' name="oficios" rows="3"
             placeholder="Despedida" #despedida="ngModel" required
-            [ngClass]="{'is-invalid':despedida.invalid && (despedida.touched|| oficiosForm.submitted)}"></textarea>
+            [ngClass]="{'is-invalid':despedida.invalid && (despedida.touched|| oficiosForm.submitted)}"></textarea> -->
             <label>Reciba un cordial saludo, atentamente</label>    
           </div>
             </div>
@@ -166,24 +171,33 @@
     </div>
     <div class="col-md-4">
       <div class="shadow-sm card action-buttons">
-        <button (click)="oficiosForm.valid ? publicarEnGedi() : ''"
-            class="btn btn-primary d-flex align-items-center justify-content-center">
-            <i class="material-icons">
-              cloud_download
-            </i><span>PUBLICAR EN GEDI</span></button>
-            <button (click)="oficiosForm.valid ? visualizarPdf() : ''"
-            class="btn btn-primary d-flex align-items-center justify-content-center">
-            <i class="material-icons">
-              picture_as_pdf
-            </i><span>VER ANTES DE PUBLICAR</span></button>
+          <button *ngIf="!editable" (click)="oficiosForm.valid ? publicarEnGedi() : ''"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            publish
+          </i><span>Publicar en GEDI</span></button>
+          <button *ngIf="editable" (click)="oficiosForm.valid ? publicarEditado() : ''"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            create
+          </i><span>Terminar edición</span></button>
+          <button *ngIf="editable" type='reset' (click)="cancelarEdicion()"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            cancel
+          </i><span>Cancelar edición</span></button>
         <button type='reset' (click)="resetearForm()"
           class="btn btn-primary d-flex align-items-center justify-content-center">
           <i class="material-icons">
-            clear
-          </i><span>Limpiar</span></button>
-          </div>
-  
+            cancel
+          </i><span>Limpiar borrador</span></button>
+          <button type='reset' (click)="backToHome()"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            meeting_room
+          </i><span>Regresar a GEDI</span></button>
       </div>
+    </div>
     </div>
   </form>
 </div>

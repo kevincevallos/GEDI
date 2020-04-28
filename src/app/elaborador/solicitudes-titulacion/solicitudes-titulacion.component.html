@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
-    <div class="navbar-brand mb-0 h1 text-white">SOLICITUD PROYECTO DE TITULACIÓN - YAVIRAC</div>
+    <div class="navbar-brand mb-0 h1 text-white">Elaborando Documento Institucional <u>Solicitud</u> en GEDI - YAVIRAC</div>
   </nav>
 <div class="progress-loader" [hidden]="!loading">
  
@@ -56,9 +56,19 @@
                 </i>
                 Destinatario:
               </h4>
-              <button class="btn btn-primary" (click)="agregarCatalogo()">+</button>
             </div>
-            <div class="row" *ngFor="let ed of solicitud.listaIng; let i=index">
+            <ng-autocomplete
+            [data]="listaProf"
+            [searchKeyword]="keyword"
+            (selected)='selectDestinatario($event)'
+            
+            [itemTemplate]="itemTemplate"                                 
+                      ></ng-autocomplete>
+           
+          <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+          </ng-template>
+           <!--  <div class="row" *ngFor="let ed of solicitud.listaIng; let i=index">
               <div class="col-md-6">
                 <div class="form-group">
                   <select class="form-control" (change)="evento($event)" placeholder="Destinatario" name="catalogo{{i}}"
@@ -68,7 +78,7 @@
                   </select>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -82,15 +92,16 @@
                     person
                   </i>
                   Solicitante :</h4>
-
+                
                 <div class="col-md-6">
                   <div class="row">
                     <div class="form-group">
-                      <input type="text" class="form-control" [(ngModel)]="solicitud.presentacionSolicitante"
-                        name="presentacionSolicitante" placeholder="solicitante:" #presentacionSolicitante="ngModel"
+                      <p>{{this.usuario.name}}</p>
+                      <!-- <input type="text" placeholder="{{this.usuario.name}}" class="form-control" [(ngModel)]="solicitud.presentacionSolicitante"
+                        name="presentacionSolicitante"  #presentacionSolicitante="ngModel"
                         required
                         [ngClass]="{'is-invalid': presentacionSolicitante.invalid && (presentacionSolicitante.touched || solicitudForm.submitted) }">
-                    </div>
+                     --></div>
                   </div>
                 </div>
               </div>
@@ -111,10 +122,11 @@
                 <div class="col-md-6">
                   <div class="row">
                     <div class="form-group">
-                      <input type="text" class="form-control" [(ngModel)]="solicitud.cedula" name="cedula"
+                           <p>{{this.usuario.user_name}}</p>                   
+                      <!--    <input type="text" class="form-control" [(ngModel)]="solicitud.cedula" name="cedula"
                         placeholder="Cedula:" #cedula="ngModel" required
                         [ngClass]="{'is-invalid': cedula.invalid && (cedula.touched || solicitudForm.submitted) }">
-                    </div>
+                    --> </div>
                   </div>
                 </div>
               </div>
@@ -177,36 +189,36 @@
         </div>
 
       </div>
-
       <div class="col-md-4">
         <div class="shadow-sm card action-buttons">
             <button *ngIf="!editable" (click)="solicitudForm.valid ? publicarEnGedi() : ''"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               publish
-            </i><span>PUBLICAR EN GEDI</span></button>
+            </i><span>Publicar en GEDI</span></button>
             <button *ngIf="editable" (click)="solicitudForm.valid ? publicarEditado() : ''"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               create
-            </i><span>TERMINAR EDICIÓN Y PUBLICAR</span></button>
+            </i><span>Terminar edición</span></button>
             <button *ngIf="editable" type='reset' (click)="cancelarEdicion()"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               cancel
-            </i><span>CANCELAR EDICIÓN</span></button>
+            </i><span>Cancelar edición</span></button>
           <button type='reset' (click)="resetearForm()"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               cancel
-            </i><span>LIMPIAR BORRADOR</span></button>
+            </i><span>Limpiar borrador</span></button>
             <button type='reset' (click)="backToHome()"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
               meeting_room
-            </i><span>REGRESAR A GEDI</span></button>
+            </i><span>Regresar a GEDI</span></button>
         </div>
       </div>
+   
     </div>
   </form>
 </div>

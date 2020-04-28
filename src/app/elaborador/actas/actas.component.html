@@ -1,14 +1,20 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
-    <div class="navbar-brand mb-0 h1 text-white">ACTA - YAVIRAC</div>
-    <button mat-button mat-raised-button routerLink="/elaborador">REGRESAR</button>
+    <div class="navbar-brand mb-0 h1 text-white">Elaborando Documento Institucional <u>Acta</u> en GEDI - YAVIRAC</div>
   </nav>
+  <div class="progress-loader" [hidden]="!loading">
+ 
+    <mat-progress-bar [mode]="'indeterminate'">
+    </mat-progress-bar>
+ 
+</div>
   <form #actaForm="ngForm">
     <div class="row">
       <div class="col-md-8">
         <div class="shadow-sm card">
-          <p>Codigo Documento : {{actaCodigoUsuario}}</p>
-          <div class="card-body">   
+          <p *ngIf="!editable">Nuevo Documento: {{actaCodigoUsuario}}</p>
+          <p *ngIf="editable">Editando Documento: {{actaCodigoUsuario}}</p>
+        <div class="card-body">   
             <h4 class="card-title d-flex">
               Título
             </h4>
@@ -103,24 +109,33 @@
         </div>
       </div>
     </div>
-      
     <div class="col-md-4">
       <div class="shadow-sm card action-buttons">
-        <button (click)="actaForm.valid ? publicarEnGedi() : ''"
-            class="btn btn-primary d-flex align-items-center justify-content-center">
-            <i class="material-icons">
-              cloud_download
-            </i><span>PUBLICAR EN GEDI</span></button>
-            <button (click)="actaForm.valid ? visualizarPdf() : ''"
-            class="btn btn-primary d-flex align-items-center justify-content-center">
-            <i class="material-icons">
-              picture_as_pdf
-            </i><span>VER ANTES DE PUBLICAR</span></button>
+          <button *ngIf="!editable" (click)="actaForm.valid ? publicarEnGedi() : ''"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            publish
+          </i><span>Publicar en GEDI</span></button>
+          <button *ngIf="editable" (click)="actaForm.valid ? publicarEditado() : ''"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            create
+          </i><span>Terminar edición</span></button>
+          <button *ngIf="editable" type='reset' (click)="cancelarEdicion()"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            cancel
+          </i><span>Cancelar edición</span></button>
         <button type='reset' (click)="resetForm()"
           class="btn btn-primary d-flex align-items-center justify-content-center">
           <i class="material-icons">
-            clear
-          </i><span>Limpiar</span></button>
+            cancel
+          </i><span>Limpiar borrador</span></button>
+          <button type='reset' (click)="backToHome()"
+          class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            meeting_room
+          </i><span>Regresar a GEDI</span></button>
       </div>
     </div>
     </div>

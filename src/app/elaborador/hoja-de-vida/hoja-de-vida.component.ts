@@ -38,6 +38,9 @@ export class HojaDeVidaComponent implements OnInit {
   m;
   invitado;
   loading: boolean;
+  documento: any;
+  editable: boolean;
+  blobPdf: Blob;
   constructor(private formBuilder: FormBuilder,
     public datepipe: DatePipe,
     public service: ServicioService,
@@ -76,8 +79,16 @@ export class HojaDeVidaComponent implements OnInit {
     this.resume.codigoDocumento = 'HDV-'
     this.hdvCodigoUsuario = 'HDV-'
     this.getLocalStorageData();
-    this.constaEnCarrera();
-  }
+    if (this.documento) {
+      this.hdvCodigoUsuario = this.documento.codigo_documento;
+      this.loading = false;
+      this.editable = true;
+    }
+    else {
+      this.loading = true;
+      this.editable = false;
+      this.constaEnCarrera();
+    }  }
 
   getLocalStorageData() {
     /*localStorage*/
@@ -86,12 +97,31 @@ export class HojaDeVidaComponent implements OnInit {
     var x = user;
     //var id_usuario:number = x.id;
     this.usuario = user;
-    this.usuario.codigoUser = x.codigo_user;
+
+    let name = this.usuario.name.toLowerCase();
+    var separador = " ";    
+    var arrayNombre = name.split(separador);
+    var nombre = arrayNombre[1];
+    var apellido = arrayNombre[0];
+    if (nombre&&apellido) {
+    nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+    apellido = apellido.charAt(0).toUpperCase() + apellido.slice(1);
+    this.usuario.name = nombre +' '+ apellido;
+    }
+    if (!nombre&&apellido) {
+      apellido='';
+      nombre=arrayNombre[0];
+      nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+      this.usuario.name = nombre;
+    }
+
+    this.usuario.codigoUser = x.codigoUser;
+    //console.log(this.usuario.codigoUser);
     this.resume.idUsuario = this.usuario.id;
     this.resume.codigoUsuario = this.usuario.codigoUser;
-    //console.log(this.usuario.id, this.usuario.codigoUser);
-    //console.log('user_string_:', user_string);
-    console.log('usuario.id_:', this.usuario);
+    let doc_string = localStorage.getItem("currentDoc");
+    let doc = JSON.parse(doc_string);
+    this.documento = doc;
 
   }
   obtenerFecha() {
@@ -110,13 +140,13 @@ export class HojaDeVidaComponent implements OnInit {
           this.n++
       }
       //console.log('variable n1_:', this.n);
-      console.log('El usuario consta en la tabla CarrerasxUser!!');
+      //console.log('El usuario consta en la tabla CarrerasxUser!!');
       this.invitado = 'no';
       this.generarCodigo();
     },
       error => {
         //console.log('variable n2_:', this.n);
-        console.log('El usuario NO consta en la tabla CarrerasxUser!!')
+        //console.log('El usuario NO consta en la tabla CarrerasxUser!!')
         this.invitado = 'si';
         this.generarCodigoInvitado();
       }
@@ -125,57 +155,57 @@ export class HojaDeVidaComponent implements OnInit {
   generarCodigo() {
     var carrera_id = this.carreraxUser;
     if (this.n > 1) {
-      console.log('generarCodigo()_:', this.hdvCodigoUsuario, this.resume.codigoDocumento)
-      this.hdvCodigoUsuario = this.resume.codigoDocumento + 'I.T.S.YAV-' + this.dateS + '-';
+      //console.log('generarCodigo()_:', this.hdvCodigoUsuario, this.resume.codigoDocumento)
+      this.hdvCodigoUsuario = this.resume.codigoDocumento + 'ITSYAV-' + this.dateS + '-';
       //console.log('ifMayor1_:', this.solicitudCodigoDocumento);
     } else
       if (this.n == 1) {
         if (carrera_id == 1) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.B.J.M-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSBJM-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 2) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.24.M.K-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITS24M-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 3) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.G.C.M-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSGC-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 4) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.YAV.AC.V-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 5) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.YAV.GT.M-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 6) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.YAV.MK-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 7) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.YAV.ELT.N-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 8) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.YAV.ELT.V-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSYAVELT-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 9) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.B.J.V-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSBJ-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 10) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.YAV.AC.M-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 11) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.YAV.GT.V-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
         if (carrera_id == 12) {
-          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'I.T.S.G.C.DM.V-' + this.dateS + '-';
+          this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'ITSGC-' + this.dateS + '-';
           //console.log('Carrera_:', this.solicitudCodigoDocumento)
         }
       }
@@ -184,7 +214,7 @@ export class HojaDeVidaComponent implements OnInit {
   generarCodigoInvitado() {
     this.hdvCodigoUsuario = 'GEDI-';
     this.resume.codigoDocumento = 'GEDI-'
-    console.log(this.resume.codigoDocumento);
+    //console.log(this.resume.codigoDocumento);
     this.hdvCodigoUsuario = this.hdvCodigoUsuario + 'INVITADO-' + this.dateS + '-';
     //this.resume.logoPic=this.logoYav;
     this.comprobarDocumentosExistentes();
@@ -205,14 +235,14 @@ export class HojaDeVidaComponent implements OnInit {
         }
       }
       if (Array.isArray(array) && array.length) {
-        console.log('Hay Documentos existentes!!', data);
+        //console.log('Hay Documentos existentes!!', data);
         if (this.invitado.includes('no')) {
-          console.log('No es invitado');
+          //console.log('No es invitado');
           this.generarNumeracionDocumento();
           this.loading = false;
         }
         if (this.invitado.includes('si')) {
-          console.log('Si es invitado');
+          //console.log('Si es invitado');
           this.generarNumeracionDocumentoInvitado();
           this.loading = false;
         }
@@ -220,11 +250,11 @@ export class HojaDeVidaComponent implements OnInit {
         //console.log('NO Existen Documentos!!');
         this.hdvCodigoUsuario = this.hdvCodigoUsuario + 1;
         this.resume.codigoDocumento = this.hdvCodigoUsuario;
-
+        this.loading = false;
       }
     },
       error => {
-        console.log('error_comprobarDocumentosExistentes()_:')
+        //console.log('error_comprobarDocumentosExistentes()_:')
       }
     )
   }
@@ -239,7 +269,7 @@ export class HojaDeVidaComponent implements OnInit {
       n = t.includes('HDV');
       //console.log(n);
       if (n) {
-        console.log('Variable_t_:', t)
+        //console.log('Variable_t_:', t)
 
         this.listaDocumentos.push(elemento);
         existe = true
@@ -247,7 +277,7 @@ export class HojaDeVidaComponent implements OnInit {
       }
     }
     if (!existe) {
-      console.log('No hay Documentos SPTs');
+      //console.log('No hay Documentos SPTs');
       this.hdvCodigoUsuario = this.hdvCodigoUsuario + 1;
     } else {
       for (let m = 0; m < this.listaDocumentos.length; m++) {
@@ -301,7 +331,7 @@ export class HojaDeVidaComponent implements OnInit {
       //
 
     }
-    console.log('codigo_documento_generado:', this.hdvCodigoUsuario, this.resume.codigoDocumento)
+    //console.log('codigo_documento_generado:', this.hdvCodigoUsuario, this.resume.codigoDocumento)
   }
   generarNumeracionDocumentoInvitado() {
     //console.log('this.codigoDoc_:', this.codigoDoc);
@@ -375,7 +405,7 @@ export class HojaDeVidaComponent implements OnInit {
       //
 
     }
-    console.log('codigo_documento_generado:', this.hdvCodigoUsuario, this.resume.codigoDocumento)
+    //console.log('codigo_documento_generado:', this.hdvCodigoUsuario, this.resume.codigoDocumento)
   }
 
   ///////////////////////Fin de métodos escenciales////////////////////////
@@ -384,6 +414,11 @@ export class HojaDeVidaComponent implements OnInit {
     sessionStorage.setItem('solicitud-titulacion', JSON.stringify(this.resume));
   }
   publicarEnGedi() {
+    const defenicionSolicitud = this. getDocumentDefinition();
+    const pdf = pdfMake.createPdf(defenicionSolicitud);
+    pdf.getBlob(async (blob) => {
+      this.blobPdf = blob;
+      await this.blobPdf;})
     /////PUBLICAR COMO INVITADO/////
     if (this.invitado.includes('si')) {
       Swal.fire({
@@ -439,42 +474,6 @@ export class HojaDeVidaComponent implements OnInit {
       })
     }
   }
-  visualizarPdf(){
-    const defenicionSolicitud = this.getDocumentDefinition();
-    const pdf:Object = pdfMake.createPdf(defenicionSolicitud).open();
-    console.log('visualizarPdf()_: ',pdf);
-  }
-    /*  generarPdf(accion = 'open') {
-     const defenicionSolicitud = this.getDefinicionSolicitud();
-     switch (accion) {
-       case 'open': pdfMake.createPdf(defenicionSolicitud).open(); break;
-       case 'print': pdfMake.createPdf(defenicionSolicitud).print(); break;
-       case 'download': pdfMake.createPdf(defenicionSolicitud).download(); break;
-       default: pdfMake.createPdf(defenicionSolicitud).open(); break
-     }
- 
-   } */
-   publicar() {
-    const formData = new FormData();
-    const defenicionSolicitud = this.getDocumentDefinition();
-    const pdf = pdfMake.createPdf(defenicionSolicitud);
-    const blob = new Blob([pdf], { type: 'application/octet-stream' });
-    //console.log('metodo_obtenerPdf()_:', blob);
-    formData.append("upload", blob);
-    formData.append("codDoc", this.hdvCodigoUsuario);
-    formData.append("codUser", this.usuario.codigoUser);
-    formData.append("idUser", this.usuario.id.toString());
-
-    this.service.setDocumento(formData);
-    console.log('ANTES_DE_:', this.hdvCodigoUsuario)
-    this.hdvCodigoUsuario = '';
-    console.log('ANTES_DE_:', this.resume.codigoDocumento)
-    this.resume.codigoDocumento = '';
-    setTimeout(() => {
-      this.ngOnInit();
-      //console.log('Page reload!!');
-    }, 3000);//1000ms=1Sec
-  }
   //Métodos a usar
   addExperience() {
     this.resume.experiences.push(new Experience());
@@ -482,15 +481,90 @@ export class HojaDeVidaComponent implements OnInit {
   addEducation() {
     this.resume.educations.push(new Education());
   }
-  /*   generatePdf(action = 'open') {
-      const documentDefinition = this.getDocumentDefinition();
-      switch (action) {
-        case 'open': pdfMake.createPdf(documentDefinition).open(); break;
-        case 'print': pdfMake.createPdf(documentDefinition).print(); break;
-        case 'download': pdfMake.createPdf(documentDefinition).download(); break;
-        default: pdfMake.createPdf(documentDefinition).open(); break;
-      }
-    } */
+  publicar() {
+    const formData = new FormData();
+    const file = new File([this.blobPdf], 'doc.pdf', { type: 'application/pdf' });
+    //console.log('Antes_del_Append_file_: ',file,'document.pdf');
+
+    formData.append("upload", file);
+    formData.append("codDoc", this.hdvCodigoUsuario);
+    formData.append("codUser", this.usuario.codigoUser);
+    formData.append("idUser", this.usuario.id.toString());
+
+    this.service.setDocumento(formData);
+    //console.log('ANTES_DE_:', this.solicitudCodigoDocumento)
+    this.hdvCodigoUsuario = '';
+    //console.log('ANTES_DE_:', this.solicitud.codigoDocumento)
+    this.resume.codigoDocumento = '';
+    setTimeout(() => {
+      this.ngOnInit();
+      //console.log('Page reload!!');
+    }, 5000);//1000ms=1Sec
+  }
+  publicarEditado() {
+    const defenicionSolicitud = this.getDocumentDefinition();
+    const pdf = pdfMake.createPdf(defenicionSolicitud);
+    pdf.getBlob(async (blob) => {
+      this.blobPdf = blob;
+      await this.blobPdf;
+    })
+    //console.log('publicarEditado_: ', this.blobPdf);
+    /////PUBLICAR COMO USUARIO GEDI/////
+      Swal.fire({
+        title: this.usuario.name + ' vas a editar un documento en GEDI',
+        html: "Si publicas tu documento estará disponible para ti y otros usuarios en la pestaña <b>Visualizador</b>",
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Publicar!',
+        cancelButtonText: 'Cancelar!',
+        timer: 5000,
+        timerProgressBar: true,
+      }).then((result) => {
+        if (result.value) {
+          this.publicarEdit();
+          Swal.fire(
+            'EXCELENTE!',
+            this.usuario.name + ' Tu documento ha sido publicado en GEDI.',
+            'success'
+          )
+          alertify.notify('Publicado con éxito!', 'success', 2);
+        } else {
+          alertify.notify('Cancelado!', 'error', 2);
+        }
+      })
+  }
+  publicarEdit(){
+    //console.log('publicarEdit_::', this.blobPdf);
+    const formData = new FormData();
+    const file = new File([this.blobPdf], 'docEdit.pdf', { type: 'application/pdf' });
+    //console.log(file);    
+    formData.append("cod", this.hdvCodigoUsuario);
+    formData.append("upload", file);
+    this.service.updatePdf(formData);
+    //console.log('ANTES_DE_:', this.solicitudCodigoDocumento)
+    this.hdvCodigoUsuario = '';
+    //console.log('ANTES_DE_:', this.solicitud.codigoDocumento)
+    this.resume.codigoDocumento = '';
+    setTimeout(() => {
+      this.loading = false;
+      localStorage.removeItem('currentDoc');
+      this.ngOnInit();
+      //console.log('Page reload!!');
+    }, 4000);//1000ms=1Sec
+  }
+  cancelarEdicion() {
+    localStorage.removeItem('currentDoc');
+    this.ngOnInit();    
+    alertify.notify('Edición Cancelada!','error',10);
+  }
+  backToHome() {
+    localStorage.removeItem('currentDoc');
+    this.router.navigate(["/visualizador"]);    
+    alertify.notify('De vuelta en el Visualizador!','success',10);
+  }
+  //Fin de Metodos Nuevos y actualizaciones!!
   resetForm() {
     this.resume = new Resume();
     sessionStorage.removeItem('hoja-de-vida');
@@ -517,14 +591,14 @@ export class HojaDeVidaComponent implements OnInit {
         {
           columns: [
             [{
-              text: this.resume.name,
+              text: this.usuario.name,
               style: 'name'
             },
             {
               text: this.resume.address
             },
             {
-              text: 'Email : ' + this.resume.email,
+              text: 'Email : ' + this.usuario.email,
             },
             {
               text: 'Teléfono : ' + this.resume.contactNo,
@@ -586,19 +660,19 @@ export class HojaDeVidaComponent implements OnInit {
         },
         {
           columns: [
-            { qr: this.resume.name + ', Teléfono de contacto : ' + this.resume.contactNo, fit: 100 },
+            { qr: this.usuario.name + ', Teléfono de contacto : ' + this.resume.contactNo, fit: 100 },
             {
-              text: `(${this.resume.name})`,
+              text: `${this.usuario.name}`,
               alignment: 'right',
             }
           ]
         }
       ],
       info: {
-        title: this.resume.name + '_HOJA DE VIDA',
-        author: this.resume.name,
-        subject: 'RESUME',
-        keywords: 'RESUME, ONLINE RESUME',
+        title: this.usuario.name + '_Hoja De Vida',
+        author: this.usuario.name,
+        subject: 'HDV',
+        keywords: 'HDV, ONLINE HDV',
       },
       styles: {
         header: {
@@ -627,7 +701,6 @@ export class HojaDeVidaComponent implements OnInit {
       }
     };
   }
-
   getExperienceObject(experiences: Experience[]) {
     const exs = [];
     experiences.forEach(experience => {
@@ -700,7 +773,6 @@ export class HojaDeVidaComponent implements OnInit {
     }
     return null;
   }
-
   fileChanged(e) {
     const file = e.target.files[0];
     this.getBase64(file);
@@ -709,11 +781,11 @@ export class HojaDeVidaComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      console.log(reader.result);
+      //console.log(reader.result);
       this.resume.profilePic = reader.result as string;
     };
     reader.onerror = (error) => {
-      console.log('Error: ', error);
+      //console.log('Error: ', error);
     };
   }
   addSkill() {

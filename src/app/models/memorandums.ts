@@ -10,5 +10,5 @@ export class Memorandums {
     codigoDocumento:string;
     fechaCodigo:string
     InstitutoPertenciciente:string
-    logoPic:string
+    logoPic:string|ArrayBuffer
 }

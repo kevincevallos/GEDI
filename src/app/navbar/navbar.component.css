@@ -29,9 +29,14 @@
     text-align: center;
     word-wrap: break-word;
     margin-left: 90%;
-    font-size: large;
-    background-color: transparent;
-    color: white;
+    margin-top: 10px;
+    font-size: medium;    
+background-color: whitesmoke;
+opacity: 80%;
+color: black;
+text-align: center;
+border-radius: 2px !important;
+border: 1px solid whitesmoke;
   }
 
   #center {

@@ -13,7 +13,8 @@ export class SolicitudesTitulacion{
         cedula:string
         titulacion:string
         fechaCodigo:string;
-        
+        InstitutoPertenciciente:string
+        logoPic:string|ArrayBuffer
         constructor(){
             this.listaIng.push(new Ing())
     

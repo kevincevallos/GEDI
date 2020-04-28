@@ -1,6 +1,151 @@
 <!--<nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
   <div class="navbar-brand mb-0 h1 text-white">ELABORADOR DE DOCUMENTOS INSTITUCIONALES - YAVIRAC</div>
 </nav>-->
-<div class="bg"></div>
+<div class="bg">
+  <div class="header" style="text-align: center;">
+    <h2>Bienvenido - Gestión y Elaboración de Documentos Institucionales
+      <span (click)="showHeaderInfo();Sol=false;Act=false;Actr=false;Ofi=false;Hdv=false;Mem=false">
+        <i class="fa fa-info-circle"></i>
+      </span>
 
 
+    </h2>
+          <mat-progress-bar class="progress-loader" [hidden]="!loading" [mode]="'indeterminate'">
+      </mat-progress-bar>
+
+  </div>
+  <div class="header2" style="text-align: center;" *ngIf="headerInfo">
+    <h3>Hola <b>{{this.user.name}}</b>, tienes <b>{{nDocumentos}}</b> documentos elaborados en GEDI</h3>
+  </div>
+  <div class="elaborador">
+    <div class="primeraFila">
+      <div class="cardSol">
+        <mat-card class="SOL">
+          <div style="font-size: 20px;text-align: center;">
+            <p>Solicitudes<button class="icon-display" routerLink="/solicitudes-titulacion"
+                matTooltip="Elaborar nueva Solicitud" mat-icon-button color="basic" matTooltipPosition="above">
+                <mat-icon>note_add</mat-icon>
+              </button></p>
+          </div>
+          <mat-card-content *ngIf="Sol">
+            <p>Actualmente has publicado {{nSolicitudes}} solicitudes en GEDI</p>
+
+          </mat-card-content>
+          <mat-card-actions>
+            <button style="width:100%;" *ngIf="Sol" mat-button (click)="Sol=false">Ocultar</button>
+            <button style="width:100%;" *ngIf="!Sol" mat-button
+              (click)="Sol=true;Act=false;Actr=false;Ofi=false;Hdv=false;Mem=false;headerInfo=false">Mostrar</button>
+          </mat-card-actions>
+          <mat-progress-bar class="progress-loader" *ngIf="loading" [mode]="'indeterminate'">
+          </mat-progress-bar>
+        </mat-card>
+
+      </div>
+      <div class="cardActB">
+        <mat-card class="ACTB">
+          <div style="font-size: 20px;text-align: center;">
+            <p>Actas<button class="icon-display" routerLink="/actas" matTooltip="Elaborar nueva Acta" mat-icon-button
+                color="basic" matTooltipPosition="above">
+                <mat-icon>note_add</mat-icon>
+              </button></p>
+          </div>
+          <mat-card-content *ngIf="Act">
+            <p>Actualmente has publicado {{nActasB}} actas en GEDI</p>
+
+          </mat-card-content>
+          <mat-card-actions>
+            <button style="width:100%;" *ngIf="Act" mat-button (click)="Act=false">Ocultar</button>
+            <button style="width:100%;" *ngIf="!Act" mat-button
+              (click)="Act=true;Sol=false;Actr=false;Ofi=false;Hdv=false;Mem=false;headerInfo=false">Mostrar</button>
+          </mat-card-actions>
+          <mat-progress-bar class="progress-loader" *ngIf="loading" [mode]="'indeterminate'">
+          </mat-progress-bar>
+        </mat-card>
+      </div>
+    </div>
+    <div class="segundaFila">
+      <div class="cardActR">
+        <mat-card class="ACTR">
+          <div style="font-size: 20px;text-align: center;">
+            <p>Actas de Reunión<button class="icon-display" routerLink="/actasReuniones"
+                matTooltip="Elaborar nueva Acta de Reunión" mat-icon-button color="basic" matTooltipPosition="above">
+                <mat-icon>note_add</mat-icon>
+              </button></p>
+          </div>
+          <mat-card-content *ngIf="Actr">
+            <p>Actualmente has publicado {{nActasR}} actas de reunión en GEDI</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button style="width:100%;" *ngIf="Actr" mat-button (click)="Actr=false">Ocultar</button>
+            <button style="width:100%;" *ngIf="!Actr" mat-button
+              (click)="Actr=true;Sol=false;Act=false;Ofi=false;Hdv=false;Mem=false;headerInfo=false">Mostrar</button>
+          </mat-card-actions>
+          <mat-progress-bar class="progress-loader" *ngIf="loading" [mode]="'indeterminate'">
+          </mat-progress-bar>
+        </mat-card>
+      </div>
+      <div class="cardOfi">
+        <mat-card class="OFI">
+          <div style="font-size: 20px;text-align: center;">
+            <p>Oficios<button class="icon-display" routerLink="/oficios" matTooltip="Elaborar nuevo Oficio"
+                mat-icon-button color="basic" matTooltipPosition="above">
+                <mat-icon>note_add</mat-icon>
+              </button></p>
+          </div>
+          <mat-card-content *ngIf="Ofi">
+            <p>Actualmente has publicado {{nOficios}} oficios en GEDI</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button style="width:100%;" *ngIf="Ofi" mat-button (click)="Ofi=false">Ocultar</button>
+            <button style="width:100%;" *ngIf="!Ofi" mat-button
+              (click)="Ofi=true;Sol=false;Act=false;Actr=false;Hdv=false;Mem=false;headerInfo=false">Mostrar</button>
+          </mat-card-actions>
+          <mat-progress-bar class="progress-loader" *ngIf="loading" [mode]="'indeterminate'">
+          </mat-progress-bar>
+        </mat-card>
+      </div>
+    </div>
+    <div class="terceraFila">
+      <div class="cardHdv">
+        <mat-card class="HDV">
+          <div style="font-size: 20px;text-align: center;">
+            <p>Hojas de Vida<button class="icon-display" routerLink="/hojasDeVida"
+                matTooltip="Elaborar nueva Hoja de Vida" mat-icon-button color="basic" matTooltipPosition="above">
+                <mat-icon>note_add</mat-icon>
+              </button></p>
+          </div>
+          <mat-card-content *ngIf="Hdv">
+            <p>Actualmente has publicado {{nHojasDeVida}} hojas de vida en GEDI</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button style="width:100%;" *ngIf="Hdv" mat-button (click)="Hdv=false">Ocultar</button>
+            <button style="width:100%;" *ngIf="!Hdv" mat-button
+              (click)="Hdv=true;Sol=false;Act=false;Actr=false;Ofi=false;Mem=false;headerInfo=false">Mostrar</button>
+          </mat-card-actions>
+          <mat-progress-bar class="progress-loader" *ngIf="loading" [mode]="'indeterminate'">
+          </mat-progress-bar>
+        </mat-card>
+      </div>
+      <div class="cardMem">
+        <mat-card class="MEM">
+          <div style="font-size: 20px;text-align: center;">
+            <p>Memorandos<button class="icon-display" routerLink="/memorandums" matTooltip="Elaborar nuevo Memorando"
+                mat-icon-button color="basic" matTooltipPosition="above">
+                <mat-icon>note_add</mat-icon>
+              </button></p>
+          </div>
+          <mat-card-content *ngIf="Mem">
+            <p>Actualmente has publicado {{nMemorandos}} memorandos en GEDI</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button style="width:100%;" *ngIf="Mem" mat-button (click)="Mem=false">Ocultar</button>
+            <button style="width:100%;" *ngIf="!Mem" mat-button
+              (click)="Mem=true;Sol=false;Act=false;Actr=false;Ofi=false;Hdv=false;headerInfo=false">Mostrar</button>
+          </mat-card-actions>
+            <mat-progress-bar class="progress-loader" *ngIf="loading" [mode]="'indeterminate'">
+            </mat-progress-bar>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

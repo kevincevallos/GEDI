@@ -6,10 +6,8 @@ import { AppComponent } from './app.component';
 import { VisualizadorComponent } from './visualizador/visualizador.component';
 import { ElaboradorComponent } from './elaborador/elaborador.component';
 import { LoginComponent } from "./login/login.component";
-import { RegistrationComponent } from './registration/registration.component';
 import { HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NbThemeModule } from '@nebular/theme';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from  '@angular/material/toolbar';
 import { MatButtonModule } from  '@angular/material/button';
@@ -23,7 +21,6 @@ import { DatePipe } from '@angular/common';
 import { ActasComponent } from './elaborador/actas/actas.component';
 import { MemorandumsComponent } from './elaborador/memorandums/memorandums.component';
 import { OficiosComponent } from './elaborador/oficios/oficios.component';
-import { SolicitudesComponent } from './elaborador/solicitudes/solicitudes.component';
 import { HojaDeVidaComponent } from './elaborador/hoja-de-vida/hoja-de-vida.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -53,12 +50,10 @@ import { MatExpansionModule } from "@angular/material/expansion";
     VisualizadorComponent,
     ElaboradorComponent,
     LoginComponent,
-    RegistrationComponent,
     NavbarComponent,
     ActasComponent,
     MemorandumsComponent,
     OficiosComponent,
-    SolicitudesComponent,
     HojaDeVidaComponent,
     ActasReunionesComponent,
     SolicitudesTitulacionComponent,

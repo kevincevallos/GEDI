@@ -3,8 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { VisualizadorComponent } from "./visualizador/visualizador.component";
 import { ElaboradorComponent } from "./elaborador/elaborador.component";
 import { LoginComponent } from "./login/login.component";
-import { RegistrationComponent } from "./registration/registration.component";
-import { SolicitudesComponent } from './elaborador/solicitudes/solicitudes.component';
 import { OficiosComponent } from './elaborador/oficios/oficios.component';
 import { ActasComponent } from './elaborador/actas/actas.component';
 import { MemorandumsComponent } from './elaborador/memorandums/memorandums.component';
@@ -19,7 +17,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
    {path:"visualizador",component:VisualizadorComponent, canActivate: [AuthGuard] },
    {path:"elaborador",component:ElaboradorComponent, canActivate: [AuthGuard] },
-   {path:"solicitudes",component:SolicitudesComponent, canActivate: [AuthGuard] },
    {path:"oficios",component:OficiosComponent, canActivate: [AuthGuard] },
    {path:"actas",component:ActasComponent, canActivate: [AuthGuard] },
    {path:"memorandums",component:MemorandumsComponent, canActivate: [AuthGuard] },

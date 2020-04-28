@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
 import { ActasReuniones, Orden, Docentes } from 'src/app/models/actas-reuniones';
 import { DatePipe } from '@angular/common'
-import { sign } from 'crypto';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { ServicioService } from 'src/app/servicio.service';
 import { FormBuilder } from '@angular/forms';
 import { UserData } from 'src/app/models/userData';
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { Router } from '@angular/router';
 declare let alertify: any;
-pdfMake.vfs=pdfFonts.pdfMake.vfs
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 @Component({
   selector: 'app-actas-reuniones',
   templateUrl: './actas-reuniones.component.html',
@@ -22,35 +22,44 @@ export class ActasReunionesComponent implements OnInit {
   reunion = new ActasReuniones()
   hora = new Date().getHours().toString()
   min = new Date().getMinutes().toString()
-  date : any
-  involucrado : any
+  date: any
+  involucrado: any
   listaDocentes = []
-  dateS:any
+  dateS: any
   listaInvolucrados = []
-  usuario:UserData
-  dialog:any
-  actaReunionesCodigoUsuario:string
-  codigoGet:string
-  numeroActual:number
-  numeroSiguiente:number;
-  listaDocumentos:any[]=[]
+  usuario: UserData
+  dialog: any
+  actaReunionesCodigoUsuario: string
+  codigoGet: string
+  numeroActual: number
+  numeroSiguiente: number;
+  listaDocumentos: any[] = []
   n: number;
   carreraxUser;
   codigoDoc;
   m;
   invitado;
   loading: boolean;
-  constructor(private formBuilder:FormBuilder
-    ,public datepipe: DatePipe,
-    public service: ServicioService) {
+  InstitutoPerteneciente: string;
+  logoYav: string | ArrayBuffer;
+  logoBj: string | ArrayBuffer;
+  logo24M: string | ArrayBuffer;
+  logoGrc: string | ArrayBuffer;
+  documento: any;
+  editable: boolean;
+  blobPdf: Blob;
+  constructor(private formBuilder: FormBuilder
+    , public datepipe: DatePipe,
+    public service: ServicioService,
+    public http: HttpClient, public router: Router) {
 
-    
+
     this.reunion = JSON.parse(sessionStorage.getItem('acta-reunion')) || new ActasReuniones();
     if (!this.reunion.ordenDelDia || this.reunion.ordenDelDia.length === 0) {
       this.reunion.ordenDelDia = [];
       this.reunion.ordenDelDia.push(new Orden());
     }
-    
+
     if (!this.reunion.involucrados || this.reunion.involucrados.length === 0) {
       this.reunion.involucrados = [];
       this.reunion.involucrados.push(new Docentes());
@@ -61,16 +70,110 @@ export class ActasReunionesComponent implements OnInit {
     this.loading = true;
     this.n = 0;
     this.service.getDocentes().subscribe(
-      (getdatos:any[]) =>  this.listaDocentes = getdatos ,
-      (error: HttpErrorResponse) => { console.log(error.message)},
-      ()=> console.log('peticion Finalizada',this.listaDocentes))
+      (getdatos: any[]) => {
+/*         console.log(getdatos)
+ */        for (let i = 0; i < getdatos.length; i++) {
+          var element = getdatos[i].name;
+
+          let name = element.toLowerCase();
+          var separador = " ";
+          var arrayNombre = name.split(separador);
+          var nombre = arrayNombre[1];
+          var apellido = arrayNombre[0];
+          if (nombre && apellido) {
+            nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+            apellido = apellido.charAt(0).toUpperCase() + apellido.slice(1);
+            element = nombre + ' ' + apellido;
+            getdatos[i].name = element;
+          }
+          if (!nombre && apellido) {
+            apellido = '';
+            nombre = arrayNombre[0];
+            nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+            element = nombre;
+            getdatos[i].name = element;
+          }
+
+          //console.log(element);
+        }
+
+        this.listaDocentes = getdatos
+      },
+      (error: HttpErrorResponse) => { console.log(error.message) },
+      () => console.log('peticion Finalizada', this.listaDocentes))
 
     this.obtenerFecha()
     this.obtenerfechaS()
-    this.reunion.codigoDocumento='ACT-';
-    this.actaReunionesCodigoUsuario = 'ACT-';
+    this.reunion.codigoDocumento = 'ACTR-';
+    this.actaReunionesCodigoUsuario = 'ACTR-';
     this.getLocalStorageData();
-    this.constaEnCarrera();
+    if (this.documento) {
+      this.actaReunionesCodigoUsuario = this.documento.codigo_documento;
+      this.loading = false;
+      this.editable = true;
+    }
+    else {
+      this.loading = true;
+      this.editable = false;
+      this.constaEnCarrera();
+    }
+  }
+  imagenUriYav() {
+    //logoYav
+    this.http.get('/assets/logoYav.png', { responseType: 'blob' })
+      .subscribe(res => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const x = reader.result;
+          this.logoYav = x;
+          this.reunion.logoPic = this.logoYav;
+          //console.log('ImagenEnBase64_LogoYav_: ', this.logoYav);
+        }
+        reader.readAsDataURL(res);
+        //console.log('RES_: ',res);
+      })
+  }
+  imagenUriBj() {
+    //logBj
+    this.http.get('/assets/logoBj.jpg', { responseType: 'blob' })
+      .subscribe(res => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          this.logoBj = reader.result;
+          this.reunion.logoPic = this.logoBj;
+          //console.log('ImagenEnBase64_: ', this.logoBj);
+        }
+        reader.readAsDataURL(res);
+        //console.log('RES_: ',res);
+      })
+  }
+  imagenUriGrc() {
+    //logoGrc
+    this.http.get('/assets/logoGrc.png', { responseType: 'blob' })
+      .subscribe(res => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          this.logoGrc = reader.result;
+          this.reunion.logoPic = this.logoGrc;
+          //console.log('ImagenEnBase64_: ', this.logoGrc);
+        }
+        reader.readAsDataURL(res);
+        //console.log('RES_: ',res);
+      })
+  }
+  imagenUri24M() {
+    //logo24M
+    this.http.get('/assets/logo24m.jpg', { responseType: 'blob' })
+      .subscribe(res => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          this.logo24M = reader.result;
+          this.reunion.logoPic = this.logo24M;
+          //console.log('ImagenEnBase64_: ', this.logo24M);
+        }
+        reader.readAsDataURL(res);
+        //console.log('RES_: ',res);
+      })
   }
   getLocalStorageData() {
     /*localStorage*/
@@ -79,12 +182,31 @@ export class ActasReunionesComponent implements OnInit {
     var x = user;
     //var id_usuario:number = x.id;
     this.usuario = user;
-    this.usuario.codigoUser = x.codigo_user;
+
+    let name = this.usuario.name.toLowerCase();
+    var separador = " ";    
+    var arrayNombre = name.split(separador);
+    var nombre = arrayNombre[1];
+    var apellido = arrayNombre[0];
+    if (nombre&&apellido) {
+    nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+    apellido = apellido.charAt(0).toUpperCase() + apellido.slice(1);
+    this.usuario.name = nombre +' '+ apellido;
+    }
+    if (!nombre&&apellido) {
+      apellido='';
+      nombre=arrayNombre[0];
+      nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+      this.usuario.name = nombre;
+    }
+
+    this.usuario.codigoUser = x.codigoUser;
+    //console.log(this.usuario.codigoUser);
     this.reunion.idUsuario = this.usuario.id;
     this.reunion.codigoUsuario = this.usuario.codigoUser;
-    //console.log(this.usuario.id, this.usuario.codigoUser);
-    //console.log('user_string_:', user_string);
-    console.log('usuario.id_:', this.usuario);
+    let doc_string = localStorage.getItem("currentDoc");
+    let doc = JSON.parse(doc_string);
+    this.documento = doc;
 
   }
   obtenerFecha() {
@@ -103,13 +225,13 @@ export class ActasReunionesComponent implements OnInit {
           this.n++
       }
       //console.log('variable n1_:', this.n);
-      console.log('El usuario consta en la tabla CarrerasxUser!!');
+      //console.log('El usuario consta en la tabla CarrerasxUser!!');
       this.invitado = 'no';
       this.generarCodigo();
     },
       error => {
         //console.log('variable n2_:', this.n);
-        console.log('El usuario NO consta en la tabla CarrerasxUser!!')
+        //console.log('El usuario NO consta en la tabla CarrerasxUser!!')
         this.invitado = 'si';
         this.generarCodigoInvitado();
       }
@@ -118,58 +240,73 @@ export class ActasReunionesComponent implements OnInit {
   generarCodigo() {
     var carrera_id = this.carreraxUser;
     if (this.n > 1) {
-      console.log('generarCodigo()_:',this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
-      this.actaReunionesCodigoUsuario = this.reunion.codigoDocumento + 'I.T.S.YAV-' + this.dateS + '-';
+      //console.log('generarCodigo()_:',this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
+      this.actaReunionesCodigoUsuario = this.reunion.codigoDocumento + 'ITSYAV-' + this.dateS + '-';
       //console.log('ifMayor1_:', this.solicitudCodigoDocumento);
+      this.reunion.InstitutoPertenciciente = 'Instituto Tecnologico Superior Yavirac'
+      this.imagenUriYav()
     } else
       if (this.n == 1) {
         if (carrera_id == 1) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.B.J.M-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSBJ-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = 'Instituto Tecnologico Superior "Benito Juarez"'
+          this.imagenUriBj()
         }
         if (carrera_id == 2) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.24.M.K-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITS24M-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "24 De Mayo"'
+          this.imagenUri24M()
         }
         if (carrera_id == 3) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.G.C.M-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSGC-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Gran Colombia"'
+          this.imagenUriGrc()
         }
         if (carrera_id == 4) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.AC.V-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSYAVACV-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Yavirac"'
+          this.imagenUriYav();
         }
         if (carrera_id == 5) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.GT.M-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Yavirac"'
+          this.imagenUriYav()
         }
         if (carrera_id == 6) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.MK-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Yavirac"'
+          this.imagenUriYav()
         }
         if (carrera_id == 7) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.ELT.N-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Yavirac"'
+          this.imagenUriYav();
         }
         if (carrera_id == 8) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.ELT.V-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Yavirac"'
+          this.imagenUriYav();
         }
         if (carrera_id == 9) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.B.J.V-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSBJ-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Benito Juarez"'
+          this.imagenUriBj();
+
         }
         if (carrera_id == 10) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.AC.M-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Yavirac"'
+          this.imagenUriYav()
         }
         if (carrera_id == 11) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.YAV.GT.V-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSYAV-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Yavirac"'
+          this.imagenUriYav();
         }
         if (carrera_id == 12) {
-          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'I.T.S.G.C.DM.V-' + this.dateS + '-';
-          //console.log('Carrera_:', this.solicitudCodigoDocumento)
+          this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'ITSGC-' + this.dateS + '-';
+          this.reunion.InstitutoPertenciciente = '"Instituto Tecnologico Superior "Yavirac"'
+          this.imagenUriYav();
         }
       }
     this.comprobarDocumentosExistentes();
@@ -177,9 +314,9 @@ export class ActasReunionesComponent implements OnInit {
   generarCodigoInvitado() {
     this.actaReunionesCodigoUsuario = 'GEDI-';
     this.reunion.codigoDocumento = 'GEDI-'
-    console.log(this.reunion.codigoDocumento);
+    //console.log(this.reunion.codigoDocumento);
     this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 'INVITADO-' + this.dateS + '-';
-    //this.reunion.logoPic;
+    this.imagenUriYav();
     this.comprobarDocumentosExistentes();
   }
   comprobarDocumentosExistentes() {
@@ -198,14 +335,14 @@ export class ActasReunionesComponent implements OnInit {
         }
       }
       if (Array.isArray(array) && array.length) {
-        console.log('Hay Documentos existentes!!', data);
+        //console.log('Hay Documentos existentes!!', data);
         if (this.invitado.includes('no')) {
-          console.log('No es invitado');
+          //console.log('No es invitado');
           this.generarNumeracionDocumento();
           this.loading = false;
         }
         if (this.invitado.includes('si')) {
-          console.log('Si es invitado');
+          //console.log('Si es invitado');
           this.generarNumeracionDocumentoInvitado();
           this.loading = false;
         }
@@ -213,11 +350,11 @@ export class ActasReunionesComponent implements OnInit {
         //console.log('NO Existen Documentos!!');
         this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 1;
         this.reunion.codigoDocumento = this.actaReunionesCodigoUsuario;
-
+        this.loading = false;
       }
     },
       error => {
-        console.log('error_comprobarDocumentosExistentes()_:')
+        //console.log('error_comprobarDocumentosExistentes()_:')
       }
     )
   }
@@ -229,10 +366,10 @@ export class ActasReunionesComponent implements OnInit {
     for (let i = 0; i < this.codigoDoc.length; i++) {
       var t = this.codigoDoc[i].codigo_documento;
       var elemento = this.codigoDoc[i];
-      n = t.includes('ACT');
+      n = t.includes('ACTR');
       //console.log(n);
       if (n) {
-        console.log('Variable_t_:', t)
+        //console.log('Variable_t_:', t)
 
         this.listaDocumentos.push(elemento);
         existe = true
@@ -240,7 +377,7 @@ export class ActasReunionesComponent implements OnInit {
       }
     }
     if (!existe) {
-      console.log('No hay Documentos SPTs');
+      //console.log('No hay Documentos SPTs');
       this.actaReunionesCodigoUsuario = this.actaReunionesCodigoUsuario + 1;
     } else {
       for (let m = 0; m < this.listaDocumentos.length; m++) {
@@ -294,7 +431,7 @@ export class ActasReunionesComponent implements OnInit {
       //
 
     }
-    console.log('codigo_documento_generado:', this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
+    //console.log('codigo_documento_generado:', this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
   }
   generarNumeracionDocumentoInvitado() {
     //console.log('this.codigoDoc_:', this.codigoDoc);
@@ -368,21 +505,64 @@ export class ActasReunionesComponent implements OnInit {
       //
 
     }
-    console.log('codigo_documento_generado:', this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
+    //console.log('codigo_documento_generado:', this.actaReunionesCodigoUsuario, this.reunion.codigoDocumento)
   }
 
   ///////////////////////Fin de métodos escenciales////////////////////////
   ///////////////////////Comienza generación de PDF////////////////////////
-  guardarBorrador(){
+  guardarBorrador() {
     sessionStorage.setItem('solicitud-titulacion', JSON.stringify(this.reunion));
   }
-  visualizarPdf(){
-    const defenicionSolicitud = this.getDocumentDefinition();
-    const pdf:Object = pdfMake.createPdf(defenicionSolicitud).open();
-    console.log('visualizarPdf()_: ',pdf);
+
+  selectCoordinador(item) {
+    this.reunion.coordinador = item.name
   }
+
+  selectSecretaria(item) {
+    this.reunion.secretaria = item.name
+  }
+
+  selectInvolucrados(item) {
+    this.listaInvolucrados.push(item)
+    //console.log('listaInvolucrados_:',this.listaInvolucrados)
+  }
+
+  selectRevisado(item) {
+    this.reunion.revisado = item.name
+  }
+
+  selectAprobadoUno(item) {
+    this.reunion.aprobadoUno = item.name
+  }
+
+  selectAprobadoDos(item) {
+    this.reunion.aprobadoDos = item.name
+  }
+  selectAprobadoTres(item) {
+    this.reunion.aprobadoTres = item.name
+  }
+  selectAprobadoCuatro(item) {
+    this.reunion.aprobadoCuatro = item.name
+  }
+
+  agregarOrden() {
+    this.reunion.ordenDelDia.push(new Orden())
+  }
+
+  agregarInvolucrados() {
+    this.reunion.involucrados.push(new Docentes())
+  }
+
   publicarEnGedi() {
+    const defenicionSolicitud = this.getDocumentDefinition();
+    const pdf = pdfMake.createPdf(defenicionSolicitud);
+    pdf.getBlob(async (blob) => {
+      this.blobPdf = blob;
+      await this.blobPdf;
+      //console.log('PDF_TO_BLOB_: ',this.blobPdf);
+    })
     /////PUBLICAR COMO INVITADO/////
+    //console.log(this.invitado);
     if (this.invitado.includes('si')) {
       Swal.fire({
         title: this.usuario.name + ' publicarás como invitado',
@@ -437,120 +617,140 @@ export class ActasReunionesComponent implements OnInit {
       })
     }
   }
-  /*  generarPdf(accion = 'open') {
-     const defenicionSolicitud = this.getDefinicionSolicitud();
-     switch (accion) {
-       case 'open': pdfMake.createPdf(defenicionSolicitud).open(); break;
-       case 'print': pdfMake.createPdf(defenicionSolicitud).print(); break;
-       case 'download': pdfMake.createPdf(defenicionSolicitud).download(); break;
-       default: pdfMake.createPdf(defenicionSolicitud).open(); break
-     }
- 
-   } */
+
   publicar() {
     const formData = new FormData();
-    const defenicionSolicitud = this.getDocumentDefinition();
-    const pdf = pdfMake.createPdf(defenicionSolicitud);
-    const blob = new Blob([pdf], { type: 'application/octet-stream' });
-    //console.log('metodo_obtenerPdf()_:', blob);
-    formData.append("upload", blob);
+    const file = new File([this.blobPdf], 'doc.pdf', { type: 'application/pdf' });
+    //console.log('Antes_del_Append_file_: ',file,'document.pdf');
+
+    formData.append("upload", file);
     formData.append("codDoc", this.actaReunionesCodigoUsuario);
     formData.append("codUser", this.usuario.codigoUser);
     formData.append("idUser", this.usuario.id.toString());
 
     this.service.setDocumento(formData);
-    console.log('ANTES_DE_:', this.actaReunionesCodigoUsuario)
+    //console.log('ANTES_DE_:', this.solicitudCodigoDocumento)
     this.actaReunionesCodigoUsuario = '';
-    console.log('ANTES_DE_:', this.reunion.codigoDocumento)
+    //console.log('ANTES_DE_:', this.solicitud.codigoDocumento)
     this.reunion.codigoDocumento = '';
     setTimeout(() => {
       this.ngOnInit();
       //console.log('Page reload!!');
-    }, 3000);//1000ms=1Sec
+    }, 5000);//1000ms=1Sec
   }
-
-  selectCoordinador(item) {
-      this.reunion.coordinador = item.name
+  publicarEditado() {
+    const defenicionSolicitud = this.getDocumentDefinition();
+    const pdf = pdfMake.createPdf(defenicionSolicitud);
+    pdf.getBlob(async (blob) => {
+      this.blobPdf = blob;
+      await this.blobPdf;
+    })
+    //console.log('publicarEditado_: ', this.blobPdf);
+    /////PUBLICAR COMO USUARIO GEDI/////
+    Swal.fire({
+      title: this.usuario.name + ' vas a editar un documento en GEDI',
+      html: "Si publicas tu documento estará disponible para ti y otros usuarios en la pestaña <b>Visualizador</b>",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Publicar!',
+      cancelButtonText: 'Cancelar!',
+      timer: 5000,
+      timerProgressBar: true,
+    }).then((result) => {
+      if (result.value) {
+        this.publicarEdit();
+        Swal.fire(
+          'EXCELENTE!',
+          this.usuario.name + ' Tu documento ha sido publicado en GEDI.',
+          'success'
+        )
+        alertify.notify('Publicado con éxito!', 'success', 2);
+      } else {
+        alertify.notify('Cancelado!', 'error', 2);
+      }
+    })
   }
-
-  selectSecretaria(item) {
-      this.reunion.secretaria = item.name
+  publicarEdit() {
+    //console.log('publicarEdit_::', this.blobPdf);
+    const formData = new FormData();
+    const file = new File([this.blobPdf], 'docEdit.pdf', { type: 'application/pdf' });
+    //console.log(file);    
+    formData.append("cod", this.actaReunionesCodigoUsuario);
+    formData.append("upload", file);
+    this.service.updatePdf(formData);
+    //console.log('ANTES_DE_:', this.solicitudCodigoDocumento)
+    this.actaReunionesCodigoUsuario = '';
+    //console.log('ANTES_DE_:', this.solicitud.codigoDocumento)
+    this.reunion.codigoDocumento = '';
+    setTimeout(() => {
+      this.loading = false;
+      localStorage.removeItem('currentDoc');
+      this.ngOnInit();
+      //console.log('Page reload!!');
+    }, 4000);//1000ms=1Sec
   }
-
-  selectInvolucrados(item) {
-    this.listaInvolucrados.push(item)
-    console.log('listaInvolucrados_:',this.listaInvolucrados)
+  cancelarEdicion() {
+    localStorage.removeItem('currentDoc');
+    this.ngOnInit();
+    alertify.notify('Edición Cancelada!', 'error', 10);
   }
-
-  selectRevisado(item){
-    this.reunion.revisado = item.name 
+  backToHome() {
+    localStorage.removeItem('currentDoc');
+    this.router.navigate(["/visualizador"]);
+    alertify.notify('De vuelta en el Visualizador!', 'success', 10);
   }
-
-  selectAprobadoUno(item){
-    this.reunion.aprobadoUno = item.name
-  }
-
-  selectAprobadoDos(item){
-    this.reunion.aprobadoDos = item.name
-  }
-  selectAprobadoTres(item){
-    this.reunion.aprobadoTres = item.name
-  }
-  selectAprobadoCuatro(item){
-    this.reunion.aprobadoCuatro = item.name
-  }
-
-  agregarOrden () {
-    this.reunion.ordenDelDia.push(new Orden())
-  }
-
-  agregarInvolucrados () {
-    this.reunion.involucrados.push(new Docentes())
-  }
-
-  resetForm() {
+  //Fin de Metodos Nuevos y actualizaciones!!
+  resetearForm() {
     this.reunion = new ActasReuniones();
-    sessionStorage.removeItem('acta-reunion');
-    this.listaInvolucrados = []
+    sessionStorage.removeItem('solicitud-titulacion');
   }
 
   getDocumentDefinition() {
     sessionStorage.setItem('acta-reunion', JSON.stringify(this.reunion));
     return {
       content: [
-        /*  {
-            image: ''
-            ,fit: [50, 50]
-          }, *//* 
+
         {
-          text: 'Instituto el cual pertenece el usuario',
-          
-          style : 'titulo'
-        }, */
-        {
-          text: 'ACTA DE REUNIÓN',
-          style : 'titulo'
+          image: this.reunion.logoPic,
+          width: 100,
+          height: 75,
+          style: 'img',
+          alignment: 'left'
         },
         {
+          text: this.reunion.InstitutoPertenciciente,
+          style: 'titulo1'
+        },
+        {
+          canvas: [{ type: 'line', x1: 0, y1: 3, x2: 590 - 2 * 30, y2: 3, lineWidth: 3 }]
+        },
+        {
+          text: 'Acta de Reunión',
+          style: 'titulo'
+        },
+
+        {
           text: this.actaReunionesCodigoUsuario,
-          style : 'titulo'
+          style: 'titulo'
         },
         {
           text: ` En el Distrito Metropolitano de Quito, provincia de Pichincha, siendo las ${this.hora}:${this.min}, del día ${this.date}, luego de verificar el quórum reglamentario, se instala la sesión de investigación, la misma que es presidida por ${this.reunion.coordinador} coordinador de Carrera; actúa como secretari@ de la reunión ${this.reunion.secretaria}; con la asistencia de los siguientes docentes:`,
           style: 'body'
         },
         {
-          ul : [
+          ul: [
             ...this.listaInvolucrados.filter((name, index) => index % 3 === 0).map(d => d.name)
           ]
         },
         {
-          ul : [
+          ul: [
             ...this.listaInvolucrados.filter((name, index) => index % 3 === 1).map(d => d.name)
           ]
         },
         {
-          ul : [
+          ul: [
             ...this.listaInvolucrados.filter((name, index) => index % 3 === 2).map(d => d.name)
           ]
         },
@@ -559,21 +759,21 @@ export class ActasReunionesComponent implements OnInit {
           style: 'subTitulo'
         },
         {
-          ul : [
+          ul: [
             ...this.reunion.ordenDelDia.filter((orden, index) => index % 3 === 0).map(o => o.orden)
           ],
           style: 'body'
         },
         {
-          ul : [
+          ul: [
             ...this.reunion.ordenDelDia.filter((orden, index) => index % 3 === 1).map(o => o.orden)
           ],
           style: 'body'
         },
         {
-          ul : [
+          ul: [
             ...this.reunion.ordenDelDia.filter((orden, index) => index % 3 === 2).map(o => o.orden)
-            
+
           ],
           style: 'body'
         },
@@ -582,38 +782,38 @@ export class ActasReunionesComponent implements OnInit {
           style: 'subTitulo'
         },
         {
-          ul : [
+          ul: [
             ...this.reunion.ordenDelDia.filter((orden, index) => index % 3 === 0).map(o => o.orden)
           ]
         },
         {
-          text : this.reunion.ordenDelDia.filter((descripcion, index) => index % 3 === 0).map(o => o.descripcion),
+          text: this.reunion.ordenDelDia.filter((descripcion, index) => index % 3 === 0).map(o => o.descripcion),
           style: 'body'
         },
         {
-          ul : [
+          ul: [
             ...this.reunion.ordenDelDia.filter((orden, index) => index % 3 === 1).map(o => o.orden)
           ]
         },
-        
+
         {
-          text : this.reunion.ordenDelDia.filter((descripcion, index) => index % 3 === 1).map(o => o.descripcion),
+          text: this.reunion.ordenDelDia.filter((descripcion, index) => index % 3 === 1).map(o => o.descripcion),
           style: 'body'
         },
         {
-          ul : [
+          ul: [
             ...this.reunion.ordenDelDia.filter((orden, index) => index % 3 === 2).map(o => o.orden)
           ]
         },
-        
+
         {
-          text : this.reunion.ordenDelDia.filter((descripcion, index) => index % 3 === 2).map(o => o.descripcion),
+          text: this.reunion.ordenDelDia.filter((descripcion, index) => index % 3 === 2).map(o => o.descripcion),
           style: 'body'
         },
         {
           text: 'Para constancia de lo actuado firman: ',
           fontSize: 12,
-          margin : [5 , 40 , 5 ,60]
+          margin: [0, 20, 0, 20]
         },
         {
           table: {
@@ -626,13 +826,14 @@ export class ActasReunionesComponent implements OnInit {
               },
               {
                 text: 'Revisado y Aprobado por:',
-                style: 'tableHeader'
+                style: 'tableHeader',
+
               }
               ],
               [
                 {
-                  text: `"nombre del usuario logeado"`
-                  ,style : 'sign'
+                  text: this.usuario.name
+                  , style: 'sign'
                 },
                 {
                   text: this.reunion.revisado,
@@ -671,59 +872,62 @@ export class ActasReunionesComponent implements OnInit {
           }
         }
       ],
-        styles: {
-          titulo: {
-            fontSize: 14,
-            bold: true,
-            margin: [0, 20, 0, 20],
-            alignment: 'center',
-            textAlign: 'justify'
-          },
-          subTitulo: {
-            fontSize: 13,
-            bold: true,
-            margin: [5, 10, 5, 10]
-          },
-          cabecera: {
-            fontSize: 12,
-            margin: [5, 10, 5, 10],
-            textAlign: 'justify'
-          },
-          body: {
-            fontSize: 12,
-            fontFamily : 'times new roman',
-            margin : [5, 10,5,10],
-            textAlign: 'justify'
-          },
-          pie : {
-            fontSize: 12,
-            fontFamily : 'times new roman',
-            margin : [5, 10,5,10],
-            bold: true,
-            alignment : 'center',
-            textAlign: 'justify'
-          },
-          sign: {
-            margin: [0, 50, 0, 10],
-            alignment: 'right',
-            italics: true
-          },
-          tableHeader: {
-            bold: true,
-            alignment: 'center',
-          }
+      info: {
+        title: this.usuario.name + '_Acta de Reunión',
+        author: this.usuario.name,
+        subject: 'ActaReunión',
+        keywords: 'ActaReunión, ONLINE ActaReunión',
+      },
+      styles: {
+        titulo: {
+          fontSize: 12,
+          bold: true,
+          margin: [0, 10, 0, 10],
+          alignment: 'center',
+          textAlign: 'justify'
+        },
+        titulo1: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 10, 0, 10],
+          alignment: 'center',
+          textAlign: 'justify'
+        },
+        subTitulo: {
+          fontSize: 11,
+          bold: true,
+          margin: [0, 20, 0, 20]
+        },
+        cabecera: {
+          fontSize: 12,
+          margin: [0, 20, 0, 20],
+          textAlign: 'justify'
+        },
+        body: {
+          fontSize: 12,
+          fontFamily: 'times new roman',
+          margin: [0, 20, 0, 20],
+          textAlign: 'justify'
+        },
+        pie: {
+          fontSize: 12,
+          fontFamily: 'times new roman',
+          margin: [0, 20, 0, 20],
+          bold: true,
+          alignment: 'center',
+          textAlign: 'justify'
+        },
+        sign: {
+          margin: [0, 20, 0, 20],
+          alignment: 'right',
+          italics: true
+        },
+        tableHeader: {
+          bold: true,
+          alignment: 'center',
         }
+      }
     };
   }
-
-/*   generatePdf(action = 'open') {
-    const documentDefinition = this.getDocumentDefinition();
-    switch (action) {
-      case 'open': pdfMake.createPdf(documentDefinition).open(); break;
-      case 'print': pdfMake.createPdf(documentDefinition).print(); break;
-      case 'download': pdfMake.createPdf(documentDefinition).download(); break;
-      default: pdfMake.createPdf(documentDefinition).open(); break;
-    }
-  } */
 
 }

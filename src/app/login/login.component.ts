@@ -125,35 +125,35 @@ export class LoginComponent implements OnInit {
         //alert('Rol_:' + rol_id);
         if (rol == 1) {
           this.codigoUsuarioGenerado = 'COOR';
-          console.log('cargo_:', this.codigoUsuarioGenerado);
+          //console.log('cargo_:', this.codigoUsuarioGenerado);
         }
         if (rol == 2) {
           this.codigoUsuarioGenerado = 'EST';
-          console.log('cargo_:', this.codigoUsuarioGenerado);
+          //console.log('cargo_:', this.codigoUsuarioGenerado);
         }
         if (rol == 3) {
           this.codigoUsuarioGenerado = 'SEC';
-          console.log('cargo_:', this.codigoUsuarioGenerado);
+          //console.log('cargo_:', this.codigoUsuarioGenerado);
         }
         if (rol == 4) {
           this.codigoUsuarioGenerado = 'VIC';
-          console.log('cargo_:', this.codigoUsuarioGenerado);
+          //console.log('cargo_:', this.codigoUsuarioGenerado);
         }
         if (rol == 5) {
           this.codigoUsuarioGenerado = 'ADM';
-          console.log('cargo_:', this.codigoUsuarioGenerado);
+          //console.log('cargo_:', this.codigoUsuarioGenerado);
         }
         if (rol == 6) {
           this.codigoUsuarioGenerado = 'REC';
-          console.log('cargo_:', this.codigoUsuarioGenerado);
+          //console.log('cargo_:', this.codigoUsuarioGenerado);
         }
         if (rol == 7) {
           this.codigoUsuarioGenerado = 'DOC';
-          console.log('cargo_:', this.codigoUsuarioGenerado);
+          //console.log('cargo_:', this.codigoUsuarioGenerado);
         }
         if (rol == 8) {
           this.codigoUsuarioGenerado = 'EVAL';
-          console.log('cargo_:', this.codigoUsuarioGenerado);
+          //console.log('cargo_:', this.codigoUsuarioGenerado);
         }
 //this.loading=false;
 this.generarCarrera();
@@ -161,7 +161,7 @@ this.generarCarrera();
   generarCarrera(){
     var n: number = 0;
     this.service.findById({ id: this.usuario.id }).subscribe(data => {
-      console.log('carrera_id_:', data[0].carrera_id);
+      //console.log('carrera_id_:', data[0].carrera_id);
       //alert('carrera_id_:' + data[0].carrera_id);
       //alert('findById_:'+data);
       this.carrera_id = data[0].carrera_id;
@@ -172,61 +172,61 @@ this.generarCarrera();
         //console.log('element_:',data[key]);
       }
       if (n > 1) {
-        console.log('pertenece a varios institutos');
+        //console.log('pertenece a varios institutos');
         //console.log('ROL_:',rol_id);
         this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'YAV';
-        console.log('Carrera_:', this.codigoUsuarioGenerado);
+        //console.log('Carrera_:', this.codigoUsuarioGenerado);
       }
       if (n == 1) {
-        console.log('pertenece a 1 instituto!');
+        //console.log('pertenece a 1 instituto!');
         //console.log('CARRERA_ID:',carrera_id);
         if (this.carrera_id == 1) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'DSBJ';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 2) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'MK24M';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 3) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'DMGRC';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 4) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'GTYAV';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 5) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'ACYAV';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 6) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'MKYAV';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 7) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'ASYAV';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 8) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'ELCYAV';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 9) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'ELTYAV';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 10) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'DSBJ';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 11) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'GNYAV';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
         if (this.carrera_id == 12) {
           this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + 'DMGRC';
-          console.log('Carrera_:', this.codigoUsuarioGenerado);
+          //console.log('Carrera_:', this.codigoUsuarioGenerado);
         }
       }
       var num = Math.floor((Math.random() * (9999 - 1)) + 1);
@@ -234,7 +234,7 @@ this.generarCarrera();
       this.codigoUsuarioGenerado = this.codigoUsuarioGenerado + num;
       this.usuario.codigoUser = this.codigoUsuarioGenerado.toString();
       localStorage.setItem('Invitado','no');
-      console.log('CÓDIGO_:',this.usuario.codigoUser, this.codigoUsuarioGenerado);
+      //console.log('CÓDIGO_:',this.usuario.codigoUser, this.codigoUsuarioGenerado);
       this.loading=false;
       this.updateUser(this.usuario);
       this.service.setUser(this.usuario);
@@ -271,7 +271,7 @@ this.generarCarrera();
     this.service.updateUser(usuario).subscribe(data => {
     },
       error => {
-        console.log('error_updateUser_:', error)
+        //console.log('error_updateUser_:', error)
       }
     )
   }

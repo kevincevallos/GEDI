@@ -1,30 +1,34 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between">
-    <div class="navbar-brand mb-0 h1 text-white">MEMORÁNDUM - YAVIRAC</div>
-    <button mat-button mat-raised-button routerLink="/elaborador">REGRESAR</button>
+    <div class="navbar-brand mb-0 h1 text-white">Elaborando Documento Institucional <u>Memorando</u> en GEDI - YAVIRAC</div>
   </nav>
+  <div class="progress-loader" [hidden]="!loading">
+ 
+    <mat-progress-bar [mode]="'indeterminate'">
+    </mat-progress-bar>
+ 
+</div>
   <form #memoForm="ngForm">
     <div class="row">
       <div class="col-md-8">
         <div class="shadow-sm card">
-          <p>Codigo DOcumento : {{memoCodigoUsuario}}</p>
-          <div class="card-body">
+          <p *ngIf="!editable">Nuevo Documento: {{memoCodigoUsuario}}</p>
+          <p *ngIf="editable">Editando Documento: {{memoCodigoUsuario}}</p>
+        <div class="card-body">
             <h4 class="card-title d-flex">
               Para:
             </h4>
-                <ng-autocomplete 
-                  [data]="listaDocentes"
-                  [searchKeyword]="keyword"
-                  [itemTemplate]="itemTemplate"
-                  placeholder="Nombre"
-                  (selected)='selectEvent($event)'
-                  > 
-                                              
-                </ng-autocomplete>
-                
-                <ng-template #itemTemplate let-item>
-                <a [innerHTML]="item.nombre"  ></a>
-                </ng-template>
+            <ng-autocomplete 
+            [data]="listaProf"
+            [searchKeyword]="keyword"
+            (selected)='selectPara($event)'
+            
+            [itemTemplate]="itemTemplate"                                 
+                      ></ng-autocomplete>
+           
+          <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+          </ng-template>        
                 
           </div>
           <div class="card-body">
@@ -82,21 +86,31 @@
       </div>
       <div class="col-md-4">
         <div class="shadow-sm card action-buttons">
-          <button (click)="memoForm.valid ? publicarEnGedi() : ''"
+            <button *ngIf="!editable" (click)="memoForm.valid ? publicarEnGedi() : ''"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
-              cloud_download
-            </i><span>PUBLICAR EN GEDI</span></button>
-            <button (click)="memoForm.valid ? visualizarPdf() : ''"
+              publish
+            </i><span>Publicar en GEDI</span></button>
+            <button *ngIf="editable" (click)="memoForm.valid ? publicarEditado() : ''"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
-              picture_as_pdf
-            </i><span>VER ANTES DE PUBLICAR</span></button>
-          <button type='reset' (click)="resetForm()"
+              create
+            </i><span>Terminar edición</span></button>
+            <button *ngIf="editable" type='reset' (click)="cancelarEdicion()"
             class="btn btn-primary d-flex align-items-center justify-content-center">
             <i class="material-icons">
-              clear
-            </i><span>Limpiar</span></button>
+              cancel
+            </i><span>Cancelar edición</span></button>
+          <button type='reset' (click)="resetearForm()"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              cancel
+            </i><span>Limpiar borrador</span></button>
+            <button type='reset' (click)="backToHome()"
+            class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="material-icons">
+              meeting_room
+            </i><span>Regresar a GEDI</span></button>
         </div>
       </div>
     </div>

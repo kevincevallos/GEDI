@@ -1,3 +1,141 @@
+.elaborador{
+  overflow: hidden;
+  position: relative;
+}
+.primeraFila, .segundaFila, .terceraFila{
+    text-align: center;
+}
+.hora{
+  float: left;
+  width: 15px;
+}
+.cardSol, .cardActB, .cardActR, .cardOfi, .cardHdv, .cardMem{
+  display: inline-block;
+  margin: 20px;
+}
+
+.header{
+width: 92%;
+margin-left: auto;
+margin-right: auto;
+padding-top: 1%;
+margin-bottom: 1%;
+background-color: floralwhite;
+opacity: 70%;
+color: black;
+text-align: center;
+border-radius: 30px !important;
+border: 1px solid floralwhite;
+}
+.icon-display {
+  transform: scale(0.7);
+  margin: 0 auto;
+}
+.progress-loader{
+  width: 90% !important;
+  height: 3px !important;
+  margin: 10px auto;
+}
+.header2{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1%;
+  background-color: floralwhite;
+  opacity: 90%;
+  color: black;
+  text-align: center;
+  border-radius: 30px !important;
+  border: 1px solid floralwhite;
+  }
+.SOL{
+  max-width: 430px;
+  width: 300px;
+  max-height: 190px;/* 
+  margin-left: 8%;
+  margin-top: 1%;
+  margin-bottom: 1%;  */
+  background-color: chocolate;
+  opacity: 90%;
+  float: left;
+  color: black;
+  border-radius: 30px !important;
+  border: 1px currentColor goldenrod;
+}
+.ACTB{
+  max-width: 430px;
+  width: 300px;
+  max-height: 190px;/* 
+  margin-left: 8%;
+  margin-top: 1%;
+  margin-bottom: 1%; */
+  background-color: cadetblue;
+  opacity: 90%;
+  float: left;
+  color: black;
+  border-radius: 30px !important;
+  border: 1px currentColor goldenrod;
+}
+.ACTR{
+  max-width: 430px;
+  width: 300px;
+  max-height: 190px;/* 
+  margin-left: 8%;
+  margin-top: 1%;
+  margin-bottom: 1%; */
+  background-color: cornflowerblue;
+  opacity: 90%;
+  float: left;
+  color: black;
+  border-radius: 30px !important;
+  border: 1px currentColor goldenrod;
+}
+.OFI{
+  max-width: 430px;
+  width: 300px;
+  max-height: 190px;/* 
+  margin-left: 8%;
+  margin-top: 1%;
+  margin-bottom: 1%; */
+  background-color: darkolivegreen;
+  opacity: 90%;
+  float: left;
+  color: black;
+  border-radius: 30px !important;
+  border: 1px currentColor goldenrod;
+}
+.HDV{
+  max-width: 430px;
+  width: 300px;
+  max-height: 190px;/* 
+  margin-left: 8%;
+  margin-top: 1%;
+  margin-bottom: 1%; */
+  background-color: darkseagreen;
+  opacity: 90%;
+  float: left;
+  color: black;
+  border-radius: 30px !important;
+  border: 1px currentColor goldenrod;
+}
+.MEM{
+  max-width: 430px;
+  width: 300px;
+  max-height: 190px;/* 
+  margin-left: 8%;
+  margin-top: 1%;
+  margin-bottom: 1%; */
+  background-color: cadetblue;
+  opacity: 90%;
+  float: left;
+  color: black;
+  border-radius: 30px !important;
+  border: 1px currentColor goldenrod;
+}
+
+
+
+
 .row{
     padding: 10px;
 }
@@ -17,10 +155,10 @@ button span{
     margin-right: 1rem;
     margin-bottom: 1rem;
   }
-  h3 {
+/*   h3 {
     margin-top: 1rem;
     margin-bottom: 1rem;
-  }
+  } */
   
   .control-panel {
     padding: 2rem;
@@ -33,10 +171,8 @@ button span{
   .bg {
     /* The image used */
     background-image: url("https://3.bp.blogspot.com/-O_-vOlwC0U4/WpYzNKyUWmI/AAAAAAAAAD4/jE8-zI18VjMyK9iMTBpaUY0exLxiFUOzgCLcBGAs/s1600/YAVIRAC.jpg");
-  
     /* Half height */
     height: 100%;
-  
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;

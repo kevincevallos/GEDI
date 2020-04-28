@@ -343,6 +343,11 @@ body{background-position:center;background-size:cover;background-repeat:no-repea
     background-repeat: no-repeat;
     background-size: cover;
   }
+  .loginCard{
+    background-color: inherit;
+    border-radius: 30px !important;
+    border: 1px solid goldenrod;
+  }
   #correo{
    background: inherit;
     border: inherit;

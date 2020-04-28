@@ -13,7 +13,7 @@ export class Oficios {
     fechaCodigo:string
     InstitutoPertenciciente:string;
     codigoDocumento:string
-    logoPic:string
+    logoPic:string|ArrayBuffer
     constructor(){
         this.ordenDelDia.push( new Ordenado())
     }
